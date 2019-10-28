@@ -196,9 +196,6 @@ class Tabelog:
         #     self.dinner = dinner
         print('　昼：{} 夜：{}'.format(self.lunch_price, self.dinner_price), end='')
 
-        # 評価の内訳取得
-        # 料理味、サービス、雰囲気、CP、酒ドリンク
-
         # レビュー一覧URL取得
         #<a class="mainnavi" href="https://tabelog.com/tokyo/A1304/A130401/13143442/dtlrvwlst/"><span>口コミ</span><span class="rstdtl-navi__total-count"><em>60</em></span></a>
         review_tag_id = soup.find('li', id="rdnavi-review")
@@ -278,6 +275,16 @@ class Tabelog:
 
 
         soup = BeautifulSoup(r.content, 'html.parser')
+
+        # 評価の内訳取得
+        # 料理味、サービス、雰囲気、CP、酒ドリンク
+        points = soup.find('ul', class_='rvw-item__ratings-dtlscore')
+        self.points = []
+        for li in points.find_all('li'):
+            self.points.append(li.strong.text)
+        print(self.points)
+
+        # Review取得
         review = soup.find_all('div', class_='rvw-item__rvw-comment')#reviewが含まれているタグの中身をすべて取得
         if len(review) == 0:
             review = ''
