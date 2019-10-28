@@ -21,6 +21,7 @@ class Tabelog:
         self.ward = p_ward
         self.lunch = ''
         self.dinner = ''
+
         self.review_cnt = 0
         self.review = ''
         self.columns = ['store_id', 'store_name', 'score', 'ward', 'lunch', 'dinner', 'review_cnt', 'review']
@@ -67,6 +68,10 @@ class Tabelog:
 
         if len(soup_a_list) == 0:
             return False
+        
+        # プレ解析なら指定されたurlをパーシング
+        # 上から順にきよ田、三谷、いまむら、初音鮨、さわだ、青空、すし通、まつ勘、銀座　鮨一
+
         if self.pretest:
             url_list = ["https://tabelog.com/tokyo/A1301/A130101/13070238/",
                         "https://tabelog.com/tokyo/A1309/A130902/13042204/",
@@ -188,6 +193,9 @@ class Tabelog:
         #     self.dinner = dinner
         print('　昼：{} 夜：{}'.format(self.lunch,self.dinner), end='')
 
+        # 評価の内訳取得
+        # 料理味、サービス、雰囲気、CP、酒ドリンク
+
         # レビュー一覧URL取得
         #<a class="mainnavi" href="https://tabelog.com/tokyo/A1304/A130401/13143442/dtlrvwlst/"><span>口コミ</span><span class="rstdtl-navi__total-count"><em>60</em></span></a>
         review_tag_id = soup.find('li', id="rdnavi-review")
@@ -202,7 +210,7 @@ class Tabelog:
 
         # レビュー一覧ページから個別レビューページを読み込み、パーシング
         # 店舗の全レビューを取得すると、食べログの評価ごとにデータ件数の濃淡が発生してしまうため、
-        # 取得するレビュー数は１ページ分としている（件数としては１ページ*20=２0レビュー）
+        # 取得するレビュー数は１ページ分としている（件数としては１ページ*20=20レビュー）
         while True:
             review_url = review_tag + 'COND-0/smp1/?lc=0&rvw_part=all&PG=' + str(page_num)
             #print('\t口コミ一覧リンク：{}'.format(review_url))
@@ -221,6 +229,7 @@ class Tabelog:
     def scrape_review(self, review_url):
         """
         レビュー一覧ページのパーシング
+        一個ずつReviewの詳細ページを取得
         """
         r = requests.get(review_url)
         time.sleep(5)
@@ -231,6 +240,8 @@ class Tabelog:
         # 各個人の口コミページ詳細へのリンクを取得する
         #<div class="rvw-item js-rvw-item-clickable-area" data-detail-url="/tokyo/A1304/A130401/13141542/dtlrvwlst/B408082636/?use_type=0&amp;smp=1">
         #</div>
+        # https://tabelog.com/tokyo/A1301/A130101/13070238/dtlrvwlst/COND-0/smp1/?smp=1&lc=0&rvw_part=all
+        # https://tabelog.com/tokyo/A1301/A130101/13070238/dtlrvwlst/COND-0/smp1/?smp=1&lc=0&rvw_part=all
         soup = BeautifulSoup(r.content, 'html.parser')
         review_url_list = soup.find_all('div', class_='rvw-item') # 口コミ詳細ページURL一覧
 
@@ -263,6 +274,7 @@ class Tabelog:
             review = ''
         else:
             review = review[0].p.text.strip() # strip()は改行コードを除外する関数
+            # reviewの1回目訪問のみ取得、複数取得するためにはfor i in range(len(review))でいけるはず...
 
         #print('\t\t口コミテキスト：', review)
         self.review = review
