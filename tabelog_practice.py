@@ -19,8 +19,10 @@ class Tabelog:
         self.score = 0
         self.pretest = pretest
         self.ward = p_ward
-        self.lunch = ''
-        self.dinner = ''
+        self.lunch_price = ''
+        self.dinner_price = ''
+        self.lunch = False
+        self.dinner = False
         self.review_cnt = 0
         self.lunch_review = ''
         self.dinner_review = ''
@@ -85,7 +87,7 @@ class Tabelog:
                         "https://tabelog.com/tokyo/A1301/A130101/13024567/",
                         ]
             if mode:
-                for url in url_list[:3]:
+                for url in url_list[:1]:
                     item_url = url # 店の個別ページURLを取得
                     self.store_id_num += 1
                     self.scrape_item(item_url, mode)
@@ -97,7 +99,7 @@ class Tabelog:
 
         else:
             if mode:
-                for soup_a in soup_a_list[:3]:
+                for soup_a in soup_a_list[:1]:
                     print(soup_a)
                     item_url = soup_a.get('href') # 店の個別ページURLを取得
                     self.store_id_num += 1
@@ -178,13 +180,13 @@ class Tabelog:
         lunch = landd_tag.find('em', class_='gly-b-lunch')
         dinner = landd_tag.find('em', class_='gly-b-dinner')
         try:
-            self.lunch = lunch.string
+            self.lunch_price = lunch.string
         except:
-            self.lunch = '-'
+            self.lunch_price = ''
         try:
-            self.dinner = dinner.string
+            self.dinner_price = dinner.string
         except:
-            self.dinner = '-'
+            self.dinner_price = ''
         #dinner = soup.find('spam', {'class': 'rstinfo-table__budget-item'})
         # try:
         #     self.lunch = lunch.text
@@ -192,7 +194,7 @@ class Tabelog:
         # except:
         #     self.lunch = lunch
         #     self.dinner = dinner
-        print('　昼：{} 夜：{}'.format(self.lunch,self.dinner), end='')
+        print('　昼：{} 夜：{}'.format(self.lunch_price, self.dinner_price), end='')
 
         # 評価の内訳取得
         # 料理味、サービス、雰囲気、CP、酒ドリンク
@@ -287,11 +289,11 @@ class Tabelog:
         #self.review = review
         if self.lunch:
             self.lunch_review = review
-            print('\t\t昼の口コミ', review)
+            self.dinner_review = ''
         
         if self.dinner:
+            self.lunch_review = ''
             self.dinner_review = review
-            print('\t\t夜の口コミ', review)
 
         # データフレームの生成
         self.make_df()
@@ -299,7 +301,7 @@ class Tabelog:
 
     def make_df(self):
         self.store_id = str(self.store_id_num).zfill(8) #0パディング
-        se = pd.Series([self.store_id, self.store_name, self.score, self.ward, self.lunch, self.dinner, self.review_cnt, self.lunch_review, self.dinner_review], self.columns) # 行を作成
+        se = pd.Series([self.store_id, self.store_name, self.score, self.ward, self.lunch_price, self.dinner_price, self.review_cnt, self.lunch_review, self.dinner_review], self.columns) # 行を作成
         self.df = self.df.append(se, self.columns) # データフレームに行を追加
         return
 
