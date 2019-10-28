@@ -21,10 +21,11 @@ class Tabelog:
         self.ward = p_ward
         self.lunch = ''
         self.dinner = ''
-
         self.review_cnt = 0
-        self.review = ''
-        self.columns = ['store_id', 'store_name', 'score', 'ward', 'lunch', 'dinner', 'review_cnt', 'review']
+        self.lunch_review = ''
+        self.dinner_review = ''
+        #self.review = ''
+        self.columns = ['store_id', 'store_name', 'score', 'ward', 'lunch', 'dinner', 'review_cnt', 'lunch_review', 'dinner_review']
         self.df = pd.DataFrame(columns=self.columns)
         self.__regexcomp = re.compile(r'\n|\s') # \nは改行、\sは空白
 
@@ -211,11 +212,15 @@ class Tabelog:
         # レビュー一覧ページから個別レビューページを読み込み、パーシング
         # 店舗の全レビューを取得すると、食べログの評価ごとにデータ件数の濃淡が発生してしまうため、
         # 取得するレビュー数は１ページ分としている（件数としては１ページ*20=20レビュー）
+        # COND-0: 全て　COND-1: 昼　COND-2: 夜
         while True:
-            review_url = review_tag + 'COND-0/smp1/?lc=0&rvw_part=all&PG=' + str(page_num)
+            review_url_lunch = review_tag + 'COND-1/smp1/?lc=0&rvw_part=all&PG=' + str(page_num)
+            review_url_dinner = review_tag + 'COND-2/smp1/?lc=0&rvw_part=all&PG=' + str(page_num)
             #print('\t口コミ一覧リンク：{}'.format(review_url))
             print(' . ' , end='') #LOG
-            if self.scrape_review(review_url) != True:
+            if self.scrape_review(review_url_lunch, lunch=True, dinner=False) != True:
+                break
+            if self.scrape_review(review_url_dinner, lunch=False, dinner=True) != True:
                 break
             if page_num >= 1:
                 break
@@ -226,11 +231,13 @@ class Tabelog:
 
         return
 
-    def scrape_review(self, review_url):
+    def scrape_review(self, review_url, lunch, dinner):
         """
         レビュー一覧ページのパーシング
         一個ずつReviewの詳細ページを取得
         """
+        self.lunch = lunch
+        self.dinner = dinner
         r = requests.get(review_url)
         time.sleep(5)
         if r.status_code != requests.codes.ok:
@@ -277,7 +284,14 @@ class Tabelog:
             # reviewの1回目訪問のみ取得、複数取得するためにはfor i in range(len(review))でいけるはず...
 
         #print('\t\t口コミテキスト：', review)
-        self.review = review
+        #self.review = review
+        if self.lunch:
+            self.lunch_review = review
+            print('\t\t昼の口コミ', review)
+        
+        if self.dinner:
+            self.dinner_review = review
+            print('\t\t夜の口コミ', review)
 
         # データフレームの生成
         self.make_df()
@@ -285,7 +299,7 @@ class Tabelog:
 
     def make_df(self):
         self.store_id = str(self.store_id_num).zfill(8) #0パディング
-        se = pd.Series([self.store_id, self.store_name, self.score, self.ward, self.lunch, self.dinner, self.review_cnt, self.review], self.columns) # 行を作成
+        se = pd.Series([self.store_id, self.store_name, self.score, self.ward, self.lunch, self.dinner, self.review_cnt, self.lunch_review, self.dinner_review], self.columns) # 行を作成
         self.df = self.df.append(se, self.columns) # データフレームに行を追加
         return
 
