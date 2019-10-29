@@ -23,11 +23,18 @@ class Tabelog:
         self.dinner_price = ''
         self.lunch = False
         self.dinner = False
+
+        self.cuisine = '-'
+        self.service = '-'
+        self.atmos = '-'
+        self.cp = '-'
+        self.drink = '-'
+
         self.review_cnt = 0
         self.lunch_review = ''
         self.dinner_review = ''
         #self.review = ''
-        self.columns = ['store_id', 'store_name', 'score', 'ward', 'lunch', 'dinner', 'review_cnt', 'lunch_review', 'dinner_review']
+        self.columns = ['store_id', 'store_name', 'score', 'ward', 'lunch', 'dinner', '料理・味', 'サービス', '雰囲気', 'CP', '酒・ドリンク', 'review_cnt', 'lunch_review', 'dinner_review']
         self.df = pd.DataFrame(columns=self.columns)
         self.__regexcomp = re.compile(r'\n|\s') # \nは改行、\sは空白
 
@@ -173,10 +180,7 @@ class Tabelog:
 
         # 昼と夜それぞれの時間帯の価格を取得
         landd_tag = soup.find('div', class_='rstinfo-table__budget')
-        # lunch = soup.find('em', class_='gly-b-lunch')
-        # dinner = soup.find('em', class_='gly-b-dinner')
-        # self.lunch = lunch.text
-        # self.dinner = dinner.text
+        
         lunch = landd_tag.find('em', class_='gly-b-lunch')
         dinner = landd_tag.find('em', class_='gly-b-dinner')
         try:
@@ -187,13 +191,7 @@ class Tabelog:
             self.dinner_price = dinner.string
         except:
             self.dinner_price = ''
-        #dinner = soup.find('spam', {'class': 'rstinfo-table__budget-item'})
-        # try:
-        #     self.lunch = lunch.text
-        #     self.dinner = dinner.text
-        # except:
-        #     self.lunch = lunch
-        #     self.dinner = dinner
+        
         print('　昼：{} 夜：{}'.format(self.lunch_price, self.dinner_price), end='')
 
         # レビュー一覧URL取得
@@ -282,7 +280,14 @@ class Tabelog:
         self.points = []
         for li in points.find_all('li'):
             self.points.append(li.strong.text)
-        print(self.points)
+        if len(self.points) < 5:
+            self.points = ['-', '-', '-', '-', '-']
+        self.cuisine = self.points[0]
+        self.service = self.points[1]
+        self.atmos = self.points[2]
+        self.cp = self.points[3]
+        self.drink = self.points[4]
+        print('\n料理: {} サービス: {} 雰囲気: {} CP: {} 酒: {}'.format(self.cuisine, self.service, self.atmos, self.cp, self.drink))
 
         # Review取得
         review = soup.find_all('div', class_='rvw-item__rvw-comment')#reviewが含まれているタグの中身をすべて取得
@@ -308,7 +313,7 @@ class Tabelog:
 
     def make_df(self):
         self.store_id = str(self.store_id_num).zfill(8) #0パディング
-        se = pd.Series([self.store_id, self.store_name, self.score, self.ward, self.lunch_price, self.dinner_price, self.review_cnt, self.lunch_review, self.dinner_review], self.columns) # 行を作成
+        se = pd.Series([self.store_id, self.store_name, self.score, self.ward, self.lunch_price, self.dinner_price, self.cuisine, self.service, self.atmos, self.cp, self.drink, self.review_cnt, self.lunch_review, self.dinner_review], self.columns) # 行を作成
         self.df = self.df.append(se, self.columns) # データフレームに行を追加
         return
 
