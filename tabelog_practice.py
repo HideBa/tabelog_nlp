@@ -212,16 +212,32 @@ class Tabelog:
         # COND-0: 全て　COND-1: 昼　COND-2: 夜
         while True:
             review_url_lunch = review_tag + 'COND-1/smp1/?lc=0&rvw_part=all&PG=' + str(page_num)
-            review_url_dinner = review_tag + 'COND-2/smp1/?lc=0&rvw_part=all&PG=' + str(page_num)
+            # review_url_dinner = review_tag + 'COND-2/smp1/?lc=0&rvw_part=all&PG=' + str(page_num)
             #print('\t口コミ一覧リンク：{}'.format(review_url))
             print(' . ' , end='') #LOG
             if self.scrape_review(review_url_lunch, lunch=True, dinner=False) != True:
                 break
-            if self.scrape_review(review_url_dinner, lunch=False, dinner=True) != True:
-                break
-            if page_num >= 1:
+            # if self.scrape_review(review_url_dinner, lunch=False, dinner=True) != True:
+            #     break
+            if page_num >= 2:
                 break
             page_num += 1
+
+        page_num = 1
+
+        while True:
+            #review_url_lunch = review_tag + 'COND-1/smp1/?lc=0&rvw_part=all&PG=' + str(page_num)
+            review_url_dinner = review_tag + 'COND-2/smp1/?lc=0&rvw_part=all&PG=' + str(page_num)
+            #print('\t口コミ一覧リンク：{}'.format(review_url))
+            print(' . ' , end='') #LOG
+            # if self.scrape_review(review_url_lunch, lunch=True, dinner=False) != True:
+            #     break
+            if self.scrape_review(review_url_dinner, lunch=False, dinner=True) != True:
+                break
+            if page_num >= 2:
+                break
+            page_num += 1
+
 
         process_time = time.time() - start
         print('  取得時間：{}'.format(process_time))
@@ -235,8 +251,15 @@ class Tabelog:
         """
         self.lunch = lunch
         self.dinner = dinner
-        r = requests.get(review_url)
-        time.sleep(5)
+
+        try:
+            r = requests.get(review_url)
+            time.sleep(5)
+        except:
+            print('Error')
+            time.sleep(5)
+            return False
+        
         if r.status_code != requests.codes.ok:
             print(f'error:not found{ review_url }')
             return False
@@ -287,7 +310,7 @@ class Tabelog:
         self.atmos = self.points[2]
         self.cp = self.points[3]
         self.drink = self.points[4]
-        print('\n料理: {} サービス: {} 雰囲気: {} CP: {} 酒: {}'.format(self.cuisine, self.service, self.atmos, self.cp, self.drink))
+        print('\n料理: {} サービス: {} 雰囲気: {} CP: {} 酒: {}'.format(self.cuisine, self.service, self.atmos, self.cp, self.drink), end='')
 
         # Review取得
         review = soup.find_all('div', class_='rvw-item__rvw-comment')#reviewが含まれているタグの中身をすべて取得
@@ -319,4 +342,4 @@ class Tabelog:
 
 tokyo_ramen_review = Tabelog(base_url="https://tabelog.com/tokyo/rstLst/sushi/",test_mode=True, pretest=True, p_ward='東京都内')
 #CSV保存
-tokyo_ramen_review.df.to_csv("../output/pretest_tokyo_sushi_review.csv")
+tokyo_ramen_review.df.to_csv("../output/pretest_tokyo_sushi_review_page2.csv")
