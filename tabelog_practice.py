@@ -94,7 +94,7 @@ class Tabelog:
                         "https://tabelog.com/tokyo/A1301/A130101/13024567/",
                         ]
             if mode:
-                for url in url_list[:2]:
+                for url in url_list[4:5]:
                     item_url = url # 店の個別ページURLを取得
                     self.store_id_num += 1
                     self.scrape_item(item_url, mode)
@@ -219,7 +219,7 @@ class Tabelog:
                 break
             # if self.scrape_review(review_url_dinner, lunch=False, dinner=True) != True:
             #     break
-            if page_num >= 5:
+            if page_num >= 20:
                 break
             page_num += 1
             
@@ -235,7 +235,7 @@ class Tabelog:
             #     break
             if self.scrape_review(review_url_dinner, lunch=False, dinner=True) != True:
                 break
-            if page_num >= 5:
+            if page_num >= 20:
                 break
             page_num += 1
             
