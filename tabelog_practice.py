@@ -94,7 +94,7 @@ class Tabelog:
                         "https://tabelog.com/tokyo/A1301/A130101/13024567/",
                         ]
             if mode:
-                for url in url_list[:1]:
+                for url in url_list[:2]:
                     item_url = url # 店の個別ページURLを取得
                     self.store_id_num += 1
                     self.scrape_item(item_url, mode)
@@ -173,10 +173,10 @@ class Tabelog:
             self.store_id_num -= 1
             return
        # 評価が3.5未満店舗は除外
-        if float(rating_score) < 3.5:
-            print('  食べログ評価が3.5未満のため処理対象外')
-            self.store_id_num -= 1
-            return
+        # if float(rating_score) < 3.5:
+        #     print('  食べログ評価が3.5未満のため処理対象外')
+        #     self.store_id_num -= 1
+        #     return
 
         # 昼と夜それぞれの時間帯の価格を取得
         landd_tag = soup.find('div', class_='rstinfo-table__budget')
@@ -205,7 +205,7 @@ class Tabelog:
 
         # レビュー一覧ページ番号
         page_num = 1 #1ページ*20 = 20レビュー 。この数字を変えて取得するレビュー数を調整。
-
+        self.i = 1
         # レビュー一覧ページから個別レビューページを読み込み、パーシング
         # 店舗の全レビューを取得すると、食べログの評価ごとにデータ件数の濃淡が発生してしまうため、
         # 取得するレビュー数は１ページ分としている（件数としては１ページ*20=20レビュー）
@@ -219,9 +219,10 @@ class Tabelog:
                 break
             # if self.scrape_review(review_url_dinner, lunch=False, dinner=True) != True:
             #     break
-            if page_num >= 2:
+            if page_num >= 5:
                 break
             page_num += 1
+            
 
         page_num = 1
 
@@ -234,9 +235,10 @@ class Tabelog:
             #     break
             if self.scrape_review(review_url_dinner, lunch=False, dinner=True) != True:
                 break
-            if page_num >= 2:
+            if page_num >= 5:
                 break
             page_num += 1
+            
 
 
         process_time = time.time() - start
@@ -281,6 +283,7 @@ class Tabelog:
 
             # 口コミのテキストを取得
             self.get_review_text(review_detail_url)
+            self.i += 1
 
         return True
 
@@ -310,8 +313,8 @@ class Tabelog:
         self.atmos = self.points[2]
         self.cp = self.points[3]
         self.drink = self.points[4]
-        print('\n料理: {} サービス: {} 雰囲気: {} CP: {} 酒: {}'.format(self.cuisine, self.service, self.atmos, self.cp, self.drink), end='')
-
+        #print('\n料理: {} サービス: {} 雰囲気: {} CP: {} 酒: {}'.format(self.cuisine, self.service, self.atmos, self.cp, self.drink), end='')
+        print("{}個めの口コミ取得完了".format(self.i))
         # Review取得
         review = soup.find_all('div', class_='rvw-item__rvw-comment')#reviewが含まれているタグの中身をすべて取得
         if len(review) == 0:
@@ -342,4 +345,4 @@ class Tabelog:
 
 tokyo_ramen_review = Tabelog(base_url="https://tabelog.com/tokyo/rstLst/sushi/",test_mode=True, pretest=True, p_ward='東京都内')
 #CSV保存
-tokyo_ramen_review.df.to_csv("../output/pretest_tokyo_sushi_review_page2.csv")
+tokyo_ramen_review.df.to_csv("../output/pretest_tokyo_sushi_review.csv")
