@@ -316,8 +316,8 @@ class Tabelog:
         self.drink = self.points[4]
         #print('\n料理: {} サービス: {} 雰囲気: {} CP: {} 酒: {}'.format(self.cuisine, self.service, self.atmos, self.cp, self.drink), end='')
 
-        score_tag = soup.find('div', class_='rvw-item__single-ratings-score')
-        score = score_tag.span.string
+        score_tag = soup.find('p', class_='rvw-item__single-ratings-total')
+        score = score_tag.b.string
         print(' 口コミ評価点数：{}点'.format(score))
         self.score = score
 
@@ -358,4 +358,4 @@ class Tabelog:
 
 tokyo_ramen_review = Tabelog(base_url="https://tabelog.com/tokyo/rstLst/sushi/",test_mode=True, pretest=True, p_ward='東京都内')
 #CSV保存
-tokyo_ramen_review.df.to_csv("../output/pretest_tokyo_sushi_review.csv")
+tokyo_ramen_review.df.to_csv("../output/detail_tokyo_sushi_review_test.csv")
