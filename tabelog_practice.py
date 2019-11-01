@@ -10,13 +10,13 @@ class Tabelog:
     test_mode=Trueで動作させると、最初のページの３店舗のデータのみを取得できる
     pretest=Trueで動作させるとプレ解析
     """
-    def __init__(self, base_url, test_mode=False, pretest=False, p_ward='東京都内', begin_page=1, end_page=30):
+    def __init__(self, base_url, test_mode=True, pretest=False, p_ward='東京都内', begin_page=1, end_page=30):
 
         # 変数宣言
         self.store_id = ''
         self.store_id_num = 0
         self.store_name = ''
-        self.score = 0
+        self.store_score = 0
         self.pretest = pretest
         self.ward = p_ward
         self.lunch_price = ''
@@ -31,10 +31,11 @@ class Tabelog:
         self.drink = '-'
 
         self.review_cnt = 0
+        self.score = 0
         self.lunch_review = ''
         self.dinner_review = ''
         #self.review = ''
-        self.columns = ['store_id', 'store_name', 'score', 'ward', 'lunch', 'dinner', '料理・味', 'サービス', '雰囲気', 'CP', '酒・ドリンク', 'review_cnt', 'lunch_review', 'dinner_review']
+        self.columns = ['store_id', 'store_name', 'store_score', 'ward', 'lunch', 'dinner', '料理・味', 'サービス', '雰囲気', 'CP', '酒・ドリンク', 'review_cnt', 'score','lunch_review', 'dinner_review']
         self.df = pd.DataFrame(columns=self.columns)
         self.__regexcomp = re.compile(r'\n|\s') # \nは改行、\sは空白
 
@@ -94,7 +95,7 @@ class Tabelog:
                         "https://tabelog.com/tokyo/A1301/A130101/13024567/",
                         ]
             if mode:
-                for url in url_list[4:5]:
+                for url in url_list[7:]:
                     item_url = url # 店の個別ページURLを取得
                     self.store_id_num += 1
                     self.scrape_item(item_url, mode)
@@ -165,7 +166,7 @@ class Tabelog:
         rating_score_tag = soup.find('b', class_='c-rating__val')
         rating_score = rating_score_tag.span.string
         print('  評価点数：{}点'.format(rating_score), end='')
-        self.score = rating_score
+        self.store_score = rating_score
 
         # 評価点数が存在しない店舗は除外
         if rating_score == '-':
@@ -314,6 +315,18 @@ class Tabelog:
         self.cp = self.points[3]
         self.drink = self.points[4]
         #print('\n料理: {} サービス: {} 雰囲気: {} CP: {} 酒: {}'.format(self.cuisine, self.service, self.atmos, self.cp, self.drink), end='')
+
+        score_tag = soup.find('div', class_='rvw-item__single-ratings-score')
+        score = score_tag.span.string
+        print(' 口コミ評価点数：{}点'.format(score))
+        self.score = score
+
+        # 評価点数が存在しない店舗は除外
+        # if score == '-':
+        #     print('  評価がないため処理対象外')
+        #     self.store_id_num -= 1
+        #     return
+        
         print("{}個めの口コミ取得完了".format(self.i))
         # Review取得
         review = soup.find_all('div', class_='rvw-item__rvw-comment')#reviewが含まれているタグの中身をすべて取得
@@ -339,7 +352,7 @@ class Tabelog:
 
     def make_df(self):
         self.store_id = str(self.store_id_num).zfill(8) #0パディング
-        se = pd.Series([self.store_id, self.store_name, self.score, self.ward, self.lunch_price, self.dinner_price, self.cuisine, self.service, self.atmos, self.cp, self.drink, self.review_cnt, self.lunch_review, self.dinner_review], self.columns) # 行を作成
+        se = pd.Series([self.store_id, self.store_name, self.store_score, self.ward, self.lunch_price, self.dinner_price, self.cuisine, self.service, self.atmos, self.cp, self.drink, self.review_cnt, self.score, self.lunch_review, self.dinner_review], self.columns) # 行を作成
         self.df = self.df.append(se, self.columns) # データフレームに行を追加
         return
 
