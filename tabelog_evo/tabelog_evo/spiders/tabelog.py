@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import requests
-from scrapy.spiders import CrawlSpider
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
 from bs4 import BeautifulSoup
 from tabelog_evo.items import TabelogEvoItem
 
@@ -148,8 +149,9 @@ class TabelogSpider(CrawlSpider):
     
         next_page = response.css('a.c-pagination__arrow--next').xpath('@href').get()
         if next_page is not None:
-            href = response.urljoin(next_page)
-            yield scrapy.Request(href, callback=self.parse_review)
+            yield response.follow(next_page, callback=self.parse_review)
+            # href = response.urljoin(next_page)
+            # yield scrapy.Request(href, callback=self.parse_review)
         
 
     def get_review_text(self, response):
