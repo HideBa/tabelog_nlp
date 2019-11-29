@@ -25,7 +25,7 @@ class TabelogSpider(CrawlSpider):
         soup = BeautifulSoup(response.body, 'html.parser')
         store_list = soup.find_all('a', class_='list-rst__rst-name-target')
 
-        for store in store_list[:1]:
+        for store in store_list:
             item = TabelogEvoItem()
             href = store["href"]
             # item['link'] = href
@@ -149,9 +149,11 @@ class TabelogSpider(CrawlSpider):
     
         next_page = response.css('a.c-pagination__arrow--next').xpath('@href').get()
         if next_page is not None:
-            yield response.follow(next_page, callback=self.parse_review)
-            # href = response.urljoin(next_page)
-            # yield scrapy.Request(href, callback=self.parse_review)
+            href = response.urljoin(next_page)
+            request = scrapy.Request(href, callback=self.parse_review)
+            request.meta['item'] = item
+            yield request
+            #yield scrapy.Request(href, callback=self.parse_review)
         
 
     def get_review_text(self, response):
