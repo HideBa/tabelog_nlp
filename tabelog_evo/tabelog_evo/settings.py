@@ -67,10 +67,11 @@ DOWNLOAD_DELAY = 5
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'tabelog_evo.pipelines.TabelogEvoPipeline': 300,
-#}
-
+ITEM_PIPELINES = {
+   'tabelog_evo.pipelines.ValidationPipeline': 300,
+}
+# DB
+POSTGRESQL_URL = 'postgresql://tabelog_evo:tabelog_evo_pass@localhost:5432/tabelog_evo_db'
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
