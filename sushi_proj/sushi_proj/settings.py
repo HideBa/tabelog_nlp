@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'sushi_app.apps.SushiAppConfig',
     # 'bootstrap4',
-    # 'mathfilters',  # これはいらないかも
+    'mathfilters',
 ]
 
 MIDDLEWARE = [

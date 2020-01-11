@@ -21,18 +21,19 @@
                 <a href="{% url 'sushi_app:store_detail' store_id=store.id %}">
                     {{ store.id }}
                 </a>
+                <td>
+                    <p>{{ store.store_name }}</p>
+                </td>
             </th>
-            
-            <td>{{ store.name }}</td>
-        </tr>
+                    </tr>
         {% endfor %}
     </tbody>
 </table>
 
 {% if page > 1 %}
-<a href="{% url 'iekari:store_list' %}?page={{ page|sub:1 }}">前のページ</a>
+<a href="{% url 'sushi_app:store_list' %}?page={{ page|sub:1 }}">前のページ</a>
 {% endif %}
 {% if page < last_page %}
-<a href="{% url 'iekari:store_list' %}?page={{ page|add:1 }}">次のページ</a>
+<a href="{% url 'sushi_app:store_list' %}?page={{ page|add:1 }}">次のページ</a>
 {% endif %}
 {% endblock %}
