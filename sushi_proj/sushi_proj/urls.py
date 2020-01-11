@@ -30,6 +30,7 @@ def render_index(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', render_index),
+    path('sushisumma/', include('sushi_app.urls')),
     # path('campaign/', include('marry_app.urls', namespace='campaign')),
 
 ]

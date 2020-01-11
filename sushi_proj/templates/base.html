@@ -1,24 +1,21 @@
 {% load i18n %}
-{% load static from staticfiles %}
-{% load bootstrap4 %}
-{% bootstrap_css %}
-{% bootstrap_javascript jquery='full' %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
     <meta charset="utf-8" />
-    <title>IEKARI</title>
+    <title>SushiSumma</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'iekari/vendor/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
-        integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
-        crossorigin="" />
+    <!-- <link rel="stylesheet" href="{% static 'sushi_app/vendor/bootstrap/css/bootstrap.min.css' %}"> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" -->
+        <!-- integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" -->
+        <!-- crossorigin="" /> -->
 
-    <link rel="stylesheet" href="{% static 'iekari/css/app.css' %}">
-    <link rel="stylesheet" href="{% static 'iekari/css/homepage.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'sushi_app/css/app.css' %}"> -->
+    <!-- <link rel="stylesheet" href="{% static 'sushi_app/css/homepage.css' %}"> -->
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,7 +33,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">IEKARI</a>
+            <a class="navbar-brand" href="#">SushiSumma</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -50,15 +47,14 @@
                     </li>
                     <li class="nav-item dropdown">
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/iekari/rentroom">物件一覧</a>
-                            <a class="dropdown-item" href="/iekari/recommend">おすすめ物件</a>
+                            <a class="dropdown-item" href="/sushi_app/rentroom">Sushi_store</a>
+                            <a class="dropdown-item" href="/sushi_app/recommend">ziku</a>
                             <!-- <div class="dropdown-divider"></div> -->
-                            <a class="dropdown-item" href="/iekari/assess">物件を売る(査定)</a>
                         </div>
                     </li>
-                    {% if user.is_authenticated %}
+                    <!-- {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/iekari/mypage">マイページ</a>
+                        <a class="nav-link" href="/sushi_app/mypage">マイページ</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/accounts/logout">ログアウト</a>
@@ -70,7 +66,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/accounts/login">ログイン</a>
                     </li>
-                    {% endif %}
+                    {% endif %} -->
                 </ul>
             </div>
         </div>
@@ -98,14 +94,14 @@
     <!-- Footer -->
     <footer class="py-5 bg-dark">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; techpreneur 2019</p>
+            <p class="m-0 text-center text-white">Copyright &copy; SushiSumma 2020</p>
         </div>
         <!-- /.container -->
     </footer>
 
-    <script type="text/javascript" src="{% static 'iekari/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'iekari/js/index.js' %}"></script>
-    <script type="text/javascript" src="{% static 'iekari/js/gulpfile.js' %}"></script>
+    <!-- <script type="text/javascript" src="{% static 'sushi_app/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script> -->
+    <!-- <script type="text/javascript" src="{% static 'sushi_app/js/index.js' %}"></script> -->
+    <!-- <script type="text/javascript" src="{% static 'sushi_app/js/gulpfile.js' %}"></script> -->
 
 </body>
 
