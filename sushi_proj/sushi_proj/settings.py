@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sushi_app.apps.SushiAppConfig',
-    # 'bootstrap4',
+    'bootstrap4',
     'mathfilters',
 ]
 
@@ -71,9 +71,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.static',
             ],
-            # 'builtins': [
-            #     'bootstrap4.templatetags.bootstrap4'
-            # ],
+            'builtins': [
+                'bootstrap4.templatetags.bootstrap4'
+            ],
         },
     },
 ]
