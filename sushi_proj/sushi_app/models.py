@@ -59,8 +59,9 @@ class LunchImportantWords(models.Model):
         Store,
         verbose_name='store',
         on_delete=models.CASCADE)
-    core_words = models.CharField('軸単語', max_length=20, null=True)
-    core_words_count = models.IntegerField('軸単語登場回数', max_length=20, null=True)
+    key_words1 = models.CharField('軸単語1', max_length=20, null=True)
+    key_words1_count = models.IntegerField(
+        '軸単語1登場回数', max_length=20, null=True)
     modifier_word1 = models.CharField('修飾語1', max_length=20, null=True)
     modifier_word2 = models.CharField('修飾語2', max_length=20, null=True)
     modifier_word3 = models.CharField('修飾語3', max_length=20, null=True)
@@ -72,12 +73,40 @@ class LunchImportantWords(models.Model):
     modifier_word9 = models.CharField('修飾語9', max_length=20, null=True)
     modifier_word10 = models.CharField('修飾語10', max_length=20, null=True)
 
+
 class LunchSentimentResult(models.Model):
     class Meta:
         verbose_name = 'sentiment analytics results'
         verbose_name_plural = 'sentiment analytics results'
-    
-    id = models.CharField('lunch_sentimentanalytics_result', max_length=30, primary_key=True)
+
+    id = models.CharField(
+        'lunch_sentimentanalytics_result',
+        max_length=30,
+        primary_key=True)
     sentense = models.CharField('sentense', max_length=100, null=True)
     sentiment = models.FloatField('sentiment', null=True)
-    
+    magnitude = models.FloatField('magunitude', null=True)
+    review = models.OneToOneField(
+        ReviewLunch,
+        verbose_name='lunch_review',
+        on_delete=models.CASCADE)
+
+
+class LunchStoreSummary(models.Model):
+    class Meta:
+        verbose_name = 'lunch_store_summary'
+        verbose_name_plural = 'lunch_store_summary'
+    id = models.CharField(
+        'lunch_store_summary',
+        max_length=6,
+        primary_key=True)
+    keyword1 = models.CharField('keyword1', max_length=20, null=True)
+    keyword2 = models.CharField('keyword2', max_length=20, null=True)
+    keyword3 = models.CharField('keyword3', max_length=20, null=True)
+    keyword4 = models.CharField('keyword4', max_length=20, null=True)
+    keyword5 = models.CharField('keyword5', max_length=20, null=True)
+    keyword6 = models.CharField('keyword6', max_length=20, null=True)
+    keyword7 = models.CharField('keyword7', max_length=20, null=True)
+    keyword8 = models.CharField('keyword8', max_length=20, null=True)
+    keyword9 = models.CharField('keyword9', max_length=20, null=True)
+    keyword10 = models.CharField('keyword10', max_length=20, null=True)
