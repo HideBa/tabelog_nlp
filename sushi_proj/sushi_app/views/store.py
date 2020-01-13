@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator
-from sushi_app.models import Store, ReviewLunch
+from sushi_app.models import Store, LunchReview
 
 import random
 
@@ -35,7 +35,7 @@ def detail_view(request, store_id):
         page = 1
 
     # try:
-    #     lunch_review = ReviewLunch.objects.get(store_id=store_id)
+    #     lunch_review = LunchReview.objects.get(store_id=store_id)
 
     # except BaseException:
     #     current_score = -1

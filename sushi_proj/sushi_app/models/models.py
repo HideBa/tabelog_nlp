@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 # from django.contrib.auth.models import User
 
 
@@ -9,12 +10,14 @@ class Store(models.Model):
 
     id = models.CharField('StoreID', max_length=6, primary_key=True)
     store_name = models.CharField('StoreName', max_length=30)
+    tabelog_score = models.FloatField('Tabelog_score', null=True)
+    retty_score = models.PositiveIntegerField('Retty_score', null=True)
 
     def _str__(self):
         return self.store_name
 
 
-class ReviewLunch(models.Model):
+class LunchReview(models.Model):
     class Meta:
         verbose_name = 'review_lunch'
         verbose_name_plural = 'review_lunch'
@@ -87,7 +90,7 @@ class LunchSentimentResult(models.Model):
     sentiment = models.FloatField('sentiment', null=True)
     magnitude = models.FloatField('magunitude', null=True)
     review = models.OneToOneField(
-        ReviewLunch,
+        LunchReview,
         verbose_name='lunch_review',
         on_delete=models.CASCADE)
 
@@ -110,3 +113,33 @@ class LunchStoreSummary(models.Model):
     keyword8 = models.CharField('keyword8', max_length=20, null=True)
     keyword9 = models.CharField('keyword9', max_length=20, null=True)
     keyword10 = models.CharField('keyword10', max_length=20, null=True)
+    keyword1_modifier1 = ArrayField(
+        models.CharField(
+            'modifier1', max_length=10, null=True), models.FloatField(
+            'sentiment', null=True), models.FloatField(
+                'magnitude', null=True), size=3)
+    keyword1_modifier1 = ArrayField(
+        models.CharField(
+            'modifier1', max_length=10, null=True), models.FloatField(
+            'sentiment', null=True), models.FloatField(
+                'magnitude', null=True), size=3)
+    keyword1_modifier1 = ArrayField(
+        models.CharField(
+            'modifier1', max_length=10, null=True), models.FloatField(
+            'sentiment', null=True), models.FloatField(
+                'magnitude', null=True), size=3)
+    keyword1_modifier1 = ArrayField(
+        models.CharField(
+            'modifier1', max_length=10, null=True), models.FloatField(
+            'sentiment', null=True), models.FloatField(
+                'magnitude', null=True), size=3)
+    keyword1_modifier1 = ArrayField(
+        models.CharField(
+            'modifier1', max_length=10, null=True), models.FloatField(
+            'sentiment', null=True), models.FloatField(
+                'magnitude', null=True), size=3)
+    keyword1_modifier1 = ArrayField(
+        models.CharField(
+            'modifier1', max_length=10, null=True), models.FloatField(
+            'sentiment', null=True), models.FloatField(
+                'magnitude', null=True), size=3)

@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='ReviewLunch',
+            name='LunchReview',
             fields=[
                 ('id', models.CharField(max_length=10, primary_key=True, serialize=False, verbose_name='reviewID')),
                 ('score', models.FloatField(null=True, verbose_name='each score')),
