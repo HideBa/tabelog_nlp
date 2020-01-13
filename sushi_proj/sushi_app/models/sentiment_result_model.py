@@ -1,5 +1,5 @@
 from django.db import models
-from models.review_model import LunchReview
+from .review_model import LunchReview
 
 
 class LunchSentimentResult(models.Model):

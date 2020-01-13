@@ -4,8 +4,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator
-from sushi_app.models import Store, LunchReview
-
+# from sushi_app.models import Store, LunchReview
+from sushi_app.models.store_model import Store
+from sushi_app.models.review_model import LunchReview
 import random
 
 

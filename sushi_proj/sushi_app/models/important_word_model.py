@@ -1,5 +1,5 @@
 from django.db import models
-from models.store_model import Store
+from .store_model import Store
 
 
 class LunchImportantWords(models.Model):
