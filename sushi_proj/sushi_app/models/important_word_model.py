@@ -13,7 +13,7 @@ class LunchImportantWords(models.Model):
         on_delete=models.CASCADE)
     key_words1 = models.CharField('軸単語1', max_length=20, null=True)
     key_words1_count = models.IntegerField(
-        '軸単語1登場回数', max_length=20, null=True)
+        '軸単語1登場回数', null=True)
     modifier_word1 = models.CharField('修飾語1', max_length=20, null=True)
     modifier_word2 = models.CharField('修飾語2', max_length=20, null=True)
     modifier_word3 = models.CharField('修飾語3', max_length=20, null=True)
