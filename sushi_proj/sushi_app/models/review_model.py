@@ -1,5 +1,6 @@
 from django.db import models
 from .store_model import Store
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class LunchReview(models.Model):
@@ -8,7 +9,12 @@ class LunchReview(models.Model):
         verbose_name_plural = 'review_lunch'
     # temporary set 'null' for development. in product set it null=False
     id = models.CharField('review_lunchID', max_length=10, primary_key=True)
-    score = models.FloatField('each score', null=True)
+    score = models.FloatField(
+        'each score',
+        null=True,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(5.0)])
     content = models.TextField('review content', null=True)
     store = models.ForeignKey(
         Store,
@@ -26,7 +32,9 @@ class DinnerReview(models.Model):
         verbose_name = 'review_dinner'
         verbose_name = 'review_dinner'
     id = models.CharField('review_dinnerID', max_length=10, primary_key=True)
-    score = models.FloatField('user score', null=True)
+    score = models.FloatField('user score', null=True, validators=[
+        MinValueValidator(0),
+        MaxValueValidator(5.0)])
     content = models.TextField('review content', null=True)
     store = models.ForeignKey(
         Store,
