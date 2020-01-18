@@ -19,12 +19,33 @@
         </tr>
     </tbody>
 </table>
+<table class="mt-4 border-bottom">lunchReviews</table>
+<tbody>
+    <thead>
+        <tr>
+            <th scope="row">ReviewID</th>
+            <th scope="row">Review Content</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lunch_review in lunch_reviews %}
+        <tr>
+            <th score="row">
+                <a href="{% url 'sushi_app:review_detail' store_id=store.id lunch_review_id=lunch_review.id %}">{{ lunch_review.id }}
+                </a>
+                Review content</th>
+            <td>{{ lunch_review.content }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</tbody>
 
-<a href="{% url 'sushi_app:store_list' %}?page={{ page }}">一覧へ戻る</a>
-{% endblock %}
-
-
-
+{% if page > 1 %}
+<a href="{% url 'sushi_app:store_detail' %}?page={{ page|sub:1 }}">back</a>
+{% endif %}
+{% if page < last_page %}
+<a href="{% url 'sushi_app:store_detail' %}?page={{ page|add:1 }}">next</a>
+{% endif %}
 
 
 {% block extra_js %}
@@ -33,4 +54,6 @@
     crossorigin=""></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-tilelayer-geojson/1.0.4/TileLayer.GeoJSON.min.js"></script>
 <script src="{% static 'sushi_app/js/map_preview.js' %}"></script>
+{% endblock %}
+
 {% endblock %}

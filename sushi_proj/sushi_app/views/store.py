@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 # from sushi_app.models import Store, LunchReview
 from sushi_app.models.store_model import Store
-from sushi_app.models.review_model import LunchReview
+from sushi_app.models.review_model import LunchReview, DinnerReview
 import random
 
 
@@ -29,7 +29,8 @@ def list_view(request):
 
 def detail_view(request, store_id):
     store = get_object_or_404(Store, id=store_id)
-
+    # lunch_reviews = store.objects.all().prefetch_related("lunch_review")
+    lunch_reviews = LunchReview.objects.filter(store__id__exact=store_id)
     try:
         page = int(request.GET.get('from_page'))
     except BaseException:
@@ -45,8 +46,37 @@ def detail_view(request, store_id):
                   'sushi_app/store_detail.html',
                   {'store': store,
                    'page': page,
+                   'lunch_reviews': lunch_reviews
                    #    'current_score': current_score
                    })
+
+
+# def review_lunch_list(request):
+#     review_list = LunchReview.objects.all().order_by('-id')
+#     paginator = Paginator(review_list, 20)
+
+#     try:
+#         page = int(request.GET.get('page'))
+#     except BaseException:
+#         page = 1
+
+#     reviews = paginator.get_page(page)
+#     return render(request,
+#                   'sushi_app/lunch_review_list.html',
+#                   {'stores': stores,
+#                    'page': page,
+#                    'last_page': paginator.num_pages})
+
+def review_lunch_view(request, store_id, lunch_review_id):
+    review = get_object_or_404(LunchReview, id=lunch_review_id)
+    store = get_object_or_404(Store, id=store_id)
+    try:
+        page = int(request.GET.get('from_page'))
+    except BaseException:
+        page = 1
+
+    return render(request, 'sushi_app/lunch_review_detail.html',
+                  {'store': store, 'review': review, 'page': page})
 
 # # 追加！
 # @login_required
