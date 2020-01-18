@@ -31,10 +31,32 @@
         {% for lunch_review in lunch_reviews %}
         <tr>
             <th score="row">
-                <a href="{% url 'sushi_app:review_detail' store_id=store.id lunch_review_id=lunch_review.id %}">{{ lunch_review.id }}
+                <a href="{% url 'sushi_app:lunch_review_detail' store_id=store.id lunch_review_id=lunch_review.id %}">{{ lunch_review.id }}
                 </a>
                 Review content</th>
             <td>{{ lunch_review.content }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</tbody>
+<table class="mt-4 border-bottom">DinnerReviews</table>
+<tbody>
+    <thead>
+        <tr>
+            <th scope="row">ReviewID</th>
+            <th scope="row">Review Content</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dinner_review in dinner_reviews %}
+        <tr>
+            <th score="row">
+                <a href="{% url 'sushi_app:dinner_review_detail' store_id=store.id dinner_review_id=dinner_review.id %}">{{ dinner_review.id }}
+                </a>
+                <a href="{% url 'sushi_app:lunch_review_detail' store_id=store.id lunch_review_id=dinner_review.id %}">{{ dinner_review.id }}
+                </a>
+                Review content</th>
+            <td>{{ dinner_review.content }}</td>
         </tr>
         {% endfor %}
     </tbody>

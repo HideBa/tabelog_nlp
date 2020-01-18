@@ -1,5 +1,6 @@
 from django.db import models
 from .store_model import Store
+from django.contrib.postgres.fields import ArrayField
 
 
 class LunchImportantWords(models.Model):
@@ -11,19 +12,38 @@ class LunchImportantWords(models.Model):
         Store,
         verbose_name='store',
         on_delete=models.CASCADE)
-    key_words1 = models.CharField('軸単語1', max_length=20, null=True)
-    key_words1_count = models.IntegerField(
-        '軸単語1登場回数', null=True)
-    modifier_word1 = models.CharField('修飾語1', max_length=20, null=True)
-    modifier_word2 = models.CharField('修飾語2', max_length=20, null=True)
-    modifier_word3 = models.CharField('修飾語3', max_length=20, null=True)
-    modifier_word4 = models.CharField('修飾語4', max_length=20, null=True)
-    modifier_word5 = models.CharField('修飾語5', max_length=20, null=True)
-    modifier_word6 = models.CharField('修飾語6', max_length=20, null=True)
-    modifier_word7 = models.CharField('修飾語7', max_length=20, null=True)
-    modifier_word8 = models.CharField('修飾語8', max_length=20, null=True)
-    modifier_word9 = models.CharField('修飾語9', max_length=20, null=True)
-    modifier_word10 = models.CharField('修飾語10', max_length=20, null=True)
+    all_words_num = models.IntegerField('総単語数', null=True)
+    key_words = models.CharField('軸単語', max_length=20, null=True)
+    key_words_nums = models.IntegerField('軸単語出現数', null=True)
+    key_words_count = models.IntegerField(
+        '軸単語登場回数', null=True)
+    keyword_modifier1 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)
+    keyword_modifier2 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)
+    keyword_modifier3 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)
+    keyword_modifier4 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)
+    keyword_modifier5 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)
+
+# 以下修正の必要あり
 
 
 class DinnerImportantWords(models.Model):
@@ -35,16 +55,33 @@ class DinnerImportantWords(models.Model):
         Store,
         verbose_name='store',
         on_delete=models.CASCADE)
-    key_words1 = models.CharField('軸単語1', max_length=20, null=True)
-    key_words1_count = models.IntegerField(
-        '軸単語1登場回数', null=True)
-    modifier_word1 = models.CharField('修飾語1', max_length=20, null=True)
-    modifier_word2 = models.CharField('修飾語2', max_length=20, null=True)
-    modifier_word3 = models.CharField('修飾語3', max_length=20, null=True)
-    modifier_word4 = models.CharField('修飾語4', max_length=20, null=True)
-    modifier_word5 = models.CharField('修飾語5', max_length=20, null=True)
-    modifier_word6 = models.CharField('修飾語6', max_length=20, null=True)
-    modifier_word7 = models.CharField('修飾語7', max_length=20, null=True)
-    modifier_word8 = models.CharField('修飾語8', max_length=20, null=True)
-    modifier_word9 = models.CharField('修飾語9', max_length=20, null=True)
-    modifier_word10 = models.CharField('修飾語10', max_length=20, null=True)
+    all_words_num = models.IntegerField('総単語数', null=True)
+    key_words = models.CharField('軸単語', max_length=20, null=True)
+    key_words_nums = models.IntegerField('軸単語出現数', null=True)
+    key_words_count = models.IntegerField(
+        '軸単語登場回数', null=True)
+    keyword_modifier1 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)
+    keyword_modifier2 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)
+    keyword_modifier3 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)
+    keyword_modifier4 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)
+    keyword_modifier5 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)

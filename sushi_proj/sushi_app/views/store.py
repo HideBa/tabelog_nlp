@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 # from sushi_app.models import Store, LunchReview
 from sushi_app.models.store_model import Store
 from sushi_app.models.review_model import LunchReview, DinnerReview
+from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
 import random
 
 
@@ -29,8 +30,8 @@ def list_view(request):
 
 def detail_view(request, store_id):
     store = get_object_or_404(Store, id=store_id)
-    # lunch_reviews = store.objects.all().prefetch_related("lunch_review")
     lunch_reviews = LunchReview.objects.filter(store__id__exact=store_id)
+    dinner_reviews = DinnerReview.objects.filter(store__id__exact=store_id)
     try:
         page = int(request.GET.get('from_page'))
     except BaseException:
@@ -46,26 +47,11 @@ def detail_view(request, store_id):
                   'sushi_app/store_detail.html',
                   {'store': store,
                    'page': page,
-                   'lunch_reviews': lunch_reviews
+                   'lunch_reviews': lunch_reviews,
+                   'dinner_reviews': dinner_reviews
                    #    'current_score': current_score
                    })
 
-
-# def review_lunch_list(request):
-#     review_list = LunchReview.objects.all().order_by('-id')
-#     paginator = Paginator(review_list, 20)
-
-#     try:
-#         page = int(request.GET.get('page'))
-#     except BaseException:
-#         page = 1
-
-#     reviews = paginator.get_page(page)
-#     return render(request,
-#                   'sushi_app/lunch_review_list.html',
-#                   {'stores': stores,
-#                    'page': page,
-#                    'last_page': paginator.num_pages})
 
 def review_lunch_view(request, store_id, lunch_review_id):
     review = get_object_or_404(LunchReview, id=lunch_review_id)
@@ -78,20 +64,18 @@ def review_lunch_view(request, store_id, lunch_review_id):
     return render(request, 'sushi_app/lunch_review_detail.html',
                   {'store': store, 'review': review, 'page': page})
 
-# # 追加！
-# @login_required
-# def rate(request, rentroom_id):
-#     rentroom = get_object_or_404(RentRoom, id=rentroom_id)
 
-#     log, created = ScoreLog.objects.update_or_create(
-#         defaults={'score': request.POST.get('score')},
-#         profile_id=request.user.profile.id,
-#         rent_room_id=rentroom_id,
-#     )
+def review_dinner_view(request, store_id, dinner_review_id):
+    review = get_object_or_404(DinnerReview, id=dinner_review_id)
+    store = get_object_or_404(Store, id=store_id)
+    try:
+        page = int(request.GET.get('from_page'))
+    except BaseException:
+        page = 1
+    print("hello--------------")
+    return render(request, 'sushi_app/dinner_review_detail.html',
+                  {'store': store, 'review': review, 'page': page})
 
-#     if created:
-#         messages.success(request, message_rate_created)
-#     else:
-#         messages.success(request, message_rate_updated)
 
-#     return redirect('iekari:rentroom_detail', rentroom_id=rentroom_id)
+def get_important_word(store_id):
+    dinner_reviews = DinnerReview.objects.filter(store__id__exact=store_id)
