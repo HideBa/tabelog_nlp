@@ -30,6 +30,7 @@
     </tbody>
 </table>
 
+
 {% if page > 1 %}
 <a href="{% url 'sushi_app:store_list' %}?page={{ page|sub:1 }}">前のページ</a>
 {% endif %}

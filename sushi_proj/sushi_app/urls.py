@@ -19,4 +19,8 @@ urlpatterns = [
     path(
         'store/<slug:store_id>/<slug:dinner_review_id>',
         store.review_dinner_view,
-        name='dinner_review_detail')]
+        name='dinner_review_detail'),
+    path(
+        'sample/<slug:store_id>',
+        store.get_important_word,
+        name='get_important_word')]

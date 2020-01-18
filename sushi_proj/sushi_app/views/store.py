@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from sushi_proj.settings import BASE_DIR
 
 from django.core.paginator import Paginator
 # from sushi_app.models import Store, LunchReview
@@ -9,6 +10,7 @@ from sushi_app.models.store_model import Store
 from sushi_app.models.review_model import LunchReview, DinnerReview
 from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
 import random
+from get_important_word.analysis import Analyzer
 
 
 def list_view(request):
@@ -77,5 +79,25 @@ def review_dinner_view(request, store_id, dinner_review_id):
                   {'store': store, 'review': review, 'page': page})
 
 
-def get_important_word(store_id):
+def get_important_word(request, store_id):
+    # 各店舗のレビューが入ったリストを格納
+    # json_file = 'sushi_proj/analyze_files/dictionary.json'
+    print("base dir ===== " + str(BASE_DIR))
+    json_file = BASE_DIR + '/analyze_files/dictionary.json'
+    # json_file = '/Users/HideBa/python/tabelog_evolution/sushi_proj/analyze_files/dictionary.json'
     dinner_reviews = DinnerReview.objects.filter(store__id__exact=store_id)
+    print("dinner_reviews ======= " + str(dinner_reviews))
+    dinner_reviews_list = []
+    for dinner_review in dinner_reviews:
+        temp = dinner_review.content
+        dinner_reviews_list.append(temp)
+    print("dinner_list ====== " + str(dinner_reviews_list))
+    content = ''.join(dinner_reviews_list)
+    analyzer = Analyzer()
+    temp = analyzer.feature_analysis(content, json_file)
+    print("result=========" + str(temp))
+    render(request, 'sushi_app/sample.html', {'temp': temp})
+
+
+# if __name__ == 'main':
+#     get_important_word()
