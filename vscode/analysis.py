@@ -1,52 +1,14 @@
 import MeCab
 from collections import Counter, defaultdict
+import json
+import re
 class Analyzer:
-    akazu = ["赤酢"]
-    nigiri = ["握り","にぎり","ニギリ"]
-    shari = ["シャリ","コメ","米","ライス","こめ","しゃり"]
-    maguro = ["まぐろ","マグロ","鮪","赤身","トロ","とろ"]
-    wine = ["ワイン"]
 
-    akazu_ad = [["強い","強め","きつい","つよい","つよめ","効く"],
-        ["あっさり","シンプル"],
-        ["酸っぱい","すっぱい","酸味"]]
-
-    nigiri_ad = [["大きい","でかい","大きめ","ビッグ"],
-            ["小さい","小ぶり","小さめ"],
-            ["創作","奇想天外","工夫","独特","意外","面白い","おもしろい"]]
-
-    shari_ad = [["大きい","でかい","大きめ","ビッグ"],
-           ["小さい","小ぶり","小さめ"],
-           ["パラパラ","少ない"],
-           ["塩気","塩","しょっぱい"],
-           ["甘い","甘め","あまい","あまめ","砂糖"],
-           ["酢","米酢","白酢"]]
-
-    maguro_ad = [["うまい","美味","美味しい","おいしい","良い","よい","いい"],
-            ["臭い","くさい","生臭い"],
-            ["あっさり"],
-            ["こってり"],
-            ["とろける","消える"],
-            ["酸味"],
-            ["熟成"]]
-
-    wine_ad = [["多い","豊富","品揃え","品ぞろえ","取り揃え"],
-            ["相性","マリアージュ", "合う"]]
     
-    features = [akazu, nigiri, shari, maguro, wine]
-    features_ad = [akazu_ad, nigiri_ad, shari_ad, maguro_ad, wine_ad]
-    all_features = [[akazu, akazu_ad], [nigiri,nigiri_ad],[shari, shari_ad],
-    [maguro, maguro_ad], [wine, wine_ad]]
-    def __init__(self):
-        self.tagger = MeCab.Tagger("-Ochasen \
-        -d /usr/local/lib/mecab/dic/mecab-ipadic-neologd \
-         -u /Users/yuki/foo/bar/user_dic2.dic")
-        
-        self.tagger.parse("")
-        self.features = features
-        self.features_ad = features_ad
-        self.all_features = all_features
 
+    def __init__(self):
+        self.tagger = MeCab.Tagger("-Ochasen")
+        self.tagger.parse("")
 
     def _tokenize_ja(self, text):
         node = self.tagger.parseToNode(str(text)) #分かち書きしたのが入っている。イテレータ
@@ -64,7 +26,43 @@ class Analyzer:
     def tokenize(self, content):
         return [token for token in self._tokenize_ja(content)]
     
-    def add_features(self, feature_list, feature_ad_list):
-        self.features.append(feature_list)
-        self.features_ad.append(feature_ad_list)
+    def feature_analysis(self, content, json_file):
+        f = open(json_file, "r")
+        json_data = json.load(f)
+        jiku_list = json_data["all_jiku"]["all_jiku_list"]
+        #['赤酢', '握り', 'シャリ']
+        pare = defaultdict(int)
+        n = 0
+        dic = defaultdict(int)
+        #sentences = re.split("[♪。！!？… \. \?]", content)
+        sentences = content.split("。")
+        l = []
+        #一つのレビューを文単位に分割
+        for sentence in sentences:
+            t = self.tokenize(sentence)
+            n += len(t)
+            for jiku in jiku_list:
+                jiku_group = json_data["all_jiku"][jiku]["jiku_group"]
+                #['握り', 'にぎり', 'ニギリ']
+                syusyoku_list = json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]
+                #['大きい', '小さい', '創作']
+                for tt in t:
+                    if tt in jiku_group:
+                        dic[jiku] += 1
+                for syusyoku in syusyoku_list:
+                    syusyoku_group = json_data["all_jiku"][jiku]["syusyoku"][syusyoku]
+                    #[['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
+                    for tt in t:
+                        if tt in jiku_group:
+                            for s in syusyoku_group:
+                                if len(list(set(s) & set(t))) == len(s):
+                                    pare[(jiku, syusyoku)] += 1
+        for jiku in jiku_list:
+            ll = []
+            ll.append(jiku)
+            ll.append(dic[jiku])
+            for syusyoku in json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]:
+                ll.append([syusyoku, pare[(jiku, syusyoku)]])
+            l.append(ll)
+        return l
     

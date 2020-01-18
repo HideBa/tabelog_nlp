@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "geoproject-255715",
+  "private_key_id": "27d66f99a6bec581c13da5d60af89666582baadc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7peCRc2iQjs4U\nUmEjuzGN34tUX9QznY8SzgSKLXxcsrenusvuoizGYAw9IdWIHd/89SZUTFnMB+Gg\nyp7M0bHmCYWei02S9lzyYKrvCUnD1hLQpVFOTt9ic/LwLs9IUCmK0saSmbef7OQx\na+yoFGgFPy7KbvauZ0A95NyTd6F0eWGkJ5Nz0JOTUiFdm8M2ZD2ySibrk8SY9AD/\nBp7wbQs2OK/rJkjeyWM5BMOqBbWCGXcdUV2Z1VojHPMj2rfBMNtEQgaIOKe3zCq/\n41038NosrMKYeOvG2NVblXACmxn9zsRQk6olBkvZQSK+Br6ihWpx8Qy2eKZagbnS\nFWS0nK+FAgMBAAECggEAUBCPyB/g/sUf4wXfUrqdgzZdoaudxEQ29sQWpcqQpJDQ\n0e1e9DwYNLBoqHDWRlTQ7ILBTvig2/CE8fFiXmweptNrQuGXQNyDfhuG86UX50ph\nDstq7Km0oLJudtLSOL2TbBtRBN43vjH6j6fH+1NxqsNxuIguEu4VOBN9liJWLnac\n1vCA/ROhpEHoBCSeWNgZgTxtAebUA6Lx6xaX6oY5/uKSc7BMaxXZgtkqjETZQLPS\nodfVhfAnDw4uQKLm9UnEjvl04zZJ+nbNyQ++lCKONkSbpn7b4UeSnnshJoUbxI20\nSJXake0dzzJxF1nsSTeWXzGD2WqWdmiwiqzHbdOp5QKBgQDlypuMuwlpKy46Oo4k\nn4RQ61KZitKkkVahu+ZrwhBwnU5uJWMFyZutB/UZfhB+0/IMUjioUDtMmsztIjJo\nlinZnj+DcMHG8/eIONEEwIfDT7lTSvZkdpwWNwtR+VDKdlzfn4SYiyBhKhtfeKrv\ncTTYGUG1b9qZ7MXOz7QAxieK0wKBgQDRDMZjxs6OaEp2BuoJ8f1o6lL2ViUy3cuX\nJMzFUhCTjl9dMHBFelHusIwA8pIrpxXtmjbFCT7S4kkJEN8fqUkuCw/jg8G3ztY8\nFbzVGmUajdznueGuhdg1NrSLdaMFAG61ehUEnxeC9KZOCytraVgefhMl2U/3kIWA\nXCH2wMq1RwKBgQCzNpip4RUt2GdtMk25ck8XbPA2n3Y4ssEF0i2azPdVXNnWPYJE\n+T9Ya2RURWVIBLQ5t8ZIPoqA7Bn2tzzpJHPvLOQL9typ9YuPyf/53M4FHSBEPap8\nH6UMDlHd1LuVq0ozfY1ECv1tyhEfHFTz+S5lew0sG9g5Q9fhu0t/bwtX0QKBgQDK\njJEwnbEHJB95akubZT9+RwQpL+CM/3/Cq2JIkbID9j+KIGO3vcPi/GY6iM19xD+n\n3vLQSJv5Yk0XnqRBnhmMpiU38TJiMOM8hmdXJ2LsrqVqVJ1JJuAM9ztJoKpaL0gV\nR/tTZf424Wq9VW81fHVn3goZcwxbN0lSzHIQDk6aAwKBgEQEzYRsk/S/o+IluXDO\nZnPjQ7V+4DcAqEZqp0NdT9CX2dquJUeSTooYTHk08RW4Nv+vrJJX0vk75psxyg5O\nuHM0K6fnwpCO9IL9GXQySv1WHSQ92536S63uwX4VEQnQhrm0+EEJse5JdUgkUFZG\nbS9RCqptQzd6yEd7PbuWsTcO\n-----END PRIVATE KEY-----\n",
+  "client_email": "natural-language-proj@geoproject-255715.iam.gserviceaccount.com",
+  "client_id": "113630536965765859312",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/natural-language-proj%40geoproject-255715.iam.gserviceaccount.com"
+}
