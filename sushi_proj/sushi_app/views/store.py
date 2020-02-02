@@ -79,6 +79,7 @@ def review_dinner_view(request, store_id, dinner_review_id):
                   {'store': store, 'review': review, 'page': page})
 
 
+# ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
 def get_important_word(request, store_id):
     # 各店舗のレビューが入ったリストを格納
     # json_file = 'sushi_proj/analyze_files/dictionary.json'
@@ -96,7 +97,10 @@ def get_important_word(request, store_id):
     analyzer = Analyzer()
     temp = analyzer.feature_analysis(content, json_file)
     print("result=========" + str(temp))
-    render(request, 'sushi_app/sample.html', {'temp': temp})
+    print("type===" + str(type(temp)))
+    # store_id = Store.objects.filter(id=store_id)
+    store = Store.objects.filter(id=store_id)
+    return render(request, 'sushi_app/sample.html', {'temp': temp})
 
 
 # if __name__ == 'main':
