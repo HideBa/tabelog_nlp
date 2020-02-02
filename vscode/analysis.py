@@ -117,5 +117,5 @@ class Analyzer:
                                         negative_dic[(jiku,syusyoku)] += -text[1]*text[2]
         for jiku in jiku_list:
             for syusyoku in json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]:
-                result_dic[jiku].append([syusyoku, positive_dic[(jiku, syusyoku)], negative_dic[(jiku, syusyoku)])
+                result_dic[jiku].append([syusyoku, positive_dic[(jiku, syusyoku)], negative_dic[(jiku, syusyoku)]])
         return result_dic
