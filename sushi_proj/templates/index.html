@@ -50,6 +50,11 @@
                 </a> -->
                 <br>
                 <a href="{% url 'sushi_app:store_list' %}">store list</a>
+---------------------------------
+                {% for keyword in keywords_list %}
+                <p>{{ keyword }}</p>
+                {% endfor %}
+-----------------------------------
             </div>
             </div>
             <!-- /.row -->

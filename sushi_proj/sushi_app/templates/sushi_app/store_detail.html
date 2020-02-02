@@ -19,6 +19,12 @@
         </tr>
     </tbody>
 </table>
+{% for summary in summary_list %}
+{% for elem in summary %}
+<p>{{ elem }}</p>
+{% endfor %}
+{% endfor %}
+
 <table class="mt-4 border-bottom">lunchReviews</table>
 <tbody>
     <thead>

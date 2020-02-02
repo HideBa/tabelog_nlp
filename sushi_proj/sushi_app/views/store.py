@@ -11,6 +11,7 @@ from sushi_app.models.store_model import Store
 from sushi_app.models.review_model import LunchReview, DinnerReview
 from sushi_app.models.sentiment_result_model import LunchSentimentResult, DinnerSentimentResult
 from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
+from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
 import random
 from get_important_word.analysis import Analyzer
 
@@ -34,6 +35,24 @@ def list_view(request):
 
 def detail_view(request, store_id):
     store = get_object_or_404(Store, id=store_id)
+    summaries = DinnerStoreSummary.objects.filter(store__id__exact=store_id)
+    print("summary obj ==== " + str(summaries))
+    summary_list = []
+    for summary in summaries:
+        keyword = summary.keyword
+        keyword_modifier1 = summary.keyword_modifier1
+        keyword_modifier2 = summary.keyword_modifier2
+        keyword_modifier3 = summary.keyword_modifier3
+        keyword_modifier4 = summary.keyword_modifier4
+        keyword_modifier5 = summary.keyword_modifier5
+        keyword_modifier6 = summary.keyword_modifier6
+        summary_list.append([keyword,
+                             keyword_modifier1,
+                             keyword_modifier2,
+                             keyword_modifier3,
+                             keyword_modifier4,
+                             keyword_modifier5,
+                             keyword_modifier6])
     lunch_reviews = LunchReview.objects.filter(store__id__exact=store_id)
     dinner_reviews = DinnerReview.objects.filter(store__id__exact=store_id)
     try:
@@ -50,6 +69,7 @@ def detail_view(request, store_id):
     return render(request,
                   'sushi_app/store_detail.html',
                   {'store': store,
+                   'summary_list': summary_list,
                    'page': page,
                    'lunch_reviews': lunch_reviews,
                    'dinner_reviews': dinner_reviews
@@ -168,9 +188,59 @@ def get_posinega(request, store_id):
         print("parse_list === " + str(sentiment_list))
         parse_list.append(sentiment_list)
     analyzer = Analyzer()
+    # ["まぐろ":[["うまい", 0.2, 0.5]["くさい", 0.5, -0.2]]
     posi_nega_result = analyzer.get_posinega(
         parse_list, json_file)  # {("まぐろ", "おいしい"): posi_point}
+#  {'赤酢': [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]], '握り': [['大きい', 0.48999999999999994, 0.0], ['小さい', 0.0, 0.0], ['創作', 0.0, 0.0]], 'シャリ': [['大きい', 0.0, 0.0], ['小さい', 0.0, 0.0], ['パラパラ', 0.0, 0.0], ['塩気', 0.0, 0.0], ['甘い', 0.0, 0.0], ['熟成', 0.0, 0.0]]})
     print("====" + str(posi_nega_result))
+    for keyword in posi_nega_result:
+        try:
+            max_id = DinnerStoreSummary.objects.latest('id').id
+        except ObjectDoesNotExist:
+            max_id = 'DSS0000000000'
+        dinner_store_id = 'DSS' + \
+            (str(int(max_id[3:]) + 1).zfill(10))
+        print("keyword ==== " + str(keyword))
+        # 赤酢
+        print("modifier ===== " + str(posi_nega_result[keyword]))
+        # [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]]
+        # for modifier_list in posi_nega_result[keyword]:
+        if len(posi_nega_result[keyword]) >= 1:
+            keyword_modifier1 = posi_nega_result[keyword][0]
+        else:
+            keyword_modifier1 = []
+        if len(posi_nega_result[keyword]) >= 2:
+            keyword_modifier2 = posi_nega_result[keyword][1]
+        else:
+            keyword_modifier2 = []
+        if len(posi_nega_result[keyword]) >= 3:
+            keyword_modifier3 = posi_nega_result[keyword][2]
+        else:
+            keyword_modifier3 = []
+        if len(posi_nega_result[keyword]) >= 4:
+            keyword_modifier4 = posi_nega_result[keyword][3]
+        else:
+            keyword_modifier4 = []
+        if len(posi_nega_result[keyword]) >= 5:
+            keyword_modifier5 = posi_nega_result[keyword][4]
+        else:
+            keyword_modifier5 = []
+        if len(posi_nega_result[keyword]) >= 6:
+            keyword_modifier6 = posi_nega_result[keyword][5]
+        else:
+            keyword_modifier6 = []
+        new_data = DinnerStoreSummary.objects.create(
+            id=dinner_store_id,
+            store=store,
+            keyword=keyword,
+            keyword_modifier1=keyword_modifier1,
+            keyword_modifier2=keyword_modifier2,
+            keyword_modifier3=keyword_modifier3,
+            keyword_modifier4=keyword_modifier4,
+            keyword_modifier5=keyword_modifier5,
+            keyword_modifier6=keyword_modifier6)
+        print("new data ===== " + str(new_data))
+
     return HttpResponse("god")
     # if __name__ == 'main':
     #     get_important_word()

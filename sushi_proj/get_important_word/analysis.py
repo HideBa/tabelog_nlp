@@ -32,14 +32,14 @@ class Analyzer:
         f = open(json_file, "r")
         json_data = json.load(f)
         jiku_list = json_data["all_jiku"]["all_jiku_list"]
-        #['赤酢', '握り', 'シャリ']
+        # ['赤酢', '握り', 'シャリ']
         pare = defaultdict(int)
         n = 0
         dic = defaultdict(int)
         content = re.sub(r"[♪！!？… \. \?]", "。", content)
         content = re.sub("。+", "。", content)
         sentences = re.split(r"[♪。！!？… \. \?]", content)
-        #sentences = content.split("。")
+        # sentences = content.split("。")
         l = []
         # 一つのレビューを文単位に分割
         for sentence in sentences:
@@ -47,15 +47,15 @@ class Analyzer:
             n += len(t)
             for jiku in jiku_list:
                 jiku_group = json_data["all_jiku"][jiku]["jiku_group"]
-                #['握り', 'にぎり', 'ニギリ']
+                # ['握り', 'にぎり', 'ニギリ']
                 syusyoku_list = json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]
-                #['大きい', '小さい', '創作']
+                # ['大きい', '小さい', '創作']
                 for tt in t:
                     if tt in jiku_group:
                         dic[jiku] += 1
                 for syusyoku in syusyoku_list:
                     syusyoku_group = json_data["all_jiku"][jiku]["syusyoku"][syusyoku]
-                    #[['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
+                    # [['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
                     for tt in t:
                         if tt in jiku_group:
                             for s in syusyoku_group:
@@ -95,22 +95,22 @@ class Analyzer:
         f = open(json_file, "r")
         json_data = json.load(f)
         jiku_list = json_data["all_jiku"]["all_jiku_list"]
-        #['赤酢', '握り', 'シャリ']
+        # ['赤酢', '握り', 'シャリ']
         positive_dic = defaultdict(float)
         negative_dic = defaultdict(float)
-        result = []
+        result_dic = defaultdict(list)
         for text in text_dic:
             t = self.tokenize(text[0])
             for jiku in jiku_list:
                 jiku_group = json_data["all_jiku"][jiku]["jiku_group"]
-                #['握り', 'にぎり', 'ニギリ']
+                # ['握り', 'にぎり', 'ニギリ']
                 syusyoku_list = json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]
-                #['大きい', '小さい', '創作']
+                # ['大きい', '小さい', '創作']
                 for ji in jiku_group:
                     if ji in t:
                         for syusyoku in syusyoku_list:
                             syusyoku_group = json_data["all_jiku"][jiku]["syusyoku"][syusyoku]
-                            #[['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
+                            # [['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
                             for s in syusyoku_group:
                                 if len(list(set(s) & set(t))) == len(s):
                                     if text[2] > 0:
@@ -121,6 +121,6 @@ class Analyzer:
                                                      ] += -text[1] * text[2]
         for jiku in jiku_list:
             for syusyoku in json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]:
-                result.append([jiku, syusyoku, positive_dic[(
-                    jiku, syusyoku)], negative_dic[(jiku, syusyoku)]])
-        return result
+                result_dic[jiku].append(
+                    [syusyoku, positive_dic[(jiku, syusyoku)], negative_dic[(jiku, syusyoku)]])
+        return result_dic
