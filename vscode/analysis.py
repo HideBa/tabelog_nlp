@@ -94,7 +94,9 @@ class Analyzer:
         json_data = json.load(f)
         jiku_list = json_data["all_jiku"]["all_jiku_list"]
         #['赤酢', '握り', 'シャリ']
-        posinega_dic = defaultdict(float)
+        positive_dic = defaultdict(float)
+        negative_dic = defaultdict(float)
+        result = []
         for text in text_dic:
             t = self.tokenize(text[0])
             for jiku in jiku_list:
@@ -112,5 +114,8 @@ class Analyzer:
                                     if text[2] > 0:
                                         positive_dic[(jiku,syusyoku)] += text[1]*text[2]
                                     elif text[2] < 0:
-                                        positive_dic[(jiku,syusyoku)] += -text[1]*text[2]
-        return positive_dic, negative_dic  
+                                        negative_dic[(jiku,syusyoku)] += -text[1]*text[2]
+        for jiku in jiku_list:
+            for syusyoku in json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]:
+                result.append([jiku, syusyoku, positive_dic[(jiku, syusyoku)], negative_dic[(jiku, syusyoku)]])
+        return result
