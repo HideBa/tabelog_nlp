@@ -101,7 +101,23 @@ def review_dinner_view(request, store_id, dinner_review_id):
                   {'store': store, 'review': review, 'page': page})
 
 
-# ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
+def save_review(request, store_id):
+    store = Store.objects.get(id=store_id)
+    analyzer = Analyzer()
+    csv_path = BASE_DIR + "/sample_files/pretest_aozora_dinner.csv"
+    reviews = analyzer.read_csv(csv_path)
+    for review in reviews:
+        try:
+            max_id = DinnerReview.objects.latest('id').id
+        except ObjectDoesNotExist:
+            max_id = 'dr00000000'
+        dinner_review_id = 'dr' + (str(int(max_id[2:]) + 1).zfill(8))
+        new_data = DinnerReview.objects.create(
+            id=dinner_review_id, content=review, store=store)
+        # ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
+    return HttpResponse("save")
+
+
 def get_important_word(request, store_id):
     print("========")
     # 各店舗のレビューが入ったリストを格納
@@ -142,6 +158,8 @@ def get_important_word(request, store_id):
 
     return render(request, 'sushi_app/sample.html', {'temp': temp})
 
+# 感情値を取得
+
 
 def get_sentiment_result(request, store_id):
     dinner_reviews = DinnerReview.objects.filter(
@@ -172,6 +190,8 @@ def get_sentiment_result(request, store_id):
                 store=store)
             print("new data === " + str(new_data))
     return HttpResponse('hello')
+
+# 以下でポジネガを取得
 
 
 def get_posinega(request, store_id):

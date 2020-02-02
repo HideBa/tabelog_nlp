@@ -21,11 +21,12 @@ urlpatterns = [
         store.review_dinner_view,
         name='dinner_review_detail'),
     path(
-        'sample/<slug:store_id>',
+        'important/<slug:store_id>',
         store.get_important_word,
         name='get_important_word'),
     path(
         'sentiment/<slug:store_id>',
         store.get_sentiment_result,
         name='get_sentiment_result'),
-    path('posinega/<slug:store_id>', store.get_posinega, name='get_posinega')]
+    path('posinega/<slug:store_id>', store.get_posinega, name='get_posinega'),
+    path('savecsv/<slug:store_id>', store.save_review, name="save_review")]
