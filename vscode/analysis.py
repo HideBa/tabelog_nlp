@@ -34,8 +34,10 @@ class Analyzer:
         pare = defaultdict(int)
         n = 0
         dic = defaultdict(int)
-        #sentences = re.split("[♪。！!？… \. \?]", content)
-        sentences = content.split("。")
+        content = re.sub("[♪！!？… \. \?]", "。", content)
+        content = re.sub("。+","。",content)
+        sentences = re.split("[♪。！!？… \. \?]", content)
+        #sentences = content.split("。")
         l = []
         #一つのレビューを文単位に分割
         for sentence in sentences:
