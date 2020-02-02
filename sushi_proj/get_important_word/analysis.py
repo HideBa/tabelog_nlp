@@ -2,6 +2,7 @@ import MeCab
 from collections import Counter, defaultdict
 import json
 import re
+import requests
 
 
 class Analyzer:
@@ -35,8 +36,10 @@ class Analyzer:
         pare = defaultdict(int)
         n = 0
         dic = defaultdict(int)
-        #sentences = re.split("[♪。！!？… \. \?]", content)
-        sentences = content.split("。")
+        content = re.sub(r"[♪！!？… \. \?]", "。", content)
+        content = re.sub("。+", "。", content)
+        sentences = re.split(r"[♪。！!？… \. \?]", content)
+        #sentences = content.split("。")
         l = []
         # 一つのレビューを文単位に分割
         for sentence in sentences:
@@ -66,3 +69,53 @@ class Analyzer:
                 ll.append([syusyoku, pare[(jiku, syusyoku)]])
             l.append(ll)
         return l
+
+    def gcp_analyzer(self, text, key):
+        url = 'https://language.googleapis.com/v1/documents:analyzeSentiment?key=' + key
+        header = {'Content-Type': 'application/json'}
+        text_ = re.sub(r"[♪！!？… \. \?]", "。", text)
+        text__ = re.sub("。+", "。", text_)
+        result = []
+        body = {
+            "document": {
+                "type": "PLAIN_TEXT",
+                "language": "JA",
+                "content": text__
+            },
+            "encodingType": "UTF8"
+        }
+        response = requests.post(url, headers=header, json=body).json()
+        for i in response["sentences"]:
+            result.append([i["text"]["content"], i["sentiment"]
+                           ["magnitude"], i["sentiment"]["score"]])
+            # 1文の中身,magnitude,score
+        return result
+
+    def get_posinega(self, text_dic, json_file):
+        f = open(json_file, "r")
+        json_data = json.load(f)
+        jiku_list = json_data["all_jiku"]["all_jiku_list"]
+        #['赤酢', '握り', 'シャリ']
+        positive_dic = defaultdict(float)
+        negative_dic = defaultdict(float)
+        for text in text_dic:
+            t = self.tokenize(text[0])
+            for jiku in jiku_list:
+                jiku_group = json_data["all_jiku"][jiku]["jiku_group"]
+                #['握り', 'にぎり', 'ニギリ']
+                syusyoku_list = json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]
+                #['大きい', '小さい', '創作']
+                for ji in jiku_group:
+                    if ji in t:
+                        for syusyoku in syusyoku_list:
+                            syusyoku_group = json_data["all_jiku"][jiku]["syusyoku"][syusyoku]
+                            #[['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
+                            for s in syusyoku_group:
+                                if len(list(set(s) & set(t))) == len(s):
+                                    if text[2] > 0:
+                                        positive_dic[(jiku, syusyoku)
+                                                     ] += text[1] * text[2]
+                                    elif text[2] < 0:
+                                        positive_dic[(jiku, syusyoku)
+                                                     ] += -text[1] * text[2]
+        return positive_dic, negative_dic
