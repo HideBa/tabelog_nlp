@@ -168,10 +168,9 @@ def get_posinega(request, store_id):
         print("parse_list === " + str(sentiment_list))
         parse_list.append(sentiment_list)
     analyzer = Analyzer()
-    positive_dic, negative_dic = analyzer.get_posinega(
+    posi_nega_result = analyzer.get_posinega(
         parse_list, json_file)  # {("まぐろ", "おいしい"): posi_point}
-    print("positive====" + str(positive_dic))
-    print("negative====" + str(negative_dic))
+    print("====" + str(posi_nega_result))
     return HttpResponse("god")
     # if __name__ == 'main':
     #     get_important_word()

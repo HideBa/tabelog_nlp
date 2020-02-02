@@ -21,6 +21,7 @@ from django.shortcuts import render
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from . import settings
+from sushi_app.views.top_page import show_top_page
 
 
 def render_index(request):
@@ -29,7 +30,7 @@ def render_index(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', render_index),
+    path('', show_top_page, name='show_top_page'),
     path('sushisumma/', include('sushi_app.urls')),
     # path('campaign/', include('marry_app.urls', namespace='campaign')),
 
