@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from .store_model import Store
 
 
 class LunchStoreSummary(models.Model):
@@ -10,6 +11,12 @@ class LunchStoreSummary(models.Model):
         'lunch_store_summary',
         max_length=6,
         primary_key=True)
+    store = models.ForeignKey(
+        Store,
+        verbose_name='store',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE)
     keyword1 = models.CharField('keyword1', max_length=20, null=True)
     keyword2 = models.CharField('keyword2', max_length=20, null=True)
     keyword3 = models.CharField('keyword3', max_length=20, null=True)
@@ -38,6 +45,12 @@ class DinnerStoreSummary(models.Model):
         'dinner_store_summary',
         max_length=6,
         primary_key=True)
+    store = models.ForeignKey(
+        Store,
+        verbose_name='store',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE)
     keyword1 = models.CharField('keyword1', max_length=20, null=True)
     keyword2 = models.CharField('keyword2', max_length=20, null=True)
     keyword3 = models.CharField('keyword3', max_length=20, null=True)
@@ -56,3 +69,13 @@ class DinnerStoreSummary(models.Model):
             max_length=20),
         null=True)
     # ex.) ['強い', '120', '30']
+    keyword1_modifier2 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)
+    keyword1_modifier3 = ArrayField(
+        models.CharField(
+            'keyword_modifier1',
+            max_length=20),
+        null=True)

@@ -116,6 +116,6 @@ class Analyzer:
                                         positive_dic[(jiku, syusyoku)
                                                      ] += text[1] * text[2]
                                     elif text[2] < 0:
-                                        positive_dic[(jiku, syusyoku)
+                                        negative_dic[(jiku, syusyoku)
                                                      ] += -text[1] * text[2]
         return positive_dic, negative_dic
