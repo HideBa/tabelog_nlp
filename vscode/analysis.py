@@ -121,7 +121,7 @@ class Analyzer:
                 result_dic[jiku].append([syusyoku, positive_dic[(jiku, syusyoku)], negative_dic[(jiku, syusyoku)]])
         return result_dic
     
-    def read_csv(csv):
+    def read_csv(self,csv):
         df = pd.read_csv(csv)
         l = list(df["dinner_review"])
         return l
