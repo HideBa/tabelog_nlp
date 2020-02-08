@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load mathfilters %}
+{% load static %}
+
+{% block title %}Review detail{% endblock title %}
+
+{% block content %}
+
+<p>{{ temp }}</p>
+------
+<!-- {% for t in tem %}
+<p>{{ t }}</p>
+{% endfor %} -->
+
+<!-- <table border="1">
+    <caption>寿司結果</caption>
+    
+    <colgroup align="center">
+    <col span="2" width="100">
+    </colgroup>
+    
+    <colgroup>
+    <col width="100">
+    <col width="150">
+    </colgroup>
+    
+    <thead>
+    <tr><th>軸</th><th>回数</th><th>修飾語1</th><th>修飾語1回数</th></tr>
+    </thead>
+    
+    <tbody>
+    <tr><td>ライオン</td><td>肉</td><td>☆☆☆☆</td><td>百獣の王です。</td></tr>
+    <tr><td>パンダ</td><td>笹</td><td>☆☆☆☆☆</td><td>猫熊です。</td></tr>
+    <tr><td>キリン</td><td>葉っぱ</td><td>☆☆☆</td><td>首が長いです。</td></tr>
+    <tr><td>ゾウ</td><td>干草</td><td>☆☆☆</td><td>鼻が長いです。</td></tr>
+    <tr><td>ゴリラ</td><td>果物</td><td>☆☆☆☆</td><td>知的です。</td></tr>
+    </tbody>
+    </table> -->
+
+{% endblock %}
+<!-- <a href="{% url 'sushi_app:store_detail' %} store_id=store.id ?page={{ page }}">Store一覧へ戻る</a> -->
+<!-- <a href="{% url 'sushi_app:store_detail' %} store_id=store.id ?page={{ page }}">review一覧へ戻る</a> -->
+
+
+
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+    integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+    crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-tilelayer-geojson/1.0.4/TileLayer.GeoJSON.min.js"></script>
+<script src="{% static 'sushi_app/js/map_preview.js' %}"></script>
+{% endblock %}
