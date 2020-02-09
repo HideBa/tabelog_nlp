@@ -29,8 +29,8 @@ class AnalyzeExe:
 
     def implement_all(self, store_id_list):
         for store_id in store_id_list:
-            # self.get_important_word(store_id, self.is_dinner)
-            # self.get_sentiment_result(store_id, self.is_dinner)
+            self.get_important_word(store_id, self.is_dinner)
+            self.get_sentiment_result(store_id, self.is_dinner)
             self.get_posinega(store_id, self.is_dinner)
 
     def get_important_word(self, store_id, is_dinner):

@@ -54,8 +54,8 @@ def detail_view(request, store_id):
                              keyword_modifier4,
                              keyword_modifier5,
                              keyword_modifier6])
-    lunch_reviews = LunchReview.objects.filter(store__id__exact=store_id)
-    dinner_reviews = DinnerReview.objects.filter(store__id__exact=store_id)
+    # lunch_reviews = LunchReview.objects.filter(store__id__exact=store_id)
+    # dinner_reviews = DinnerReview.objects.filter(store__id__exact=store_id)
     try:
         page = int(request.GET.get('from_page'))
     except BaseException:
@@ -72,8 +72,8 @@ def detail_view(request, store_id):
                   {'store': store,
                    'summary_list': summary_list,
                    'page': page,
-                   'lunch_reviews': lunch_reviews,
-                   'dinner_reviews': dinner_reviews
+                   #    'lunch_reviews': lunch_reviews,
+                   #    'dinner_reviews': dinner_reviews
                    #    'current_score': current_score
                    })
 
@@ -105,7 +105,9 @@ def review_dinner_view(request, store_id, dinner_review_id):
 def save_review(request, store_id):
     store = Store.objects.get(id=store_id)
     analyzer = Analyzer()
-    csv_path = BASE_DIR + "/sample_files/pretest_aozora_dinner.csv"
+    # csv_path = BASE_DIR + "/sample_files/pretest_aozora_dinner.csv"
+    # csv_path = BASE_DIR + "/sample_files/pretest_sushitsuu_dinner.csv"
+    csv_path = BASE_DIR + "/sample_files/pretest_mitani_dinner.csv"
     reviews = analyzer.read_csv(csv_path)
     for review in reviews:
         try:
@@ -117,3 +119,8 @@ def save_review(request, store_id):
             id=dinner_review_id, content=review, store=store)
         # ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
     return HttpResponse("save")
+
+
+def keyword_sort(request, keyword, ranksite):
+    # dinner_store_summary_obj = DinnerStoreSummary.objects.get(keyword=keyword)
+    return HttpResponse("keyword sort")

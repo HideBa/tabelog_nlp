@@ -20,6 +20,8 @@ urlpatterns = [
         'store/<slug:store_id>/<slug:dinner_review_id>',
         store.review_dinner_view,
         name='dinner_review_detail'),
+    path('keyword-sort/<slug:keyword>/<slug:ranksite>',
+         store.keyword_sort, name='keyword_sort')
     # path(
     #     'important/<slug:store_id>',
     #     store.get_important_word,
@@ -30,4 +32,5 @@ urlpatterns = [
     #     name='get_sentiment_result'),
     # path('posinega/<slug:store_id>', store.get_posinega, name='get_posinega'),
     # path('savecsv/<slug:store_id>', store.save_review, name="save_review"),
-    path('exe', analyze_exe.implement_all_process, name="exe")]
+    # path('exe', analyze_exe.implement_all_process, name="exe")
+]

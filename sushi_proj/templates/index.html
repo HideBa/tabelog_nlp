@@ -53,9 +53,11 @@
 ---------------------------------
                 {% for keyword in keywords_list %}
                 <p>{{ keyword }}</p>
+                <p><a href="{% url 'sushi_app:keyword_sort' keyword=keyword ranksite='tabelog' %}">{{ keyword }}</a></p>
+
                 {% endfor %}
 -----------------------------------
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
             </div>
             </div>
             <!-- /.row -->
