@@ -100,6 +100,7 @@ class Analyzer:
         positive_dic = defaultdict(float)
         negative_dic = defaultdict(float)
         result_dic = defaultdict(list)
+        sentiment_dic = defaultdict(list)
         for text in text_dic:
             t = self.tokenize(text[0])
             for jiku in jiku_list:

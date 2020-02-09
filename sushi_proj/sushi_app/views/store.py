@@ -15,6 +15,7 @@ from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
 import random
 from get_important_word.analysis import Analyzer
 from .analyze_exe import AnalyzeExe
+from django.db.models import Prefetch
 
 
 def list_view(request):
@@ -124,9 +125,27 @@ def save_review(request, store_id):
 def keyword_sort(request, keyword, site):
     print("keyword recieved === " + keyword)
     print("site === " + site)
-    dinner_store_summary_objs = DinnerStoreSummary.objects.filter(
-        keyword=keyword)
+    # get objects and sort by posi_nega score
+    # dinner_store_summary_objs = DinnerStoreSummary.objects.filter(
+    #     keyword=keyword).order_by('keyword_sentiment')
+    # print("store summary objs === " + str(dinner_store_summary_objs))
+    # store_list = []
     # for dinner_store_summary_obj in dinner_store_summary_objs:
-    # dinner_store_summary_obj.
-    # print("summary === " + str(dinner_store_summary_obj))
+    #     print("dinner store summary obj === " + str(dinner_store_summary_obj))
+    #     for store_summary in dinner_store_summary_obj.objects.all().select_related():
+    #         store_list.append(store_summary.store)
+    #         print("store obj ==== " + str(store_summary.store))
+
+    # # other way
+    # store_list = Store.object.filter(dinnerstoresummary_set__keyword=keyword)
+    # print("store list === " + str(store_list))
+    for store in Store.objects.all().prefetch_related(
+        Prefetch(
+            "dinerstoresummary_set",
+            queryset=DinnerStoreSummary.objects.filter(
+            keyword__exact=keyword).order_by("-keyword_sentiment"),
+            to_attr="dinnerstoresummary")):
+        if len(store.dinnerstoresummary) > 0:
+            print(str(store))
+
     return HttpResponse(keyword)
