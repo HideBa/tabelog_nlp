@@ -121,6 +121,7 @@ def save_review(request, store_id):
     return HttpResponse("save")
 
 
-def keyword_sort(request, keyword, ranksite):
+def keyword_sort(request, keyword):
+    print("keyword recieved === " + keyword)
     # dinner_store_summary_obj = DinnerStoreSummary.objects.get(keyword=keyword)
-    return HttpResponse("keyword sort")
+    return HttpResponse(keyword)
