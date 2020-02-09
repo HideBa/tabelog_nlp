@@ -13,7 +13,7 @@ class LunchSentimentResult(models.Model):
         'lunch_sentimentanalytics_result',
         max_length=30,
         primary_key=True)
-    sentense = models.CharField('sentense', max_length=300, null=True)
+    sentense = models.CharField('sentense', max_length=1000, null=True)
     sentiment = models.FloatField('sentiment', null=True, validators=[
                                   MinValueValidator(-1.0), MaxValueValidator(1.0)])
     magnitude = models.FloatField('magunitude', null=True)
@@ -32,7 +32,7 @@ class DinnerSentimentResult(models.Model):
         'lunch_sentimentanalytics_result',
         max_length=30,
         primary_key=True)
-    sentense = models.CharField('sentense', max_length=300, null=True)
+    sentense = models.CharField('sentense', max_length=1000, null=True)
     sentiment = models.FloatField('sentiment', null=True, validators=[
                                   MinValueValidator(-1.0), MaxValueValidator(1.0)])
     magnitude = models.FloatField('magunitude', null=True)

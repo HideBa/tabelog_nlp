@@ -1,12 +1,14 @@
 from sushi_app.models.store_model import Store
+# /sushi_proj/sushi_app/models/store_model.py
 from sushi_app.models.review_model import LunchReview, DinnerReview
 from sushi_app.models.sentiment_result_model import LunchSentimentResult, DinnerSentimentResult
 from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
 from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
-from get_important_word.analysis import Analyzer
-from sushi_proj.settings import BASE_DIR
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
+from sushi_proj.settings import BASE_DIR
+from get_important_word.analysis import Analyzer
+from django.http import HttpResponse
 # from django.http import JsonResponse
 
 
@@ -27,9 +29,9 @@ class AnalyzeExe:
 
     def implement_all(self, store_id_list):
         for store_id in store_id_list:
-            self.get_important_word(store_id)
-            self.get_sentiment_result(store_id)
-            self.get_posinega(store_id)
+            # self.get_important_word(store_id, self.is_dinner)
+            # self.get_sentiment_result(store_id, self.is_dinner)
+            self.get_posinega(store_id, self.is_dinner)
 
     def get_important_word(self, store_id, is_dinner):
         print("========")
@@ -118,9 +120,12 @@ class AnalyzeExe:
             store = get_object_or_404(Store, id=store_id)  # ストアオブジェクト
             key = 'AIzaSyCIl8F1e8D7mLIs0jhgp4Z3U4KWI76pcvE'
             analyzer = Analyzer()
+            gcp_nums = 0
             for dinner_review in dinner_reviews:
                 text = dinner_review.content
                 sentiment_result = analyzer.gcp_analyzer(text, key)
+                gcp_nums += 1
+                print("gcp nums === " + str(gcp_nums))
                 for elem in sentiment_result:
                     try:
                         max_id = DinnerSentimentResult.objects.latest('id').id
@@ -311,8 +316,10 @@ class AnalyzeExe:
 #     get_important_word()
 
 
-if __name__ == 'main':
+def implement_all_process(request):
+    print("base dir === " + BASE_DIR)
     json_file = BASE_DIR + '/analyze_files/dictionary.json'
     analyze_implement = AnalyzeExe(json_file, is_dinner=True)
     store_id_list = analyze_implement.get_store_id_list()
-    analyze_implement.implement_all()
+    analyze_implement.implement_all(store_id_list)
+    return HttpResponse("done")
