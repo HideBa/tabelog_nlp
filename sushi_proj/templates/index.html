@@ -37,9 +37,8 @@
                 <br>
                 <a href="{% url 'sushi_app:store_list' %}">store list</a>
 ---------------------------------
-                {% for keyword, parameter in keyword_dict.items %}
-                <p><a href="{% url 'sushi_app:keyword_sort' keyword=parameter %}">{{ keyword }}</a></p>
-
+                {% for keyword in keywords_list %}
+                <p><a href="{% url 'sushi_app:keyword_sort' keyword=keyword site='tabelog' %}">{{ keyword }}</a></p>
                 {% endfor %}
 -----------------------------------
 

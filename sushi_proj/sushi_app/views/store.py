@@ -121,7 +121,10 @@ def save_review(request, store_id):
     return HttpResponse("save")
 
 
-def keyword_sort(request, keyword):
+def keyword_sort(request, keyword, site):
     print("keyword recieved === " + keyword)
-    # dinner_store_summary_obj = DinnerStoreSummary.objects.get(keyword=keyword)
+    print("site === " + site)
+    dinner_store_summary_obj = DinnerStoreSummary.objects.filter(
+        keyword=keyword)
+    print("summary === " + str(dinner_store_summary_obj))
     return HttpResponse(keyword)

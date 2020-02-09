@@ -20,7 +20,7 @@ urlpatterns = [
         'store/<slug:store_id>/<slug:dinner_review_id>',
         store.review_dinner_view,
         name='dinner_review_detail'),
-    path('keyword-sort/<slug:keyword>',
+    path('keyword-sort/<str:keyword>/<slug:site>',
          store.keyword_sort, name='keyword_sort')
     # path('keyword-sort/<slug:keyword>/<slug:ranksite>',
     #      store.keyword_sort, name='keyword_sort')
