@@ -9,10 +9,11 @@ mkdir sushi_docker
 ```
 cd sushi_docker
 docker build -t container:8.4 .
-docker run -itd -p 127.0.0.1:8000:8000 イメージのID
+docker run -v "$(pwd)"/sushi_proj:/sushi_container -itd --name sushi_instance -p 127.0.0.1:8000:8000 イメージのID
 docker exec -it コンテナのID /bin/bash
 
-/etc/init.d/postgresql start
+/etc/init.d/postgresql startsudo 
+sudo -u postgres psql
 postgres=# CREATE USER sushi_proj WITH PASSWORD 'sushi_proj_pass';
 CREATE ROLE
 postgres=# create database sushi_proj_db;

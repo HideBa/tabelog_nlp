@@ -41,7 +41,7 @@ COPY user_dic.csv foo/bar/user_dic.csv
 
 WORKDIR /home/foo/bar
 RUN /usr/lib/mecab/mecab-dict-index -d /usr/lib/mecab/dic/mecab-ipadic-neologd/ \ 
--u /usr/lib/mecab/dic/user.dic -f utf-8 -t utf-8 user_dic.csv
+    -u /usr/lib/mecab/dic/user.dic -f utf-8 -t utf-8 user_dic.csv
 
 WORKDIR /
 
@@ -54,8 +54,8 @@ RUN apt update
 RUN apt -y install postgresql-10
 RUN systemctl enable postgresql
 
-RUN mkdir /app
-COPY sushi_proj /app/sushi_proj
+# RUN mkdir /app
+# COPY sushi_proj /app/sushi_proj
 
 RUN pip install django-mathfilters
 RUN pip install django-bootstrap4
