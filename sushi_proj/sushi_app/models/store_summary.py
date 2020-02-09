@@ -44,6 +44,11 @@ class DinnerStoreSummary(models.Model):
         on_delete=models.CASCADE)
 
     keyword = models.CharField('keyword1', max_length=20, null=True)
+    keyword_sentiment = ArrayField(
+        models.CharField(
+            'keyword_sentiment',
+            max_length=10),
+        null=True)
 
 # -------------positive negative --------------------
 # keyword1--------------------

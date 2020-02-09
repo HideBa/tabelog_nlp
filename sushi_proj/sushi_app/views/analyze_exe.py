@@ -29,8 +29,8 @@ class AnalyzeExe:
 
     def implement_all(self, store_id_list):
         for store_id in store_id_list:
-            self.get_important_word(store_id, self.is_dinner)
-            self.get_sentiment_result(store_id, self.is_dinner)
+            # self.get_important_word(store_id, self.is_dinner)
+            # self.get_sentiment_result(store_id, self.is_dinner)
             self.get_posinega(store_id, self.is_dinner)
 
     def get_important_word(self, store_id, is_dinner):
@@ -194,9 +194,10 @@ class AnalyzeExe:
                 parse_list.append(sentiment_list)
             analyzer = Analyzer()
             # ["まぐろ":[["うまい", 0.2, 0.5]["くさい", 0.5, -0.2]]
-            posi_nega_result = analyzer.get_posinega(
+            posi_nega_result, sentiment_dic = analyzer.get_posinega(
                 parse_list, self.keyword_dict)  # {("まぐろ", "おいしい"): posi_point}
         #  {'赤酢': [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]], '握り': [['大きい', 0.48999999999999994, 0.0], ['小さい', 0.0, 0.0], ['創作', 0.0, 0.0]], 'シャリ': [['大きい', 0.0, 0.0], ['小さい', 0.0, 0.0], ['パラパラ', 0.0, 0.0], ['塩気', 0.0, 0.0], ['甘い', 0.0, 0.0], ['熟成', 0.0, 0.0]]})
+        #    {'赤酢': [0.4, 0.4], }
             print("====" + str(posi_nega_result))
             for keyword in posi_nega_result:
                 try:
@@ -208,6 +209,7 @@ class AnalyzeExe:
                 print("keyword ==== " + str(keyword))
                 # 赤酢
                 print("modifier ===== " + str(posi_nega_result[keyword]))
+                keyword_sentiment = sentiment_dic[keyword]
                 # [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]]
                 # for modifier_list in posi_nega_result[keyword]:
                 if len(posi_nega_result[keyword]) >= 1:
@@ -238,6 +240,7 @@ class AnalyzeExe:
                     id=dinner_store_id,
                     store=store,
                     keyword=keyword,
+                    keyword_sentiment=keyword_sentiment,
                     keyword_modifier1=keyword_modifier1,
                     keyword_modifier2=keyword_modifier2,
                     keyword_modifier3=keyword_modifier3,
@@ -260,7 +263,7 @@ class AnalyzeExe:
                 parse_list.append(sentiment_list)
             analyzer = Analyzer()
             # ["まぐろ":[["うまい", 0.2, 0.5]["くさい", 0.5, -0.2]]
-            posi_nega_result = analyzer.get_posinega(
+            posi_nega_result, sentiment_dic = analyzer.get_posinega(
                 parse_list, self.keyword_dict)  # {("まぐろ", "おいしい"): posi_point}
         #  {'赤酢': [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]], '握り': [['大きい', 0.48999999999999994, 0.0], ['小さい', 0.0, 0.0], ['創作', 0.0, 0.0]], 'シャリ': [['大きい', 0.0, 0.0], ['小さい', 0.0, 0.0], ['パラパラ', 0.0, 0.0], ['塩気', 0.0, 0.0], ['甘い', 0.0, 0.0], ['熟成', 0.0, 0.0]]})
             print("====" + str(posi_nega_result))
@@ -273,6 +276,7 @@ class AnalyzeExe:
                     (str(int(max_id[3:]) + 1).zfill(10))
                 print("keyword ==== " + str(keyword))
                 # 赤酢
+                keyword_sentiment = sentiment_dic[keyword]
                 print("modifier ===== " + str(posi_nega_result[keyword]))
                 # [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]]
                 # for modifier_list in posi_nega_result[keyword]:
@@ -304,6 +308,7 @@ class AnalyzeExe:
                     id=lunch_store_id,
                     store=store,
                     keyword=keyword,
+                    keyword_sentiment=keyword_sentiment,
                     keyword_modifier1=keyword_modifier1,
                     keyword_modifier2=keyword_modifier2,
                     keyword_modifier3=keyword_modifier3,
