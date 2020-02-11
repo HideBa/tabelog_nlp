@@ -123,43 +123,20 @@ def save_review(request, store_id):
 
 
 def keyword_sort(request, keyword, site):
-    print("keyword recieved === " + keyword)
-    print("site === " + site)
-    # get objects and sort by posi_nega score
-    # dinner_store_summary_objs = DinnerStoreSummary.objects.filter(
-    #     keyword=keyword).order_by('keyword_sentiment')
-    # print("store summary objs === " + str(dinner_store_summary_objs))
-    # store_list = []
-    # for dinner_store_summary_obj in dinner_store_summary_objs:
-    #     print("dinner store summary obj === " + str(dinner_store_summary_obj))
-    #     for store_summary in dinner_store_summary_obj.objects.all().select_related():
-    #         store_list.append(store_summary.store)
-    #         print("store obj ==== " + str(store_summary.store))
-
-    # # other way
-    # store_list = Store.object.filter(dinnerstoresummary__keyword=keyword)
-    # print("store list === " + str(store_list))
-    # for store
-
-    # for store in Store.objects.all().prefetch_related(
-    #     Prefetch(
-    #         "dinerstoresummary_set",
-    #         queryset=DinnerStoreSummary.objects.filter(
-    #         keyword__exact=keyword).order_by("-keyword_sentiment"),
-    #         to_attr="dinnerstoresummary")):
-    #     if len(store.dinnerstoresummary) > 0:
-    #         print(str(store))
-
-    # dinner_summary_objs = DinnerStoreSummary.objects.filter(keyword=keyword)
-    # for dinner_summary_obj in dinner_summary_objs:
-    #     store = dinner_summary_obj.Store
-    # temp = DinnerStoreSummary.objects.all(
-    #     keyword=keyword).select_related('store')
-    # for item in temp:
-    #     obj = temp.store
-    #     print("temp === " + str(obj))
-    # for dinner_store_summary_obj in dinner_store_summary_objs:
-
-    stores = Store.objects.filter(dinnerstoresummary__keyword=keyword).all()
+    stores = Store.objects.filter(dinnerstoresummary__keyword=keyword).all(
+    ).order_by("dinnerstoresummary__keyword_sentiment")[:30]
     print("stores ==== " + str(stores))
-    return HttpResponse(keyword)
+
+    if(site == "tabelog"):
+        sorted_stores = sorted(stores, key=lambda store: store.tabelog_score)
+        print("sorted stores === " + str(sorted_stores))
+    elif(site == "retty"):
+        sorted_stores = sorted(stores, key=lambda store: store.retty_score)
+        print("sorted stores === " + str(sorted_stores))
+
+    return render(request,
+                  'sushi_app/sorted_store_list.html',
+                  {'store_list': sorted_stores})
+
+
+# .order_by(str(site) + "_score")
