@@ -42,6 +42,7 @@ class DinnerStoreSummary(models.Model):
         null=True,
         blank=True,
         on_delete=models.CASCADE)
+    # on_delete=models.CASCADE, related_name='dinner_summary')
 
     keyword = models.CharField('keyword1', max_length=20, null=True)
     keyword_sentiment = ArrayField(

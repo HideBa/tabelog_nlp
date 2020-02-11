@@ -123,6 +123,11 @@ def save_review(request, store_id):
 
 
 def keyword_sort(request, keyword, site):
+    if request.POST:
+        print("postpostpost")
+        site = request.POST.get('sort')
+        print("value ==== " + request.POST.get('sort'))
+
     stores = Store.objects.filter(dinnerstoresummary__keyword=keyword).all(
     ).order_by("dinnerstoresummary__keyword_sentiment")[:30]
     print("stores ==== " + str(stores))
@@ -133,10 +138,17 @@ def keyword_sort(request, keyword, site):
     elif(site == "retty"):
         sorted_stores = sorted(stores, key=lambda store: store.retty_score)
         print("sorted stores === " + str(sorted_stores))
-
-    return render(request,
-                  'sushi_app/sorted_store_list.html',
-                  {'store_list': sorted_stores})
+    store_summary_list = []
+    # ex), [[store_obj], [dinner_summary_obj]]
+    for store in sorted_stores:
+        list = [
+            store, DinnerStoreSummary.objects.filter(
+                store__id__exact=store.id).filter(
+                keyword=keyword).get()]
+        print("store summary === " + str(list))
+        store_summary_list.append(list)
+    return render(request, 'sushi_app/sorted_store_list.html',
+                  {'store_summary_list': store_summary_list, 'keyword': keyword})
 
 
 # .order_by(str(site) + "_score")

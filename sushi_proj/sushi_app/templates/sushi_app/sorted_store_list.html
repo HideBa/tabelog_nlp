@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load mathfilters %}
+
+{% block title %}sushi_stores{% endblock title %}
+
+{% block content %}
+<h4 class="mt-4 border-bottom">Sushiの一覧</h4>
+
+<form action="{% url 'sushi_app:keyword_sort' keyword=keyword site='tabelog' %}" method="post">
+    {% csrf_token %}
+    <select name="sort" aria-placeholder="choose">
+        <option value="">select</option>
+        <option value="tabelog">tabelog</option>
+        <option value="retty">retty</option>
+    </select>
+<input type="submit" class="btn btn-primary" value="submit" />
+</form>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">StoreID</th>
+            <th scope="col">Store_Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for store_and_summary in store_summary_list %}
+        <tr>
+            <th scope="row">
+                <a href="{% url 'sushi_app:store_detail' store_id=store_and_summary.0.id %}">
+                    {{ store_and_summary.0.store_name }}
+
+                </a>
+                <td>
+                    {{ store_and_summary.1.keyword }}{{ store_and_summary.1.keyword_sentiment }}
+                </td>
+                <td>
+                    
+                </td>
+            </th>
+                    </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% if page > 1 %}
+<a href="{% url 'sushi_app:store_list' %}?page={{ page|sub:1 }}">前のページ</a>
+{% endif %}
+{% if page < last_page %}
+<a href="{% url 'sushi_app:store_list' %}?page={{ page|add:1 }}">次のページ</a>
+{% endif %}
+{% endblock %}
