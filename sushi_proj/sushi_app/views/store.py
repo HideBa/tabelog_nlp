@@ -137,15 +137,29 @@ def keyword_sort(request, keyword, site):
     #         print("store obj ==== " + str(store_summary.store))
 
     # # other way
-    # store_list = Store.object.filter(dinnerstoresummary_set__keyword=keyword)
+    # store_list = Store.object.filter(dinnerstoresummary__keyword=keyword)
     # print("store list === " + str(store_list))
-    for store in Store.objects.all().prefetch_related(
-        Prefetch(
-            "dinerstoresummary_set",
-            queryset=DinnerStoreSummary.objects.filter(
-            keyword__exact=keyword).order_by("-keyword_sentiment"),
-            to_attr="dinnerstoresummary")):
-        if len(store.dinnerstoresummary) > 0:
-            print(str(store))
+    # for store
 
+    # for store in Store.objects.all().prefetch_related(
+    #     Prefetch(
+    #         "dinerstoresummary_set",
+    #         queryset=DinnerStoreSummary.objects.filter(
+    #         keyword__exact=keyword).order_by("-keyword_sentiment"),
+    #         to_attr="dinnerstoresummary")):
+    #     if len(store.dinnerstoresummary) > 0:
+    #         print(str(store))
+
+    # dinner_summary_objs = DinnerStoreSummary.objects.filter(keyword=keyword)
+    # for dinner_summary_obj in dinner_summary_objs:
+    #     store = dinner_summary_obj.Store
+    # temp = DinnerStoreSummary.objects.all(
+    #     keyword=keyword).select_related('store')
+    # for item in temp:
+    #     obj = temp.store
+    #     print("temp === " + str(obj))
+    # for dinner_store_summary_obj in dinner_store_summary_objs:
+
+    stores = Store.objects.filter(dinnerstoresummary__keyword=keyword).all()
+    print("stores ==== " + str(stores))
     return HttpResponse(keyword)
