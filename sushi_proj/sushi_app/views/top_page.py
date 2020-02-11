@@ -6,6 +6,7 @@ import json
 
 
 def show_top_page(request):
+
     json_file = BASE_DIR + '/analyze_files/dictionary.json'
 
     with open(json_file, encoding='utf-8') as f:

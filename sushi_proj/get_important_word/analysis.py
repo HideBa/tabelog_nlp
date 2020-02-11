@@ -1,5 +1,5 @@
 import MeCab
-from collections import Counter, defaultdict
+from collections import defaultdict
 import json
 import re
 import requests

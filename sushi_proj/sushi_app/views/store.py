@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from sushi_proj.settings import BASE_DIR
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 from django.core.paginator import Paginator
 # from sushi_app.models import Store, LunchReview
@@ -12,10 +13,7 @@ from sushi_app.models.review_model import LunchReview, DinnerReview
 from sushi_app.models.sentiment_result_model import LunchSentimentResult, DinnerSentimentResult
 from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
 from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
-import random
 from get_important_word.analysis import Analyzer
-from .analyze_exe import AnalyzeExe
-from django.db.models import Prefetch
 
 
 def list_view(request):
@@ -156,4 +154,32 @@ def keyword_sort(request, keyword, site):
                   {'store_summary_list': store_summary_list, 'keyword': keyword})
 
 
+def store_search(request):
+    if request.GET.get('search'):
+        query_string = request.GET.get('search')
+        if Store.objects.filter(
+                Q(store_name__icontains=query_string)).exists():
+            searched_store_list = Store.objects.filter(
+                Q(store_name__icontains=query_string)).all()
+            message = ""
+        else:
+            searched_store_list = []
+            message = "no result"
+
+        paginator = Paginator(searched_store_list, 20)  # ページ当たり20個表示
+
+        try:
+            page = int(request.GET.get('page'))
+        except BaseException:
+            page = 1
+
+        stores = paginator.get_page(page)
+        return render(request,
+                      'sushi_app/store_list.html',
+                      {'stores': stores,
+                       'page': page,
+                       'message': message,
+                       'last_page': paginator.num_pages})
+    else:
+        return redirect('show_top_page')
 # .order_by(str(site) + "_score")

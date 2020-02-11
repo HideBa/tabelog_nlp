@@ -34,6 +34,10 @@
                     <div class="carousel-item">
                     </div>
                 </div>
+                <form action="{% url 'sushi_app:store_search' %}" method="get">
+                    <input type="text" name="search" placeholder="search store">
+                    <input type="submit" class="btn" value="search">
+                </form>
                 <br>
                 <a href="{% url 'sushi_app:store_list' %}">store list</a>
 ---------------------------------
