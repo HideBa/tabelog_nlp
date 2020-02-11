@@ -48,13 +48,25 @@ def detail_view(request, store_id):
         keyword_modifier4 = summary.keyword_modifier4
         keyword_modifier5 = summary.keyword_modifier5
         keyword_modifier6 = summary.keyword_modifier6
-        summary_list.append([keyword,
-                             keyword_modifier1,
-                             keyword_modifier2,
-                             keyword_modifier3,
-                             keyword_modifier4,
-                             keyword_modifier5,
-                             keyword_modifier6])
+        each_summary_list = [
+            keyword_modifier1,
+            keyword_modifier2,
+            keyword_modifier3,
+            keyword_modifier4,
+            keyword_modifier5,
+            keyword_modifier6]
+        each_summary_list = sorted(
+            each_summary_list,
+            reverse=True,
+            key=lambda modifier: modifier[1])
+        each_summary_list.insert(0, keyword)
+        print("sorted summary list ==== " + str(each_summary_list))
+        summary_list.append(each_summary_list)
+    print("summary list ==== " + str(summary_list))
+    sorted_summary_list = sorted(
+        summary_list, reverse=True,
+        key=lambda obj: obj[1])
+
     # lunch_reviews = LunchReview.objects.filter(store__id__exact=store_id)
     # dinner_reviews = DinnerReview.objects.filter(store__id__exact=store_id)
     try:
@@ -71,7 +83,7 @@ def detail_view(request, store_id):
     return render(request,
                   'sushi_app/store_detail.html',
                   {'store': store,
-                   'summary_list': summary_list,
+                   'summary_list': sorted_summary_list,
                    'page': page,
                    #    'lunch_reviews': lunch_reviews,
                    #    'dinner_reviews': dinner_reviews
