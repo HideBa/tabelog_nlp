@@ -18,8 +18,8 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th scope="col">StoreID</th>
-            <th scope="col">Store_Name</th>
+            <th scope="col">StoreName</th>
+            <th scope="col">Store_Summary</th>
         </tr>
     </thead>
     <tbody>
@@ -31,7 +31,7 @@
 
                 </a>
                 <td>
-                    {{ store_and_summary.1.keyword }}{{ store_and_summary.1.keyword_sentiment }}
+                    {{ store_and_summary.1.keyword }}{{ store_and_summary.1.keyword_sentiment.0 }}PP {{ store_and_summary.1.keyword_sentiment.1 }}NP
                 </td>
                 <td>
                     
