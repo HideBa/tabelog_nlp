@@ -91,9 +91,12 @@ DATABASES = {
         'USER': 'sushi_proj',
         'HOST': 'localhost',
         'PASSWORD': 'sushi_proj_pass',
+        'POST': '',
     }
 }
-
+# psqlを別で実行して、pidファイルが残ってしまった場合は、
+# rm /usr/local/var/postgres/postmaster.pid
+# を実行する。
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

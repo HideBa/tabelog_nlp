@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.contrib import messages
 from sushi_proj.settings import BASE_DIR
 import json
+from collections import defaultdict
 
 prefecture_list = ["北海道",
                    "青森県",
@@ -60,6 +61,17 @@ def show_top_page(request):
     with open(json_file, encoding='utf-8') as f:
         json_data = json.load(f)
         keywords_list = json_data["all_jiku"]["all_jiku_list"]
+        keywords_dic = defaultdict(list)
+        for keyword in keywords_list:
+            print("keyword ==== " + str(keyword))
+            if json_data["all_jiku"][keyword]["adjective"]:
+                modi_words = json_data["all_jiku"][str(
+                    keyword)]["syusyoku"]["syusyoku_list"]
+            else:
+                modi_words = []
+            keywords_dic[keyword] = modi_words
+
+        print("keyword === " + str(keywords_dic))
 
         return render(
             request, 'index.html', {

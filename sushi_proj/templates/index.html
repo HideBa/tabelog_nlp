@@ -34,27 +34,40 @@
                     <div class="carousel-item">
                     </div>
                 </div>
-                <form action="{% url 'sushi_app:store_search' %}" method="get">
-                    <input type="text" name="search" placeholder="search store">
-                    <input type="submit" class="btn" value="search">
-                </form>
-                <form action="{% url 'sushi_app:area_search' %}" method="get">
-                    <select name="prefecture" id="">
-
-                        {% for prefecture in prefecture_list %}
-                        <option value=prefecture>{{ prefecture }}</option>
-                        {% endfor %}
-                    </select>
-            <input type="submit" value="submit" class="btn"/>
-
-                </form>
+                <div class="area-container">
+                    <p>エリアを選ぶ</p>
+                    <div class="area-icon-container">
+                        <form action="{% url 'sushi_app:store_search' %}" method="get">
+                            <input type="text" name="search" placeholder="search store">
+                            <input type="submit" class="btn" value="search">
+                        </form>
+                        <form action="{% url 'sushi_app:area_search' %}" method="get">
+                            <select name="prefecture" id="">
+                                
+                                {% for prefecture in prefecture_list %}
+                                <option value=prefecture>{{ prefecture }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="submit" value="submit" class="btn"/>
+                        </form>
+                    </div>
+                </div>
                 <br>
                 <a href="{% url 'sushi_app:store_list' %}">store list</a>
----------------------------------
+                <div class="keyword-container">
+                    <div class="keyword-title-container">
+                        <h4>keywordから寿司を見る</h4>
+                    </div>
+                    <div class="keyword-box-container">
+                        <div class="keyword-box">
+                            <h5>{{ keyword }}</h5>
+                            <p>keyword modi</p>
+                        </div>
+                    </div>
+                </div>
                 {% for keyword in keywords_list %}
                 <p><a href="{% url 'sushi_app:keyword_sort' keyword=keyword site='tabelog' %}">{{ keyword }}</a></p>
                 {% endfor %}
------------------------------------
 
             </div>
             </div>
