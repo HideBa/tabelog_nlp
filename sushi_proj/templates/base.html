@@ -12,7 +12,8 @@
     <title>SushiSumma</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'sushi_app/vendor/bootstrap/css/bootstrap.min.css' %}"> 
+    <!-- <link rel="stylesheet" href="{% static 'sushi_app/vendor/bootstrap/css/bootstrap.min.css' %}">  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="{% static 'sushi_app/css/styles.css' %}"> 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
         integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
@@ -35,43 +36,16 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar" >
         <div class="container">
-            <a class="navbar-brand" href="/">SushiSumma</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/sushi_app/store">Sushi_store</a>
-                            <!-- <div class="dropdown-divider"></div> -->
-                        </div>
-                    </li>
-                    <!-- {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sushi_app/mypage">マイページ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/accounts/logout">ログアウト</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/accounts/register">会員登録</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/accounts/login">ログイン</a>
-                    </li>
-                    {% endif %} -->
-                </ul>
-            </div>
+            <h1 class="navbar-title">
+                <a class="navbar-brand" href="/">SushiSumma</a>
+            </h1>
+        <form class="search-box" action="{% url 'sushi_app:store_search' %}" method="get">
+            <input class="search-textbox" type="text" name="search" placeholder="search store">
+            <input type="submit" class="btn" value="search">
+        </form>
+        <p class="navbar-about"><a href="/">about</a></p>
         </div>
     </nav>
 
@@ -104,7 +78,7 @@
         <!-- /.container -->
     </footer>
 
-    <script type="text/javascript" src="{% static 'sushi_app/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script> -->
+    <!-- <script type="text/javascript" src="{% static 'sushi_app/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script> --> -->
     <script type="text/javascript" src="{% static 'sushi_app/js/index.js' %}"></script>
     <script type="text/javascript" src="{% static 'sushi_app/js/gulpfile.js' %}"></script>
 

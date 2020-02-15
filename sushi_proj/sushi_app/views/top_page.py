@@ -60,18 +60,18 @@ def show_top_page(request):
 
     with open(json_file, encoding='utf-8') as f:
         json_data = json.load(f)
-        keywords_list = json_data["all_jiku"]["all_jiku_list"]
-        keywords_dic = defaultdict(list)
-        for keyword in keywords_list:
+        keywords = json_data["all_jiku"]["all_jiku_list"]
+        keywords_list = []
+        for keyword in keywords:
             print("keyword ==== " + str(keyword))
             if json_data["all_jiku"][keyword]["adjective"]:
                 modi_words = json_data["all_jiku"][str(
                     keyword)]["syusyoku"]["syusyoku_list"]
             else:
                 modi_words = []
-            keywords_dic[keyword] = modi_words
+            keywords_list.append([keyword, modi_words])
 
-        print("keyword === " + str(keywords_dic))
+        print("keyword === " + str(keywords_list))
 
         return render(
             request, 'index.html', {
