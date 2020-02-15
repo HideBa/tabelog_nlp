@@ -37,18 +37,18 @@
 <body>
     <!-- Navigation -->
     <nav class="navbar" >
-        <div class="container">
             <h1 class="navbar-title">
                 <a class="navbar-brand" href="/">SushiSumma</a>
             </h1>
         <form class="search-box" action="{% url 'sushi_app:store_search' %}" method="get">
             {% csrf_token %}
-            <img src="{% static 'sushi_app/icons/search_icon.svg' %}" alt="img">
-            <input class="search-textbox" type="text" name="search" placeholder="search store">
-            <input type="submit" class="btn" value="search">
+            <div class="input-container">
+                <img src="{% static 'sushi_app/icons/search_icon.svg' %}" alt="img">
+                <input class="search-textbox" type="text" name="search" placeholder="search store">
+                <!-- <input type="submit" class="btn search-button" value="検索"> -->
+            </div>
         </form>
         <p class="navbar-about"><a href="/">about</a></p>
-        </div>
     </nav>
 
     <!-- Page Content -->
@@ -61,8 +61,6 @@
         </div>
         {% endfor %}
         {% endif %}
-
-        <div class="tempSpace"></div>
 
         {% block content %}
         {{ content }}

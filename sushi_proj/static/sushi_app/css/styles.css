@@ -8,6 +8,10 @@ body, header, footer {
     font-size: 16px;
 }
 
+input {
+    outline: none;
+}
+
 a:any-link {
     color: #D8DADA;
 }
@@ -32,10 +36,15 @@ p.navbar-about {
     text-align: center;
 }
 
-/* ここが適用されない */
+div.input-container {
+    border-bottom: 2px solid #D8DADA;
+    display: inline-block;
+    margin: 10px;
+}
+
 input.search-textbox {
     border: none;
-    border-bottom: 2px solid #D8DADA;
+    /* border-bottom: 2px solid #D8DADA; */
     background-color: transparent;
     color: #B5B8BA;
     font-size: 16px;
@@ -46,9 +55,19 @@ input::placeholder {
     font-size: 16px;
 }
 
-.are-container {
-    background-color: #232323;
+form.search-box {
+    margin: 0 0 0 auto;
+}
+
+.search-button {
     color: #D8DADA;
+    border: 1px solid #D8DADA;
+    font-size: 10px;
+    padding: 5px;
+}
+
+p.navbar-about {
+    margin: 0 20px 0 auto;
 }
 
 
@@ -56,3 +75,13 @@ input::placeholder {
 
 
 /* area------------- */
+
+
+.area-container {
+    background-color: #232323;
+    color: #D8DADA;
+    width: 150px;
+    height: 80px;
+    margin: 20px auto 50px 20px;
+}
+
