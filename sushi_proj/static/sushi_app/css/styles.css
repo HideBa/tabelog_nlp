@@ -8,6 +8,10 @@ body, header, footer {
     font-size: 16px;
 }
 
+a:any-link {
+    color: #D8DADA;
+}
+
 /* Navbar---------------------------- */
 nav.navbar {
     width: 100%;
