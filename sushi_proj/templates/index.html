@@ -6,39 +6,39 @@
 
 <!-- Page Content -->
 <div class="container">
-                <div class="area-container">
-                    <p>エリアを選ぶ</p>
-                    <div class="area-icon-container">
-                        <form action="{% url 'sushi_app:area_search' %}" method="get">
-                            <select name="prefecture" id="">
-                                
-                                {% for prefecture in prefecture_list %}
-                                <option value=prefecture>{{ prefecture }}</option>
-                                {% endfor %}
-                            </select>
-                            <input type="submit" value="submit" class="btn"/>
-                        </form>
-                    </div>
-                </div>
-                <br>
-                <a href="{% url 'sushi_app:store_list' %}">store list</a>
-                <div class="keyword-container">
-                    <div class="keyword-title-container">
-                        <h4>keywordから寿司を見る</h4>
-                    </div>
-                    <div class="keyword-box-container">
-                        <div class="keyword-box">
-                            --------------------------
-                            {% for keyword_list in keywords_list %}
-                            <h5><a href="{% url 'sushi_app:keyword_sort' keyword=keyword_list.0 site='tabelog' %}">{{ keyword_list.0 }}</a></h5>
-                            {% for modifier in keyword_list.1 %}
-                            <p>{{ modifier }}</p>
-                            {% endfor %}
-                            {% endfor %}
-                        </div>
-                        --------------------------
-                    </div>
-                </div>
+    <div class="area-container">
+        <p>エリアを選ぶ</p>
+        <div class="area-icon-container">
+            <img src="{% static 'sushi_app/icons/lower_arrow.svg' %}" alt="arrow" class="lower-arrow-icon" />
+            <form class="area-select" action="{% url 'sushi_app:area_search' %}" method="get">
+                <select name="prefecture-list" id="">
+                    {% for prefecture in prefecture_list %}
+                    <option value=prefecture>{{ prefecture }}</option>
+                    {% endfor %}
+                </select>
+                <!-- <input type="submit" value="submit" class="btn"/> -->
+            </form>
+        </div>
+    </div>
+    <br>
+    <a class="keyword-link" href="{% url 'sushi_app:store_list' %}">store list</a>
+    <div class="keyword-container">
+        <div class="keyword-title-container">
+            <h4>keywordから寿司を見る</h4>
+        </div>
+        <div class="keyword-box-container">
+            {% for keyword_list in keywords_list %}
+            <div class="keyword-box">
+                <h5><a class="keyword"
+                        href="{% url 'sushi_app:keyword_sort' keyword=keyword_list.0 site='tabelog' %}">{{ keyword_list.0 }}</a>
+                </h5>
+                {% for modifier in keyword_list.1 %}
+                <p class="modifier">{{ modifier }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 <!-- /.container -->
 
