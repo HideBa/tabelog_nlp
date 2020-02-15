@@ -30,6 +30,7 @@ p.navbar-about {
 
 /* ここが適用されない */
 input.search-textbox {
+    border: none;
     border-bottom: 2px solid #D8DADA;
     background-color: transparent;
     color: #B5B8BA;
