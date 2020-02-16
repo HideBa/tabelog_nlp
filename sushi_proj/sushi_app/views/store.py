@@ -14,6 +14,7 @@ from sushi_app.models.sentiment_result_model import LunchSentimentResult, Dinner
 from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
 from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
 from get_important_word.analysis import Analyzer
+import json
 
 
 def list_view(request):
@@ -64,7 +65,7 @@ def detail_view(request, store_id):
     for sorted_summary in sorted_summary_list:
         score = 0
         adj = sorted_summary.pop(0)
-        chart_labels.append(adj)
+        chart_labels.append(str(adj))
         for adjective_list in sorted_summary:
             if not adjective_list:
                 continue
@@ -77,10 +78,40 @@ def detail_view(request, store_id):
     print("char label === " + str(chart_labels))
     chart_store_name = store.store_name
     chart_data = chart_score_list
-    chart_dict = {
-        'chart_store_name': chart_store_name,
-        'chart_data': chart_data,
-        'chart_labels': chart_labels}
+    # chart_dict = {
+    #     'chart_store_name': chart_store_name,
+    #     'chart_data': chart_data,
+    #     'chart_labels': chart_labels}
+
+    radar_json_data = json.dumps({
+        'type': 'radar',
+        'data': {
+            'labels': ['赤酢', 'しゃり', 'ねた'],
+            'datasets': [
+                {
+                    'label': chart_store_name,
+                    'data': [1.2, 3.2, 4.3],
+                    'backgroundColor': 'rgba(255, 99, 132, 0.6)',
+                    'borderColor': 'rgba(255, 99, 132, 0.9)',
+                    'pointBackgroundColor': 'rgba(255, 99, 132, 0.9)',
+                    'pointBorderColor': 'rgba(255, 99, 132, 1)',
+                    'borderWidth': 3,
+                    'pointRadius': 3,
+                }, ]
+        },
+        'options': {
+            'animation': {'duration': 2000},
+            # 'legend': {'display': false},
+            'scale': {
+                'ticks': {
+                    'min': 0.0,
+                    'max': 10,
+                    'stepSize': 1,
+                    'backdropColor': 'rgba(255, 255, 255, 0)',
+                }
+            }
+        }
+    })
 
     try:
         page = int(request.GET.get('from_page'))
@@ -92,10 +123,11 @@ def detail_view(request, store_id):
                   {'store': store,
                    'summary_list': sorted_summary_list,
                    'page': page,
+                   'radar_json_data': radar_json_data,
                    #    'chart_dict': chart_dict
-                   'chart_store_name': chart_store_name,
-                   'chart_data': chart_data,
-                   'chart_labels': chart_labels
+                   #    'chart_store_name': chart_store_name,
+                   #    'chart_data': chart_data,
+                   #    'chart_labels': chart_labels
                    })
 
 
