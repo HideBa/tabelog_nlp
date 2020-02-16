@@ -4,11 +4,14 @@ from sushi_app.models.review_model import LunchReview, DinnerReview
 from sushi_app.models.sentiment_result_model import LunchSentimentResult, DinnerSentimentResult
 from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
 from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
+from sushi_app.models.dinner_summary_average import DinnerSummaryAverage
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from sushi_proj.settings import BASE_DIR, GCP_API_KEY
 from get_important_word.analysis import Analyzer
 from django.http import HttpResponse
+from statistics import mean
+import json
 # from django.http import JsonResponse
 
 
@@ -29,10 +32,11 @@ class AnalyzeExe:
         return store_id_list
 
     def implement_all(self, store_id_list):
-        for store_id in store_id_list:
-            self.get_important_word(store_id, self.is_dinner)
+        # for store_id in store_id_list:
+            # self.get_important_word(store_id, self.is_dinner)
             # self.get_sentiment_result(store_id, self.is_dinner)
             # self.get_posinega(store_id, self.is_dinner)
+        self.get_summary_average(self.is_dinner, self.keyword_dict)
 
     def get_important_word(self, store_id, is_dinner):
         # decide dinner or lunch
@@ -326,6 +330,37 @@ class AnalyzeExe:
 
         # return HttpResponse("god")
 #     get_important_word()
+
+    def get_summary_average(self, is_dinner, json_file):
+        if is_dinner:
+            if DinnerSummaryAverage.objects.all():
+                DinnerSummaryAverage.objects.all().delete()
+            with open(json_file, encoding='utf-8') as f:
+                json_data = json.load(f)
+                keywords = json_data['all_jiku']['all_jiku_list']
+            print("keyword === " + str(keywords))
+            for keyword in keywords:
+                summaries = DinnerStoreSummary.objects.filter(
+                    keyword__exact=keyword).all()
+                print("summaries === " + str(summaries))
+                posi_score_list = [float(summary.keyword_sentiment[0])
+                                   for summary in summaries]
+                print(
+                    "summaries sentiment score === " +
+                    str(posi_score_list))
+                if posi_score_list:
+                    score_ave = mean(posi_score_list)
+                else:
+                    score_ave = 0.0
+                print("score_ave === " + str(score_ave))
+                try:
+                    max_id = DinnerSummaryAverage.objects.latest('id').id
+                except ObjectDoesNotExist:
+                    max_id = 'DSA0000000'
+                id = 'DSA' + \
+                    (str(int(max_id[3:]) + 1).zfill(7))
+                DinnerSummaryAverage.objects.create(
+                    id=id, keyword=keyword, keyword_sentiment_ave_score=score_ave)
 
 
 def implement_all_process(request):

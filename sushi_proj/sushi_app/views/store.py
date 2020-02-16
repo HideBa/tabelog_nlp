@@ -16,6 +16,7 @@ from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
 from get_important_word.analysis import Analyzer
 import json
 import math
+from .get_average import get_keyword_average
 
 
 def list_view(request):
