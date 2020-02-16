@@ -57,28 +57,40 @@ def detail_view(request, store_id):
     sorted_summary_list = sorted(
         summary_list, reverse=True,
         key=lambda obj: obj[1][1])
+    print("sorted summary list === " + str(sorted_summary_list))
+    # [['握り', ['大きい', '0.8099999999999999', '0.0'], ['小さい', '0.970000000000000
+    chart_score_list = []
+    chart_labels = []
+    for sorted_summary in sorted_summary_list:
+        score = 0
+        adj = sorted_summary.pop(0)
+        chart_labels.append(adj)
+        for adjective_list in sorted_summary:
+            if not adjective_list:
+                continue
+            # 一旦PPの合計値で出す
+            score += float(adjective_list[1])
+            # score += adjective_list[1]
+        chart_score_list.append(score)
+        print("score === " + str(chart_score_list))
 
-    # lunch_reviews = LunchReview.objects.filter(store__id__exact=store_id)
-    # dinner_reviews = DinnerReview.objects.filter(store__id__exact=store_id)
+    print("char label === " + str(chart_labels))
+    chart_store_name = store.store_name
+    chart_data = chart_score_list
+
     try:
         page = int(request.GET.get('from_page'))
     except BaseException:
         page = 1
-
-    # try:
-    #     lunch_review = LunchReview.objects.get(store_id=store_id)
-
-    # except BaseException:
-    #     current_score = -1
 
     return render(request,
                   'sushi_app/store_detail.html',
                   {'store': store,
                    'summary_list': sorted_summary_list,
                    'page': page,
-                   #    'lunch_reviews': lunch_reviews,
-                   #    'dinner_reviews': dinner_reviews
-                   #    'current_score': current_score
+                   'chart_labels': chart_labels,
+                   'chart_store_name': chart_store_name,
+                   'chart_data': chart_data
                    })
 
 

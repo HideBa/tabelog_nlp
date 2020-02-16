@@ -128,3 +128,17 @@ div.keyword-title-container h4 {
     display: inline-block;
     width: 200px;
 }
+
+
+
+
+
+
+/* sample  */
+#radar-chart canvas {
+    height: 70px;
+    background-color: rgba(255, 99, 132, 0.6);
+    border-color: rgba(255, 99, 132, 0.9);
+    border-width: 3;
+    color: white;
+}
