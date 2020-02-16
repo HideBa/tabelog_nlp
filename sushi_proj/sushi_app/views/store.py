@@ -62,16 +62,18 @@ def detail_view(request, store_id):
     # [['握り', ['大きい', '0.8099999999999999', '0.0'], ['小さい', '0.970000000000000
     chart_score_list = []
     chart_labels = []
+    chart_store_ave_list = []
     for sorted_summary in sorted_summary_list:
         score = 0
         adj = sorted_summary.pop(0)
+        ave_score = get_keyword_average(adj)
+        chart_store_ave_list.append(ave_score)
         chart_labels.append(str(adj))
         for adjective_list in sorted_summary:
             if not adjective_list:
                 continue
             # 一旦PPの合計値で出す
             score += float(adjective_list[1])
-            # score += adjective_list[1]
         chart_score_list.append(score)
     chart_store_name = store.store_name
     chart_data = chart_score_list
@@ -92,7 +94,17 @@ def detail_view(request, store_id):
                     'pointBorderColor': 'rgba(255, 99, 132, 1)',
                     'borderWidth': 3,
                     'pointRadius': 3,
-                }, ]
+                }, {
+                    'label': '他店平均',
+                    'data': chart_store_ave_list,
+                    'backgroundColor': 'rgba(0, 0, 255, 0.6)',
+                    'borderColor': 'rgba(0, 0, 255, 0.9)',
+                    'pointBackgroundColor': 'rgba(0, 0, 255, 0.9)',
+                    'pointBorderColor': 'rgba(0, 0, 255, 1)',
+                    'borderWidth': 3,
+                    'pointRadius': 3,
+                }
+            ]
         },
         'options': {
             'animation': {'duration': 2000},
