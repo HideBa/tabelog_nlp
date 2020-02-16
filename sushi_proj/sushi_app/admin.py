@@ -6,6 +6,7 @@ from sushi_app.models.important_word_model import LunchImportantWords, DinnerImp
 from sushi_app.models.sentiment_result_model import LunchSentimentResult, DinnerSentimentResult
 from sushi_app.models.store_summary import LunchStoreSummary, DinnerStoreSummary
 from sushi_app.models.dinner_summary_average import DinnerSummaryAverage
+from sushi_app.models.score_history_model import TabelogHistory, RettyHistory
 
 
 admin.site.register(Store)
@@ -18,3 +19,5 @@ admin.site.register(LunchStoreSummary)
 admin.site.register(DinnerStoreSummary)
 admin.site.register(DinnerReview)
 admin.site.register(DinnerSummaryAverage)
+admin.site.register(TabelogHistory)
+admin.site.register(RettyHistory)
