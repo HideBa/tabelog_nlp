@@ -147,3 +147,5 @@ STATICFILES_DIRS = (
 MEDIA_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+GCP_API_KEY = 'AIzaSyCIl8F1e8D7mLIs0jhgp4Z3U4KWI76pcvE'

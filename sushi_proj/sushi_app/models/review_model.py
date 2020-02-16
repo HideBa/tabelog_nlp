@@ -36,6 +36,7 @@ class DinnerReview(models.Model):
         MinValueValidator(0),
         MaxValueValidator(5.0)])
     content = models.TextField('review content', null=True)
+    is_new = models.BooleanField('新しく取得されたレビューかどうか？', null=True)
     store = models.ForeignKey(
         Store,
         verbose_name='store',

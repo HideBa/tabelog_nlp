@@ -33,7 +33,7 @@ class Analyzer:
         with open(json_file, encoding='utf-8') as f:
             with open(adjective_file, encoding='utf-8') as a:
                 json_data = json.load(f)
-                ad_data   = json.load(a)
+                ad_data = json.load(a)
                 jiku_list = json_data["all_jiku"]["all_jiku_list"]
                 # ['赤酢', '握り', 'シャリ']
                 pare = defaultdict(int)
@@ -62,23 +62,26 @@ class Analyzer:
                                     syusyoku_group = ad_data[syusyoku]
                                     # [['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
                                     for tt in t:
-                                            if tt in jiku_group:
-                                                for s in syusyoku_group:
-                                                    if len(list(set(s) & set(t))) == len(s):
-                                                        pare[(jiku, syusyoku)] += 1
+                                        if tt in jiku_group:
+                                            for s in syusyoku_group:
+                                                if len(
+                                                        list(set(s) & set(t))) == len(s):
+                                                    pare[(jiku, syusyoku)] += 1
                         elif json_data["all_jiku"][jiku]["is_no"] == 1:
                             if json_data["all_jiku"][jiku]["adjective"] == 1:
                                 jiku_group = json_data["all_jiku"][jiku]["jiku_group"]
-                                #[["サバ","さば","鯖"],["昆布","こんぶ","昆布締め","こぶ締め"]]
+                                # [["サバ","さば","鯖"],["昆布","こんぶ","昆布締め","こぶ締め"]]
                                 syusyoku_list = json_data["all_jiku"][jiku]["syusyoku_list"]
-                                #["大きい","小さい","パラパラ","塩気","甘い","熟成"]
-                                if len(list(set(jiku_group[0]) & set(t))) >= 1 and len(list(set(jiku_group[0]) & set(t))) >= 1:
+                                # ["大きい","小さい","パラパラ","塩気","甘い","熟成"]
+                                if len(list(set(jiku_group[0]) & set(t))) >= 1 and len(
+                                        list(set(jiku_group[0]) & set(t))) >= 1:
                                     dic[jiku] += 1
                                     for syusyoku in syusyoku_list:
                                         syusyoku_group = ad_data[syusyoku]
                                         # [['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
                                         for s in syusyoku_group:
-                                            if len(list(set(s) & set(t))) == len(s):
+                                            if len(list(set(s) & set(t))
+                                                   ) == len(s):
                                                 pare[(jiku, syusyoku)] += 1
 
                 for jiku in jiku_list:
@@ -90,13 +93,13 @@ class Analyzer:
                             ll.append([syusyoku, pare[(jiku, syusyoku)]])
                         l.append(ll)
                 return l
-                    # [["マグロ",["美味しい",3],["とろける",3]],["シャリ",["大きい",2]]]
-    
-    def feature_analysis_non(self, content, json_file,adjective_file):
+                # [["マグロ",["美味しい",3],["とろける",3]],["シャリ",["大きい",2]]]
+
+    def feature_analysis_non(self, content, json_file, adjective_file):
         with open(json_file, encoding='utf-8') as f:
             with open(adjective_file, encoding='utf-8') as a:
                 json_data = json.load(f)
-                ad_data   = json.load(a)
+                ad_data = json.load(a)
                 jiku_list = json_data["all_jiku"]["all_jiku_list"]
                 # ['赤酢', '握り', 'シャリ']
                 n = 0
@@ -123,7 +126,8 @@ class Analyzer:
                             if json_data["all_jiku"][jiku]["adjective"] == 0:
                                 jiku_group = json_data["all_jiku"][jiku]["jiku_group"]
                                 # [["鯛", "たい", "タイ"],["昆布", "こんぶ", "昆布締め", "こぶ締め"]]
-                                if len(list(set(jiku_group[0]) & set(t))) >= 1 and len(list(set(jiku_group[0]) & set(t))) >= 1:
+                                if len(list(set(jiku_group[0]) & set(t))) >= 1 and len(
+                                        list(set(jiku_group[0]) & set(t))) >= 1:
                                     dic[jiku] += 1
                 for jiku in jiku_list:
                     if json_data["all_jiku"][jiku]["adjective"] == 0:
@@ -132,12 +136,7 @@ class Analyzer:
                         ll.append(dic[jiku])
                         l.append(ll)
                 return l
-                    #[["茶碗蒸し", 6],["鯛の昆布締め", 3]]
-
-
-
-
-
+                #[["茶碗蒸し", 6],["鯛の昆布締め", 3]]
 
     def gcp_analyzer(self, text, key):
         url = 'https://language.googleapis.com/v1/documents:analyzeSentiment?key=' + key
@@ -184,10 +183,10 @@ class Analyzer:
                                     if len(list(set(s) & set(t))) == len(s):
                                         if text[2] > 0:
                                             positive_dic[(jiku, syusyoku)
-                                                        ] += text[1] * text[2]
+                                                         ] += text[1] * text[2]
                                         elif text[2] < 0:
                                             negative_dic[(jiku, syusyoku)
-                                                        ] += -text[1] * text[2]
+                                                         ] += -text[1] * text[2]
             for jiku in jiku_list:
                 for syusyoku in json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]:
                     result_dic[jiku].append(

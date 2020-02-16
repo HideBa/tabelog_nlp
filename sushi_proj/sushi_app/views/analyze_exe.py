@@ -6,15 +6,16 @@ from sushi_app.models.important_word_model import LunchImportantWords, DinnerImp
 from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
-from sushi_proj.settings import BASE_DIR
+from sushi_proj.settings import BASE_DIR, GCP_API_KEY
 from get_important_word.analysis import Analyzer
 from django.http import HttpResponse
 # from django.http import JsonResponse
 
 
 class AnalyzeExe:
-    def __init__(self, keyword_dict, is_dinner):
+    def __init__(self, keyword_dict, adjective_dict, is_dinner):
         self.keyword_dict = keyword_dict
+        self.adjective_dict = adjective_dict
         self.is_dinner = is_dinner
 
     def get_store_id_list(self):
@@ -119,10 +120,13 @@ class AnalyzeExe:
             dinner_reviews = DinnerReview.objects.filter(
                 store__id__exact=store_id)  # review object
             store = get_object_or_404(Store, id=store_id)  # ストアオブジェクト
-            key = 'AIzaSyCIl8F1e8D7mLIs0jhgp4Z3U4KWI76pcvE'
+            # import api key from settings
+            key = GCP_API_KEY
             analyzer = Analyzer()
             gcp_nums = 0
             for dinner_review in dinner_reviews:
+                if not dinner_review.is_new:
+                    continue
                 text = dinner_review.content
                 sentiment_result = analyzer.gcp_analyzer(text, key)
                 gcp_nums += 1
@@ -181,6 +185,8 @@ class AnalyzeExe:
     def get_posinega(self, store_id, is_dinner):
         store = get_object_or_404(Store, id=store_id)
         if is_dinner:
+            # delete old data
+            DinnerSentimentResult.objects.all().delete()
             sentiment_result_objects = DinnerSentimentResult.objects.filter(
                 store__id__exact=store_id)
             # json_file = BASE_DIR + '/analyze_files/dictionary.json'
@@ -324,8 +330,10 @@ class AnalyzeExe:
 
 def implement_all_process(request):
     print("base dir === " + BASE_DIR)
-    json_file = BASE_DIR + '/analyze_files/dictionary.json'
-    analyze_implement = AnalyzeExe(json_file, is_dinner=True)
+    keyword_file = BASE_DIR + '/analyze_files/dictionary.json'
+    adjective_file = BASE_DIR + '/analyze_files/adjective.json'
+    analyze_implement = AnalyzeExe(
+        keyword_file, adjective_file, is_dinner=True)
     store_id_list = analyze_implement.get_store_id_list()
     analyze_implement.implement_all(store_id_list)
     return HttpResponse("done")
