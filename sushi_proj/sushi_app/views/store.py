@@ -15,6 +15,7 @@ from sushi_app.models.important_word_model import LunchImportantWords, DinnerImp
 from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
 from get_important_word.analysis import Analyzer
 import json
+import math
 
 
 def list_view(request):
@@ -54,11 +55,9 @@ def detail_view(request, store_id):
                              keyword_modifier4,
                              keyword_modifier5,
                              keyword_modifier6])
-    print("summary list ==== " + str(summary_list))
     sorted_summary_list = sorted(
         summary_list, reverse=True,
         key=lambda obj: obj[1][1])
-    print("sorted summary list === " + str(sorted_summary_list))
     # [['握り', ['大きい', '0.8099999999999999', '0.0'], ['小さい', '0.970000000000000
     chart_score_list = []
     chart_labels = []
@@ -73,16 +72,11 @@ def detail_view(request, store_id):
             score += float(adjective_list[1])
             # score += adjective_list[1]
         chart_score_list.append(score)
-        print("score === " + str(chart_score_list))
-
-    print("char label === " + str(chart_labels))
     chart_store_name = store.store_name
     chart_data = chart_score_list
-    # chart_dict = {
-    #     'chart_store_name': chart_store_name,
-    #     'chart_data': chart_data,
-    #     'chart_labels': chart_labels}
-
+    max_scale = math.ceil(max(chart_score_list))
+    print("max == ! " + str(max_scale))
+    min_scale = math.floor(min(chart_score_list))
     radar_json_data = json.dumps({
         'type': 'radar',
         'data': {
@@ -104,8 +98,8 @@ def detail_view(request, store_id):
             # 'legend': {'display': false},
             'scale': {
                 'ticks': {
-                    'min': 0.0,
-                    'max': 10,
+                    'min': min_scale,
+                    'max': max_scale,
                     'stepSize': 1,
                     'backdropColor': 'rgba(255, 255, 255, 0)',
                 }
@@ -124,10 +118,6 @@ def detail_view(request, store_id):
                    'summary_list': sorted_summary_list,
                    'page': page,
                    'radar_json_data': radar_json_data,
-                   #    'chart_dict': chart_dict
-                   #    'chart_store_name': chart_store_name,
-                   #    'chart_data': chart_data,
-                   #    'chart_labels': chart_labels
                    })
 
 
