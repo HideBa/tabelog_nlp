@@ -29,22 +29,22 @@ class AnalyzeExe:
 
     def implement_all(self, store_id_list):
         for store_id in store_id_list:
-            # self.get_important_word(store_id, self.is_dinner)
+            self.get_important_word(store_id, self.is_dinner)
             # self.get_sentiment_result(store_id, self.is_dinner)
-            self.get_posinega(store_id, self.is_dinner)
+            # self.get_posinega(store_id, self.is_dinner)
 
     def get_important_word(self, store_id, is_dinner):
-        print("========")
-        # 各店舗のレビューが入ったリストを格納
-        print("base dir ===== " + str(BASE_DIR))
-        # json_file = BASE_DIR + '/analyze_files/dictionary.json'
+        # decide dinner or lunch
         if is_dinner:
+            # delete old data
+            DinnerImportantWords.objects.all().delete()
+        # 各店舗のレビューが入ったリストを格納
             dinner_reviews = DinnerReview.objects.filter(
                 store__id__exact=store_id)
             dinner_reviews_list = []
             for dinner_review in dinner_reviews:
-                temp = dinner_review.content
-                dinner_reviews_list.append(temp)
+                review_content = dinner_review.content
+                dinner_reviews_list.append(review_content)
             content = ''.join(dinner_reviews_list)
             analyzer = Analyzer()
             temp = analyzer.feature_analysis(content, self.keyword_dict)
@@ -74,6 +74,7 @@ class AnalyzeExe:
                     keyword_modifier3=keyword_modifier3)
                 print("saved data ==== " + str(new_data))
         else:
+            LunchImportantWords.objects.all().delete()
             lunch_reviews = LunchReview.objects.filter(
                 store__id__exact=store_id)
             lunch_reviews_list = []

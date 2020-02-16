@@ -58,6 +58,7 @@ class DinnerImportantWords(models.Model):
     all_words_num = models.IntegerField('総単語数', null=True)
     key_words = models.CharField('軸単語', max_length=20, null=True)
     key_words_nums = models.IntegerField('軸単語出現数', null=True)
+    created_at = models.DateTimeField('データ作成日時', auto_now=True, null=True)
     keyword_modifier1 = ArrayField(
         models.CharField(
             'keyword_modifier1',

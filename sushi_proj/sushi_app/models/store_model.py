@@ -13,6 +13,8 @@ class Store(models.Model):
         'Tabelog_score', null=True, validators=[
             MinValueValidator(0), MaxValueValidator(5.0)])
     retty_score = models.PositiveIntegerField('Retty_score', null=True)
+    created_at = models.DateTimeField('データ作成日時', auto_now=True, null=True)
+    updated_at = models.DateTimeField('データ作成日時', auto_now_add=True, null=True)
 
     def _str__(self):
         return self.store_name

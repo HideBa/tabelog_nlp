@@ -43,6 +43,8 @@ class DinnerStoreSummary(models.Model):
         blank=True,
         on_delete=models.CASCADE)
     # on_delete=models.CASCADE, related_name='dinner_summary')
+    created_at = models.DateTimeField('データ作成日時', auto_now=True, null=True)
+    updated_at = models.DateTimeField('データ作成日時', auto_now_add=True, null=True)
 
     keyword = models.CharField('keyword1', max_length=20, null=True)
     keyword_sentiment = ArrayField(
