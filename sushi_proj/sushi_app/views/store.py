@@ -86,11 +86,11 @@ def detail_view(request, store_id):
     radar_json_data = json.dumps({
         'type': 'radar',
         'data': {
-            'labels': ['赤酢', 'しゃり', 'ねた'],
+            'labels': chart_labels,
             'datasets': [
                 {
                     'label': chart_store_name,
-                    'data': [1.2, 3.2, 4.3],
+                    'data': chart_data,
                     'backgroundColor': 'rgba(255, 99, 132, 0.6)',
                     'borderColor': 'rgba(255, 99, 132, 0.9)',
                     'pointBackgroundColor': 'rgba(255, 99, 132, 0.9)',
