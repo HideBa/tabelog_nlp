@@ -65,8 +65,8 @@ def show_top_page(request):
         for keyword in keywords:
             print("keyword ==== " + str(keyword))
             if json_data["all_jiku"][keyword]["adjective"]:
-                modi_words = json_data["all_jiku"][str(
-                    keyword)]["syusyoku"]["syusyoku_list"]
+                modi_words = json_data["all_jiku"][
+                    keyword]["syusyoku_list"]
             else:
                 modi_words = []
             keywords_list.append([keyword, modi_words])
