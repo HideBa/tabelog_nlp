@@ -77,6 +77,10 @@ def detail_view(request, store_id):
     print("char label === " + str(chart_labels))
     chart_store_name = store.store_name
     chart_data = chart_score_list
+    chart_dict = {
+        'chart_store_name': chart_store_name,
+        'chart_data': chart_data,
+        'chart_labels': chart_labels}
 
     try:
         page = int(request.GET.get('from_page'))
@@ -88,9 +92,10 @@ def detail_view(request, store_id):
                   {'store': store,
                    'summary_list': sorted_summary_list,
                    'page': page,
-                   'chart_labels': chart_labels,
+                   #    'chart_dict': chart_dict
                    'chart_store_name': chart_store_name,
-                   'chart_data': chart_data
+                   'chart_data': chart_data,
+                   'chart_labels': chart_labels
                    })
 
 
