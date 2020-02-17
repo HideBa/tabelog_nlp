@@ -159,39 +159,65 @@ class Analyzer:
             # 1文の中身,magnitude,score
         return result
 
-    def get_posinega(self, text_dic, json_file):
+    def get_posinega_adjective(self, text_dic, json_file, adjective_file):
         with open(json_file, encoding='utf-8') as f:
-            json_data = json.load(f)
-            jiku_list = json_data["all_jiku"]["all_jiku_list"]
-            # ['赤酢', '握り', 'シャリ']
-            positive_dic = defaultdict(float)
-            negative_dic = defaultdict(float)
-            result_dic = defaultdict(list)
-            for text in text_dic:
-                t = self.tokenize(text[0])
+            with open(adjective_file, encoding='utf-8') as a:
+                json_data = json.load(f)
+                ad_data = json.load(a)
+                jiku_list = json_data["all_jiku"]["all_jiku_list"]
+                # ['赤酢', '握り', 'シャリ']
+                positive_dic = defaultdict(float)
+                negative_dic = defaultdict(float)
+                result_dic = defaultdict(list)
+                for text in text_dic:
+                    t = self.tokenize(text[0])
+                    for jiku in jiku_list:
+                        if json_data["all_jiku"][jiku]["adjective"] == 1 and json_data["all_jiku"][jiku]["is_no"] == 0:
+                            jiku_group = json_data["all_jiku"][jiku]["jiku_group"]
+                            # ['握り', 'にぎり', 'ニギリ']
+                            syusyoku_list = json_data["all_jiku"][jiku]["syusyoku_list"]
+                            # ['大きい', '小さい', '創作']
+                            for ji in jiku_group:
+                                if ji in t:
+                                    for syusyoku in syusyoku_list:
+                                        syusyoku_group = ad_data[syusyoku]
+                                        # [['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
+                                        for s in syusyoku_group:
+                                            if len(list(set(s) & set(t))
+                                                   ) == len(s):
+                                                if text[2] > 0:
+                                                    positive_dic[(jiku, syusyoku)
+                                                                 ] += text[1] * text[2]
+                                                elif text[2] < 0:
+                                                    negative_dic[(jiku, syusyoku)
+                                                                 ] += -text[1] * text[2]
+                        elif json_data["all_jiku"][jiku]["adjective"] == 1 and json_data["all_jiku"][jiku]["is_no"] == 1:
+                            jiku_group = json_data["all_jiku"][jiku]["jiku_group"]
+                            # [['さば','昆布締め'], ['サバ','昆布']]
+                            syusyoku_list = json_data["all_jiku"][jiku]["syusyoku_list"]
+                            # ['大きい', '小さい', '創作']
+                            for ji in jiku_group:
+                                if len(list(set(ji)) & list(t)) == len(ji):
+                                    for syusyoku in syusyoku_list:
+                                        syusyoku_group = ad_data[syusyoku]
+                                        # [['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
+                                        for s in syusyoku_group:
+                                            if len(list(set(s) & set(t))
+                                                   ) == len(s):
+                                                if text[2] > 0:
+                                                    positive_dic[(jiku, syusyoku)
+                                                                 ] += text[1] * text[2]
+                                                elif text[2] < 0:
+                                                    negative_dic[(jiku, syusyoku)
+                                                                 ] += -text[1] * text[2]
+
                 for jiku in jiku_list:
-                    jiku_group = json_data["all_jiku"][jiku]["jiku_group"]
-                    # ['握り', 'にぎり', 'ニギリ']
-                    syusyoku_list = json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]
-                    # ['大きい', '小さい', '創作']
-                    for ji in jiku_group:
-                        if ji in t:
-                            for syusyoku in syusyoku_list:
-                                syusyoku_group = json_data["all_jiku"][jiku]["syusyoku"][syusyoku]
-                                # [['大きい'], ['でかい'], ['大きめ'], ['ビッグ']]
-                                for s in syusyoku_group:
-                                    if len(list(set(s) & set(t))) == len(s):
-                                        if text[2] > 0:
-                                            positive_dic[(jiku, syusyoku)
-                                                         ] += text[1] * text[2]
-                                        elif text[2] < 0:
-                                            negative_dic[(jiku, syusyoku)
-                                                         ] += -text[1] * text[2]
-            for jiku in jiku_list:
-                for syusyoku in json_data["all_jiku"][jiku]["syusyoku"]["syusyoku_list"]:
-                    result_dic[jiku].append(
-                        [syusyoku, positive_dic[(jiku, syusyoku)], negative_dic[(jiku, syusyoku)]])
-            return result_dic
+                    if json_data["all_jiku"][jiku]["adjective"] == 1:
+                        syusyoku_list = json_data["all_jiku"][jiku]["syusyoku_list"]
+                        for syusyoku in syusyoku_list:
+                            result_dic[jiku].append(
+                                [syusyoku, positive_dic[(jiku, syusyoku)], negative_dic[(jiku, syusyoku)]])
+                return result_dic
 
     def read_csv(self, csv):
         df = pd.read_csv(csv)

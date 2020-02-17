@@ -32,10 +32,10 @@ class AnalyzeExe:
         return store_id_list
 
     def implement_all(self, store_id_list):
-        # for store_id in store_id_list:
-            # self.get_important_word(store_id, self.is_dinner)
-            # self.get_sentiment_result(store_id, self.is_dinner)
-            # self.get_posinega(store_id, self.is_dinner)
+        for store_id in store_id_list:
+            self.get_important_word(store_id, self.is_dinner)
+            self.get_sentiment_result(store_id, self.is_dinner)
+            self.get_posinega(store_id, self.is_dinner)
         self.get_summary_average(self.is_dinner, self.keyword_dict)
 
     def get_important_word(self, store_id, is_dinner):
@@ -52,7 +52,8 @@ class AnalyzeExe:
                 dinner_reviews_list.append(review_content)
             content = ''.join(dinner_reviews_list)
             analyzer = Analyzer()
-            temp = analyzer.feature_analysis(content, self.keyword_dict)
+            temp = analyzer.feature_analysis_adjective(
+                content, self.keyword_dict)
             store = get_object_or_404(Store, id=store_id)
             for t in temp:
                 try:
@@ -88,7 +89,8 @@ class AnalyzeExe:
                 lunch_reviews_list.append(temp)
             content = ''.join(lunch_reviews_list)
             analyzer = Analyzer()
-            temp = analyzer.feature_analysis(content, self.keyword_dict)
+            temp = analyzer.feature_analysis_adjective(
+                content, self.keyword_dict)
             store = get_object_or_404(Store, id=store_id)
             for t in temp:
                 try:
