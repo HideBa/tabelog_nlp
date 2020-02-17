@@ -7,7 +7,10 @@ class TabelogHistory(models.Model):
     class Meta:
         verbose_name = 'tabelog_history'
         verbose_name = 'tabelog_history'
-    id = models.CharField('review_dinnerID', max_length=20, primary_key=True)
+    id = models.CharField(
+        'tabelog_history_ID',
+        max_length=20,
+        primary_key=True)
     score = models.FloatField('user score', null=True, validators=[
         MinValueValidator(0),
         MaxValueValidator(5.0)])
@@ -20,14 +23,14 @@ class TabelogHistory(models.Model):
         on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.score
+        return str(self.score) + " " + str(self.nth)
 
 
 class RettyHistory(models.Model):
     class Meta:
         verbose_name = 'retty_history'
         verbose_name = 'retty_history'
-    id = models.CharField('review_dinnerID', max_length=20, primary_key=True)
+    id = models.CharField('retty_history_ID', max_length=20, primary_key=True)
     score = models.FloatField('user score', null=True, validators=[
         MinValueValidator(0)])
     nth = models.PositiveIntegerField('何回目')
@@ -39,4 +42,4 @@ class RettyHistory(models.Model):
         on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.score
+        return str(self.score) + " " + str(self.nth)

@@ -13,6 +13,7 @@ from sushi_app.models.review_model import LunchReview, DinnerReview
 from sushi_app.models.sentiment_result_model import LunchSentimentResult, DinnerSentimentResult
 from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
 from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
+from sushi_app.models.score_history_model import TabelogHistory, RettyHistory
 from get_important_word.analysis import Analyzer
 import json
 import math
@@ -60,6 +61,7 @@ def detail_view(request, store_id):
         summary_list, reverse=True,
         key=lambda obj: obj[1][1])
     # [['握り', ['大きい', '0.8099999999999999', '0.0'], ['小さい', '0.970000000000000
+    # radar chart ------------------------
     chart_score_list = []
     chart_labels = []
     chart_store_ave_list = []
@@ -119,6 +121,57 @@ def detail_view(request, store_id):
             }
         }
     })
+# radar chart --------------------
+# line chart -------------------
+    tabelog_history_list = TabelogHistory.objects.filter(
+        store__id__exact=store_id)
+    sorted_tabelog_history_list = sorted(
+        tabelog_history_list,
+        reverse=True,
+        key=lambda obj: obj.nth)
+    chart_line_data = [
+        tabelog_history.score for tabelog_history in sorted_tabelog_history_list]
+    chart_line_labels = [
+        tabelog_history.nth for tabelog_history in sorted_tabelog_history_list]
+    line_json_data = json.dumps({
+        'type': 'line',
+        'data': {
+            'labels': chart_line_labels,
+            'datasets': [
+                {
+                    'label': 'tabelog 変化',
+                    'data': chart_line_data,
+                    'borderColor': "rgba(255,0,0,1)",
+                    'backgroundColor': "rgba(0,0,0,0)"
+                },
+                # {
+                #   label: '最低気温(度）',
+                #   data: [25, 27, 27, 25, 26, 27, 25, 21],
+                #   borderColor: "rgba(0,0,255,1)",
+                #   backgroundColor: "rgba(0,0,0,0)"
+                # }
+            ],
+        },
+        'options': {
+            'title': {
+                # 'display': true,
+                'text': 'tabelog_change'
+            },
+            'scales': {
+                'yAxes': [{
+                    'ticks': {
+                        'suggestedMax': 5,
+                        'suggestedMin': 0,
+                        'stepSize': 1,
+                        # 'callback': function(value, index, values){
+                        #     return value
+                        # }
+                    }
+                }]
+            },
+        }
+    })
+    print("sorted tabelog history === " + str(sorted_tabelog_history_list))
 
     try:
         page = int(request.GET.get('from_page'))
@@ -131,6 +184,7 @@ def detail_view(request, store_id):
                    'summary_list': sorted_summary_list,
                    'page': page,
                    'radar_json_data': radar_json_data,
+                   'line_json_data': line_json_data,
                    })
 
 
