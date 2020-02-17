@@ -53,7 +53,7 @@ class AnalyzeExe:
             content = ''.join(dinner_reviews_list)
             analyzer = Analyzer()
             temp = analyzer.feature_analysis_adjective(
-                content, self.keyword_dict)
+                content, self.keyword_dict, self.adjective_dict)
             store = get_object_or_404(Store, id=store_id)
             for t in temp:
                 try:
@@ -69,7 +69,10 @@ class AnalyzeExe:
                 key_words_nums = t[1]
                 keyword_modifier1 = t[2]
                 keyword_modifier2 = t[3]
-                keyword_modifier3 = t[4]
+                if len(t) > 4:
+                    keyword_modifier3 = t[4]
+                else:
+                    keyword_modifier3 = []
                 new_data = DinnerImportantWords.objects.create(
                     id=dinner_important_words_id,
                     store=store,
@@ -207,8 +210,8 @@ class AnalyzeExe:
                 parse_list.append(sentiment_list)
             analyzer = Analyzer()
             # ["まぐろ":[["うまい", 0.2, 0.5]["くさい", 0.5, -0.2]]
-            posi_nega_result, sentiment_dic = analyzer.get_posinega(
-                parse_list, self.keyword_dict)  # {("まぐろ", "おいしい"): posi_point}
+            posi_nega_result, sentiment_dic = analyzer.get_posinega_adjective(
+                parse_list, self.keyword_dict, self.adjective_dict)  # {("まぐろ", "おいしい"): posi_point}
         #  {'赤酢': [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]], '握り': [['大きい', 0.48999999999999994, 0.0], ['小さい', 0.0, 0.0], ['創作', 0.0, 0.0]], 'シャリ': [['大きい', 0.0, 0.0], ['小さい', 0.0, 0.0], ['パラパラ', 0.0, 0.0], ['塩気', 0.0, 0.0], ['甘い', 0.0, 0.0], ['熟成', 0.0, 0.0]]})
         #    {'赤酢': [0.4, 0.4], }
             print("====" + str(posi_nega_result))
