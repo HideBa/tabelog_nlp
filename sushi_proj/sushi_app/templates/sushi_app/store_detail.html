@@ -9,10 +9,10 @@
 
 <canvas id="radar-chart"></canvas>
 <canvas id="line-chart"></canvas>
-<table class="table table-striped table-bordered">
-    <tbody>
+<!-- <table class="table table-striped table-bordered">
+    <tbody class="table-text">
         <tr>
-            <th scope="row">StoreID</th>
+            <th scope="row" class="store-th">StoreID</th>
             <td>{{ store.id }}</td>
         </tr>
         <tr>
@@ -20,7 +20,8 @@
             <td>{{ store.store_name }}</td>
         </tr>
     </tbody>
-</table>
+</table> -->
+<h3 class="store-name">{{ store.store_name }}</h3>
 {% for summary in summary_list %}
 {% for elem in summary %}
 <p>{{ elem }}</p>

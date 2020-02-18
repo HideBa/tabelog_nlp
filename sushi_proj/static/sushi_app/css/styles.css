@@ -8,6 +8,10 @@ body, header, footer {
     font-size: 16px;
 }
 
+table {
+    color: #D8DADA;
+}
+
 a {
     cursor: pointer;
 }
@@ -129,11 +133,6 @@ div.keyword-title-container h4 {
     width: 200px;
 }
 
-
-
-
-
-
 /* sample  */
 #radar-chart canvas {
     height: 70px;
@@ -141,4 +140,12 @@ div.keyword-title-container h4 {
     border-color: rgba(255, 99, 132, 0.9);
     border-width: 3;
     color: white;
+}
+
+h3.store-name {
+    color: #D8DADA;
+}
+
+td, th {
+    color: #D8DADA;
 }
