@@ -5,6 +5,7 @@ from sushi_app.models.sentiment_result_model import LunchSentimentResult, Dinner
 from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
 from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
 from sushi_app.models.dinner_summary_average import DinnerSummaryAverage
+from sushi_app.models.score_history_model import TabelogHistory, RettyHistory
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from sushi_proj.settings import BASE_DIR, GCP_API_KEY
@@ -32,11 +33,12 @@ class AnalyzeExe:
         return store_id_list
 
     def implement_all(self, store_id_list):
-        for store_id in store_id_list:
-            self.get_important_word(store_id, self.is_dinner)
-            self.get_sentiment_result(store_id, self.is_dinner)
-            self.get_posinega(store_id, self.is_dinner)
-        self.get_summary_average(self.is_dinner, self.keyword_dict)
+        # for store_id in store_id_list:
+        #     self.get_important_word(store_id, self.is_dinner)
+        #     self.get_sentiment_result(store_id, self.is_dinner)
+        #     self.get_posinega(store_id, self.is_dinner)
+        # self.get_summary_average(self.is_dinner, self.keyword_dict)
+        self.update_growth_rate()
 
     def get_important_word(self, store_id, is_dinner):
         # decide dinner or lunch
@@ -366,6 +368,27 @@ class AnalyzeExe:
                     (str(int(max_id[3:]) + 1).zfill(7))
                 DinnerSummaryAverage.objects.create(
                     id=id, keyword=keyword, keyword_sentiment_ave_score=score_ave)
+
+    def update_growth_rate(self):
+        store_list = Store.objects.all()
+        for store_obj in store_list:
+            latest_tabelog_score = TabelogHistory.objects.filter(
+                store__id__exact=store_obj.id).order_by('-nth').all()
+            print("score === " + str(latest_tabelog_score))
+            if latest_tabelog_score:
+                growth_rate = (
+                    (latest_tabelog_score[0].score - latest_tabelog_score[1].score) / latest_tabelog_score[1].score) * 100
+                print("growth rate ===" + str(growth_rate))
+                store_obj.tabelog_growth_rate = growth_rate
+            latest_retty_score = RettyHistory.objects.filter(
+                store__id__exact=store_obj.id).order_by('-nth').all()
+            print("score === " + str(latest_retty_score))
+            if latest_retty_score:
+                growth_rate = (
+                    (latest_retty_score[0].score - latest_retty_score[1].score) / latest_retty_score[1].score) * 100
+                print("growth rate ===" + str(growth_rate))
+                store_obj.retty_growth_rate = growth_rate
+            store_obj.save()
 
 
 def implement_all_process(request):

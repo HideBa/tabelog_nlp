@@ -144,17 +144,10 @@ def detail_view(request, store_id):
                     'borderColor': "rgba(255,0,0,1)",
                     'backgroundColor': "rgba(0,0,0,0)"
                 },
-                # {
-                #   label: '最低気温(度）',
-                #   data: [25, 27, 27, 25, 26, 27, 25, 21],
-                #   borderColor: "rgba(0,0,255,1)",
-                #   backgroundColor: "rgba(0,0,0,0)"
-                # }
             ],
         },
         'options': {
             'title': {
-                # 'display': true,
                 'text': 'tabelog_change'
             },
             'scales': {
@@ -163,9 +156,6 @@ def detail_view(request, store_id):
                         'suggestedMax': 5,
                         'suggestedMin': 0,
                         'stepSize': 1,
-                        # 'callback': function(value, index, values){
-                        #     return value
-                        # }
                     }
                 }]
             },
@@ -288,6 +278,16 @@ def store_search(request):
                        'last_page': paginator.num_pages})
     else:
         return redirect('show_top_page')
+
+
+def get_top_growth_rate(request):
+    tabelog_store_list = Store.objects.all().order_by('tabelog_growth_rate').reverse()
+    retty_store_list = Store.objects.all().order_by('retty_growth_rate').reverse()
+
+    return render(request,
+                  'sushi_app/growth_rate_store_list.html',
+                  {'tabelog_store_list': tabelog_store_list,
+                   'retty_score_list': retty_store_list})
 
 
 def area_search(request):

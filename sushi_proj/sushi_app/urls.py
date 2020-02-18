@@ -36,5 +36,6 @@ urlpatterns = [
     #     name='get_sentiment_result'),
     # path('posinega/<slug:store_id>', store.get_posinega, name='get_posinega'),
     # path('savecsv/<slug:store_id>', store.save_review, name="save_review"),
-    path('exe', analyze_exe.implement_all_process, name="exe")
+    path('exe', analyze_exe.implement_all_process, name="exe"),
+    path('top-growth-rate', store.get_top_growth_rate, name="top_growth_rate"),
 ]

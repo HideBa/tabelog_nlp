@@ -15,6 +15,8 @@ class Store(models.Model):
     retty_score = models.PositiveIntegerField('Retty_score', null=True)
     created_at = models.DateTimeField('データ作成日時', auto_now=True, null=True)
     updated_at = models.DateTimeField('データ作成日時', auto_now_add=True, null=True)
+    tabelog_growth_rate = models.FloatField('食べログ伸び率', null=True)
+    retty_growth_rate = models.FloatField('Retty伸び率', null=True)
 
     def _str__(self):
         return self.store_name
