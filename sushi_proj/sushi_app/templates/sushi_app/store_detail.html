@@ -12,9 +12,10 @@
 <h3 class="store-name">{{ store.store_name }}</h3>
 {% for summary in sorted_summary_list %}
 <p>key: {{ summary.0 }}</p>
-<br>
 {% for keyword in summary.1.1 %}
+{% if keyword %}
 <p>{{ keyword.0 }}: PP{{ keyword.1 }} NP{{ keyword.2 }}</p>
+{% endif %}
 {% endfor %}
 
 {% endfor %}

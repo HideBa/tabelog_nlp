@@ -1,5 +1,5 @@
 from django.urls import path
-from sushi_app.views import store, analyze_exe
+from sushi_app.views import store, analyze_exe, get_gender_popular
 
 app_name = 'sushi_app'
 
@@ -38,4 +38,8 @@ urlpatterns = [
     # path('savecsv/<slug:store_id>', store.save_review, name="save_review"),
     path('exe', analyze_exe.implement_all_process, name="exe"),
     path('top-growth-rate', store.get_top_growth_rate, name="top_growth_rate"),
+    path(
+        'gender-rate',
+        get_gender_popular.get_popular_store,
+        name="get_gender_popular"),
 ]

@@ -2,6 +2,8 @@ from django.db import models
 from .store_model import Store
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+USER_SEX_LIST = ((0, '不明'), (1, '男性'), (2, '女性'))
+
 
 class LunchReview(models.Model):
     class Meta:
@@ -37,6 +39,7 @@ class DinnerReview(models.Model):
         MaxValueValidator(5.0)])
     content = models.TextField('review content', null=True)
     is_new = models.BooleanField('新しく取得されたレビューかどうか？', null=True)
+    user_sex = models.IntegerField('性別', choices=USER_SEX_LIST, null=True)
     store = models.ForeignKey(
         Store,
         verbose_name='store',
