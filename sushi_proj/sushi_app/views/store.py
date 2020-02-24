@@ -44,38 +44,41 @@ def detail_view(request, store_id):
     summary_list = []
     for summary in summaries:
         keyword = summary.keyword
+        print("keyword === " + str(keyword))
         keyword_modifier1 = summary.keyword_modifier1
         keyword_modifier2 = summary.keyword_modifier2
         keyword_modifier3 = summary.keyword_modifier3
         keyword_modifier4 = summary.keyword_modifier4
         keyword_modifier5 = summary.keyword_modifier5
         keyword_modifier6 = summary.keyword_modifier6
-        summary_list.append([keyword,
-                             keyword_modifier1,
-                             keyword_modifier2,
-                             keyword_modifier3,
-                             keyword_modifier4,
-                             keyword_modifier5,
-                             keyword_modifier6])
+        keyword_modifiers = [
+            keyword_modifier1,
+            keyword_modifier2,
+            keyword_modifier3,
+            keyword_modifier4,
+            keyword_modifier5,
+            keyword_modifier6]
+        posi_score_list = [float(keyword_modifier[1])
+                           for keyword_modifier in keyword_modifiers if len(keyword_modifier) > 0]
+        total_posinega_score = sum(posi_score_list)
+        summary_list.append(
+            [keyword, [total_posinega_score, keyword_modifiers]])
+        print("summary list === " + str(summary_list))
     sorted_summary_list = sorted(
         summary_list, reverse=True,
-        key=lambda obj: obj[1][1])
-    # [['握り', ['大きい', '0.8099999999999999', '0.0'], ['小さい', '0.970000000000000
+        key=lambda obj: obj[1][0])
+    #  [['握り', [3.33, [['大きい', '0.8099999999999999', '0.0'], ['小さい', '0.9700000000000001', '0.6400000000000001'], ['創作', '1.55', '0.0'], [], [], []]]],
+    print("sorted sumary list === " + str(sorted_summary_list))
     # radar chart ------------------------
     chart_score_list = []
     chart_labels = []
     chart_store_ave_list = []
     for sorted_summary in sorted_summary_list:
-        score = 0
-        adj = sorted_summary.pop(0)
+        score = sorted_summary[1][0]
+        adj = sorted_summary[0]
         ave_score = get_keyword_average(adj)
         chart_store_ave_list.append(ave_score)
         chart_labels.append(str(adj))
-        for adjective_list in sorted_summary:
-            if not adjective_list:
-                continue
-            # 一旦PPの合計値で出す
-            score += float(adjective_list[1])
         chart_score_list.append(score)
     chart_store_name = store.store_name
     chart_data = chart_score_list
@@ -162,16 +165,17 @@ def detail_view(request, store_id):
         }
     })
     print("sorted tabelog history === " + str(sorted_tabelog_history_list))
+    # print("summary list === " + str(sorted_summary_list))
 
     try:
         page = int(request.GET.get('from_page'))
     except BaseException:
         page = 1
-
+    print("sorted summary list === " + str(sorted_summary_list))
     return render(request,
                   'sushi_app/store_detail.html',
                   {'store': store,
-                   'summary_list': sorted_summary_list,
+                   'sorted_summary_list': sorted_summary_list,
                    'page': page,
                    'radar_json_data': radar_json_data,
                    'line_json_data': line_json_data,

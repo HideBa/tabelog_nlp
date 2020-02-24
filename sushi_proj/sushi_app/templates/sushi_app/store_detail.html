@@ -9,23 +9,14 @@
 
 <canvas id="radar-chart"></canvas>
 <canvas id="line-chart"></canvas>
-<!-- <table class="table table-striped table-bordered">
-    <tbody class="table-text">
-        <tr>
-            <th scope="row" class="store-th">StoreID</th>
-            <td>{{ store.id }}</td>
-        </tr>
-        <tr>
-            <th scope="row">StoreName</th>
-            <td>{{ store.store_name }}</td>
-        </tr>
-    </tbody>
-</table> -->
 <h3 class="store-name">{{ store.store_name }}</h3>
-{% for summary in summary_list %}
-{% for elem in summary %}
-<p>{{ elem }}</p>
+{% for summary in sorted_summary_list %}
+<p>key: {{ summary.0 }}</p>
+<br>
+{% for keyword in summary.1.1 %}
+<p>{{ keyword.0 }}: PP{{ keyword.1 }} NP{{ keyword.2 }}</p>
 {% endfor %}
+
 {% endfor %}
 
 </tbody>
@@ -42,19 +33,7 @@
 
 
 {% block extra_js %}
-<!-- <script type="text/javascript">
-    const ctx = document.getElementById("radar-chart");
-    const sushiRadarChart = new Chart(ctx, {
-        type: 'radar',
-        data: {
-            labels: ['国語', '算数', 'science', 'social', 'en'],
-            datasets: [{
-                label: "a san",
-                data: [65, 32, 43, 23, 65]
-            }]
-        },
-    });
-</script> -->
+
 <script type="text/javascript">
     var ctx = document.getElementById("radar-chart");
     var chart_json_data = JSON.parse('{{ radar_json_data|safe }}')
@@ -75,33 +54,3 @@
 {% endblock %}
 
 {% endblock %}
-<!-- 
-{
-    type: 'radar',
-    data: {
-        labels: ['赤酢', 'しゃり', 'ねた'],
-        datasets: [
-            {
-                label: label,
-                data: data,
-                backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                borderColor: 'rgba(255, 99, 132, 0.9)',
-                pointBackgroundColor: 'rgba(255, 99, 132, 0.9)',
-                pointBorderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 3,
-                pointRadius: 3,
-            },]
-    },
-    options: {
-        animation: { duration: 2000 },
-        legend: { display: false },
-        scale: {
-            ticks: {
-                min: 0.0,
-                max: 10,
-                stepSize: 1,
-                backdropColor: 'rgba(255, 255, 255, 0)',
-            }
-        }
-    }
-} -->
