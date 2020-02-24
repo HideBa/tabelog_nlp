@@ -7,10 +7,12 @@ from sushi_app.models.review_model import LunchReview, DinnerReview
 # from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
 # from sushi_app.models.dinner_summary_average import DinnerSummaryAverage
 from django.http import HttpResponse, Http404, JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
 
 
-def get_popular_store(is_dinner):
+def get_popular_store(request, is_dinner, is_male):
     store_list = Store.objects.all()
+    result_list = []
     if is_dinner:
         for store in store_list:
             all_reviews = DinnerReview.objects.filter(store_id__exact=store.id)
@@ -37,6 +39,18 @@ def get_popular_store(is_dinner):
                     female_review.score for female_review in female_reviews_list) / len(male_reviews_list)
             else:
                 female_score_ave = 0
+            result_list.append([store, male_score_ave, female_rate])
             print("male_rate === " + str(male_rate))
             print("male ave === " + str(male_score_ave))
-    return HttpResponse("male rate")
+    if is_male:
+        sorted_result_list = sorted(
+            result_list,
+            reverse=True,
+            key=lambda result: result[1])
+    else:
+        sorted_result_list = sorted(
+            result_list,
+            reverse=True,
+            key=lambda result: result[2])
+    return render(request, 'sushi_app/gender_sorted_list.html',
+                  {'sorted_result_list': sorted_result_list})

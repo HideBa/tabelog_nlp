@@ -165,7 +165,6 @@ def detail_view(request, store_id):
         }
     })
     print("sorted tabelog history === " + str(sorted_tabelog_history_list))
-    # print("summary list === " + str(sorted_summary_list))
 
     try:
         page = int(request.GET.get('from_page'))
