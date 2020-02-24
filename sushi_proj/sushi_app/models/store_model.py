@@ -12,6 +12,16 @@ class Store(models.Model):
     tabelog_score = models.FloatField(
         'Tabelog_score', null=True, validators=[
             MinValueValidator(0), MaxValueValidator(5.0)])
+    station = models.CharField('最寄り駅', max_length=20, null=True)
+    lunch_price = models.CharField('ランチ価格', max_length=10, null=True)
+    dinner_price = models.CharField('ディナー価格', max_length=10, null=True)
+    address = models.CharField('住所', max_length=50, null=True)
+    phone_num = models.CharField('電話番号', max_length=11)
+    opening_time = models.CharField('営業時間', max_length=20, null=True)
+    regular_holiday = models.CharField('定休日', max_length=10, null=True)
+    url = models.URLField('url', null=True)
+    latitude = models.FloatField('latitude', null=True)
+    longitude = models.FloatField('longtitude', null=True)
     retty_score = models.PositiveIntegerField('Retty_score', null=True)
     created_at = models.DateTimeField('データ作成日時', auto_now=True, null=True)
     updated_at = models.DateTimeField('データ作成日時', auto_now_add=True, null=True)

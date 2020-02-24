@@ -74,7 +74,7 @@ DOWNLOAD_DELAY = 5
 # DB
 POSTGRESQL_URL = 'postgresql://{0}:{1}@localhost:5432/{2}'.format(
     DATABASES['default']['USER'],
-    DATABASE['default']['PASSWORD'],
+    DATABASES['default']['PASSWORD'],
     DATABASES['default']['NAME'])
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
