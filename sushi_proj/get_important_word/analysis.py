@@ -169,6 +169,7 @@ class Analyzer:
                 positive_dic = defaultdict(float)
                 negative_dic = defaultdict(float)
                 result_dic = defaultdict(list)
+                sentiment_dic = defaultdict(list)
                 for text in text_dic:
                     t = self.tokenize(text[0])
                     for jiku in jiku_list:
@@ -212,12 +213,17 @@ class Analyzer:
                                                                  ] += -text[1] * text[2]
 
                 for jiku in jiku_list:
+                    pp = 0
+                    np = 0
                     if json_data["all_jiku"][jiku]["adjective"] == 1:
                         syusyoku_list = json_data["all_jiku"][jiku]["syusyoku_list"]
                         for syusyoku in syusyoku_list:
                             result_dic[jiku].append(
                                 [syusyoku, positive_dic[(jiku, syusyoku)], negative_dic[(jiku, syusyoku)]])
-                return result_dic
+                            pp += positive_dic[(jiku, syusyoku)]
+                            np += negative_dic[(jiku, syusyoku)]
+                        sentiment_dic[jiku] = [pp, np]
+                return result_dic, sentiment_dic
 
     def read_csv(self, csv):
         df = pd.read_csv(csv)
