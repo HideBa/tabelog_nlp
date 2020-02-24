@@ -91,7 +91,7 @@ DATABASES = {
         'USER': 'sushi_proj',
         'HOST': 'localhost',
         'PASSWORD': 'sushi_proj_pass',
-        'POST': '',
+        'PORT': '',
     }
 }
 # psqlを別で実行して、pidファイルが残ってしまった場合は、

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from sushi_proj.settings import DATABASES
 # Scrapy settings for tabelog_evo project
 #
 # For simplicity, this file contains only settings considered important or
@@ -42,16 +42,16 @@ DOWNLOAD_DELAY = 5
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
+# DEFAULT_REQUEST_HEADERS = {
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 #   'Accept-Language': 'en',
-#}
+# }
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    'tabelog_evo.middlewares.TabelogEvoSpiderMiddleware': 543,
-#}
+# }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
@@ -61,9 +61,9 @@ DOWNLOAD_DELAY = 5
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
-#EXTENSIONS = {
+# EXTENSIONS = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
-#}
+# }
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
@@ -72,7 +72,10 @@ DOWNLOAD_DELAY = 5
 #    'tabelog_evo.pipelines.PostgresPipeline': 600
 # }
 # DB
-POSTGRESQL_URL = 'postgresql://tabelog_evo:tabelog_evo_pass@localhost:5432/tabelog_evo_db'
+POSTGRESQL_URL = 'postgresql://{0}:{1}@localhost:5432/{2}'.format(
+    DATABASES['default']['USER'],
+    DATABASE['default']['PASSWORD'],
+    DATABASES['default']['NAME'])
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
