@@ -41,11 +41,9 @@ def list_view(request):
 def detail_view(request, store_id):
     store = get_object_or_404(Store, id=store_id)
     summaries = DinnerStoreSummary.objects.filter(store__id__exact=store_id)
-    print("summary obj ==== " + str(summaries))
     summary_list = []
     for summary in summaries:
         keyword = summary.keyword
-        print("keyword === " + str(keyword))
         keyword_modifier1 = summary.keyword_modifier1
         keyword_modifier2 = summary.keyword_modifier2
         keyword_modifier3 = summary.keyword_modifier3
@@ -69,7 +67,6 @@ def detail_view(request, store_id):
         summary_list, reverse=True,
         key=lambda obj: obj[1][0])
     #  [['握り', [3.33, [['大きい', '0.8099999999999999', '0.0'], ['小さい', '0.9700000000000001', '0.6400000000000001'], ['創作', '1.55', '0.0'], [], [], []]]],
-    print("sorted sumary list === " + str(sorted_summary_list))
     # radar chart ------------------------
     chart_score_list = []
     chart_labels = []
@@ -84,7 +81,6 @@ def detail_view(request, store_id):
     chart_store_name = store.store_name
     chart_data = chart_score_list
     max_scale = math.ceil(max(chart_score_list))
-    print("max == ! " + str(max_scale))
     min_scale = math.floor(min(chart_score_list))
     radar_json_data = json.dumps({
         'type': 'radar',
@@ -165,7 +161,6 @@ def detail_view(request, store_id):
             },
         }
     })
-    print("sorted tabelog history === " + str(sorted_tabelog_history_list))
     # line chart ----------------------
     # pie chart -------------------
     chart_pie_data = get_gender_rate(True, store_id)
@@ -175,10 +170,9 @@ def detail_view(request, store_id):
             'labels': ["男性", "女性", "不明"],
             'datasets': [{
                 'backgroundColor': [
-                    "#BB5179",
-                    "#FAFF67",
+                    "rgba(0, 0, 255, 0.9)",
+                    "rgba(255, 99, 132, 0.9)",
                     "#58A27C",
-                    "#3C00FF"
                 ],
                 'data': chart_pie_data
             }]
