@@ -18,6 +18,7 @@ from get_important_word.analysis import Analyzer
 import json
 import math
 from .get_average import get_keyword_average
+from .get_gender_popular import get_gender_rate
 
 
 def list_view(request):
@@ -165,6 +166,29 @@ def detail_view(request, store_id):
         }
     })
     print("sorted tabelog history === " + str(sorted_tabelog_history_list))
+    # line chart ----------------------
+    # pie chart -------------------
+    chart_pie_data = get_gender_rate(True, store_id)
+    pie_json_data = json.dumps({
+        'type': 'pie',
+        'data': {
+            'labels': ["男性", "女性", "不明"],
+            'datasets': [{
+                'backgroundColor': [
+                    "#BB5179",
+                    "#FAFF67",
+                    "#58A27C",
+                    "#3C00FF"
+                ],
+                'data': chart_pie_data
+            }]
+        },
+        'options': {
+            'title': {
+                # 'display': True,
+                'text': '血液型 割合'
+            }
+        }})
 
     try:
         page = int(request.GET.get('from_page'))
@@ -178,6 +202,7 @@ def detail_view(request, store_id):
                    'page': page,
                    'radar_json_data': radar_json_data,
                    'line_json_data': line_json_data,
+                   'pie_json_data': pie_json_data,
                    })
 
 

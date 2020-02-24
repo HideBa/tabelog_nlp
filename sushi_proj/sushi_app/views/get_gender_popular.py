@@ -18,7 +18,8 @@ def get_popular_store(request, is_dinner, is_male):
             all_reviews = DinnerReview.objects.filter(store_id__exact=store.id)
             # male_reviews = DinnerReview.objects.filter(user_sex__exact=1).all()
             # female_reviews = DinnerReview.objects.filter(user_sex_exact=2).all()
-            # unknown_review = DinnerReview.objects.filter(user_sex__exact=0).all()
+            # unknown_review =
+            # DinnerReview.objects.filter(user_sex__exact=0).all()
             male_reviews_list = [
                 review for review in all_reviews if review.user_sex == 1]
             female_reviews_list = [
@@ -36,7 +37,7 @@ def get_popular_store(request, is_dinner, is_male):
                 male_score_ave = 0
             if female_reviews_list:
                 female_score_ave = sum(
-                    female_review.score for female_review in female_reviews_list) / len(male_reviews_list)
+                    female_review.score for female_review in female_reviews_list) / len(female_reviews_list)
             else:
                 female_score_ave = 0
             result_list.append([store, male_score_ave, female_rate])
@@ -54,3 +55,35 @@ def get_popular_store(request, is_dinner, is_male):
             key=lambda result: result[2])
     return render(request, 'sushi_app/gender_sorted_list.html',
                   {'sorted_result_list': sorted_result_list})
+
+
+def get_gender_rate(store_id, is_dinner):
+    # store = Store.objects.get(id=store_id)
+    if is_dinner:
+        all_reviews = DinnerReview.objects.filter(store_id__exact=store_id)
+        male_reviews_list = [
+            review for review in all_reviews if review.user_sex == 1]
+        female_reviews_list = [
+            review for review in all_reviews if review.user_sex == 2]
+        unknown_reviews_list = [
+            review for review in all_reviews if review.user_sex == 0]
+        if male_reviews_list:
+            male_rate = len(male_reviews_list) / len(all_reviews)
+        else:
+            male_rate = 0
+        if female_reviews_list:
+            female_rate = len(female_reviews_list) / len(all_reviews)
+        else:
+            female_rate = 0
+        if unknown_reviews_list:
+            unknown_rate = len(unknown_reviews_list) / len(all_reviews)
+        else:
+            unknown_rate = 0
+        print("return == " + str([
+            len(male_reviews_list),
+            len(female_reviews_list),
+            len(unknown_reviews_list)]))
+        return [
+            male_rate,
+            female_rate,
+            unknown_rate]

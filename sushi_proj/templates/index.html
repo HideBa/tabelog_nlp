@@ -39,6 +39,7 @@
             {% endfor %}
             <p><a href="{% url 'sushi_app:top_growth_rate' %}">急上昇</a></p>
             <p><a href="{% url 'sushi_app:get_gender_popular' is_dinner=True is_male=True %}">男性ウケ</a></p>
+            <p><a href="{% url 'sushi_app:get_gender_popular' is_dinner=True is_male=False %}">女性ウケ</a></p>
         </div>
     </div>
 </div>
