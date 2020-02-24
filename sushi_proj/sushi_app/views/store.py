@@ -44,6 +44,8 @@ def detail_view(request, store_id):
     summary_list = []
     for summary in summaries:
         keyword = summary.keyword
+        keyword_sentiment = summary.keyword_sentiment
+        print("keyword sentiment=== " + str(keyword_sentiment))
         keyword_modifier1 = summary.keyword_modifier1
         keyword_modifier2 = summary.keyword_modifier2
         keyword_modifier3 = summary.keyword_modifier3
@@ -57,22 +59,20 @@ def detail_view(request, store_id):
             keyword_modifier4,
             keyword_modifier5,
             keyword_modifier6]
-        posi_score_list = [float(keyword_modifier[1])
-                           for keyword_modifier in keyword_modifiers if len(keyword_modifier) > 0]
-        total_posinega_score = sum(posi_score_list)
         summary_list.append(
-            [keyword, [total_posinega_score, keyword_modifiers]])
-        print("summary list === " + str(summary_list))
+            [keyword, [keyword_sentiment, keyword_modifiers]])
     sorted_summary_list = sorted(
         summary_list, reverse=True,
-        key=lambda obj: obj[1][0])
-    #  [['握り', [3.33, [['大きい', '0.8099999999999999', '0.0'], ['小さい', '0.9700000000000001', '0.6400000000000001'], ['創作', '1.55', '0.0'], [], [], []]]],
+        key=lambda obj: obj[1][0][0])
+    #  [['握り', [3.33, 3.45] [['大きい', '0.8099999999999999', '0.0'], ['小さい', '0.9700000000000001', '0.6400000000000001'], ['創作', '1.55', '0.0'], [], [], []]]],
     # radar chart ------------------------
     chart_score_list = []
     chart_labels = []
     chart_store_ave_list = []
-    for sorted_summary in sorted_summary_list:
-        score = sorted_summary[1][0]
+    sliced_summary_list = sorted_summary_list[:5]
+    for sorted_summary in sliced_summary_list:
+        score = float(sorted_summary[1][0][0])
+        print("score === " + str(score))
         adj = sorted_summary[0]
         ave_score = get_keyword_average(adj)
         chart_store_ave_list.append(ave_score)
@@ -219,7 +219,6 @@ def review_dinner_view(request, store_id, dinner_review_id):
         page = int(request.GET.get('from_page'))
     except BaseException:
         page = 1
-    print("hello--------------")
     return render(request, 'sushi_app/dinner_review_detail.html',
                   {'store': store, 'review': review, 'page': page})
 
