@@ -48,7 +48,8 @@ class PostgresPipeline(object):
 
         # store_idが既にある場合はStoreテーブルに入れずにreturn
         store_id = item['store_id']
-        curs.execute('SELECT * FROM store WHERE (id = %s)', (store_id,))
+        curs.execute(
+            'SELECT * FROM sushi_app_store WHERE (id = %s)', (store_id,))
         record = curs.fetchone()
         if record is not None:
             logging.info(
@@ -77,7 +78,7 @@ class PostgresPipeline(object):
 
         # Review テーブル
         review_col = "(score, store_id, id, content, user_sex, is_new)"
-        review_sql = "INSERT INTO review {} VALUES (%s, %s, %s, %s, %s, %s)".format(
+        review_sql = "INSERT INTO sushi_app_dinnerreview {} VALUES (%s, %s, %s, %s, %s, %s)".format(
             review_col)
         is_new = True
         curs.execute(
@@ -107,7 +108,7 @@ class RettyPipeline(object):
         curs = self.conn.cursor()
 
         col = "(name, phone_num, retty_score)"
-        sql = "INSERT INTO retty {} VALUES (%s, %s, %s)".format(col)
+        sql = "INSERT INTO sushi_app_retty {} VALUES (%s, %s, %s)".format(col)
 
         # storeに同じ電話番号があれば処理開始
         phone_num = item['phone_num']
