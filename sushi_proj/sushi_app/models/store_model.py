@@ -16,7 +16,7 @@ class Store(models.Model):
     lunch_price = models.CharField('ランチ価格', max_length=10, null=True)
     dinner_price = models.CharField('ディナー価格', max_length=10, null=True)
     address = models.CharField('住所', max_length=50, null=True)
-    phone_num = models.CharField('電話番号', max_length=11)
+    phone_num = models.CharField('電話番号', max_length=11, default='000')
     opening_time = models.CharField('営業時間', max_length=20, null=True)
     regular_holiday = models.CharField('定休日', max_length=10, null=True)
     url = models.URLField('url', null=True)
