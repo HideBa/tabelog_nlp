@@ -1,0 +1,225 @@
+.tempSpace {
+    margin-top: 100px;
+}
+
+body, header, footer {
+    font-family: "Hiragino Sans", "ヒラギノ角ゴシック";
+    color: #D8DADA;
+    font-size: 16px;
+}
+
+table {
+    color: #D8DADA;
+}
+
+a {
+    cursor: pointer;
+}
+
+input, button, select {
+    outline: none;
+}
+
+select {
+    color: #D8DADA;
+}
+
+a:any-link {
+    color: #D8DADA;
+}
+
+.icon {
+    display: inline-block;
+}
+
+/* Navbar---------------------------- */
+nav.navbar {
+    width: 100%;
+    height: 60px;
+    background-color: #1E262B;
+}
+
+h1.navbar-title {
+    font-size: 18px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+
+p.navbar-about {
+    font-size: 14px;
+    text-align: center;
+}
+
+div.input-container {
+    border-bottom: 2px solid #D8DADA;
+    display: inline-block;
+    margin: 10px;
+}
+
+input.search-textbox {
+    border: none;
+    /* border-bottom: 2px solid #D8DADA; */
+    background-color: transparent;
+    color: #B5B8BA;
+    font-size: 16px;
+}
+
+input::placeholder {
+    color: #B5B8BA;
+    font-size: 16px;
+}
+
+form.search-box {
+    margin: 0 0 0 auto;
+}
+
+.search-button {
+    color: #D8DADA;
+    border: 1px solid #D8DADA;
+    font-size: 10px;
+    padding: 5px;
+}
+
+p.navbar-about {
+    margin: 0 20px 0 auto;
+}
+
+
+/* Navbarーーーーーーーーーーーーーーーーーーーーーー */
+
+body {
+    background-color: #222C32;
+}
+/* area------------- */
+
+
+.area-container {
+    background-color: #232323;
+    color: #D8DADA;
+    width: 150px;
+    height: 80px;
+    margin: 20px auto 50px 20px;
+}
+
+.lower-arrow-icon {
+    width: 30px;
+    /* height: 30px; */
+    display: inline-block;
+}
+
+select.prefecture-list {
+    display: inline-block;
+    height: 30px;
+}
+
+form.area-select {
+    display: inline-block;
+    margin: 0;
+}
+
+
+div.keyword-container {
+    width: 80%;
+    background-color: rgba(35, 35, 35, 0.5);
+    padding: 30px;
+    margin: auto;
+}
+
+div.keyword-title-container h4 {
+    font-size: 16px;
+    padding: 10px;
+}
+
+.keyword-box {
+    margin: 10px;
+    display: inline-block;
+    width: 200px;
+}
+
+
+/* top page------- */
+.title-with-icon {
+    display: inline-block;
+}
+
+/* sample  */
+#radar-chart canvas {
+    height: 70px;
+    background-color: rgba(255, 99, 132, 0.6);
+    border-color: rgba(255, 99, 132, 0.9);
+    border-width: 3;
+    color: white;
+}
+
+h3.store-name {
+    color: #D8DADA;;
+}
+
+td, th {
+    color: #D8DADA;
+}
+
+/* ----------store detail -------- */
+.store-name-container {
+
+}
+
+.store-name {
+    display: inline-block;
+    margin: 10px;
+}
+.site-score {
+    display: inline-block;
+    margin: 10px;;
+}
+
+.keyword-title-container {
+    margin: 10px;
+}
+
+.gender-score {
+    display: inline-block;
+    margin: 0 10px 0 0 ;
+}
+.gender-score-container {
+    margin: 10px;
+}
+
+.keyword-summary-container {
+    padding: 10px;
+}
+
+.summary-keyword {
+    font-weight: bold;
+}
+
+.posinega-keyword-score {
+    font-size: calc(4px * var(--param));
+}
+
+.posinega-score {
+    display: inline-block;
+}
+
+.posinega-word {
+    display: inline-block;
+}
+
+.posinega-posi {
+    color: greenyellow;
+}
+
+.posinega-nega {
+    color: red;
+    
+}
+.posinega-modi-score {
+    font-size: calc(6px * var(--param));
+}
+.posinega-modi {
+    padding: 5px 5px 5px 50px;
+    font-size: calc(10px * var(--param));
+
+}
