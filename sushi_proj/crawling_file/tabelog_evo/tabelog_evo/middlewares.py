@@ -11,9 +11,11 @@ from selenium.webdriver import Chrome
 
 #driver = Chrome('C:\Program Files\Chromedriver\chromedriver.exe')
 
+
 class SeleniumMiddleware(object):
     def __init__(self):
-        self.driver = Chrome('C:\Program Files\Chromedriver\chromedriver.exe')
+        self.driver = Chrome('/usr/local/bin/chromedriver')
+
     @classmethod
     def from_crawler(cls, crawler):
         # This method is used by Scrapy to create your spiders.
@@ -24,15 +26,17 @@ class SeleniumMiddleware(object):
     def process_request(self, request, spider):
         self.driver.get(request.url)
         return HtmlResponse(self.driver.current_url,
-            body = self.driver.page_source,
-            encoding = 'utf-8',
-            request = request)
-    
+                            body=self.driver.page_source,
+                            encoding='utf-8',
+                            request=request)
+
     def spider_closed(self, spider):
         self.driver.quit()
 
+
 def close_driver():
     driver.close()
+
 
 class TabelogEvoSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
