@@ -9,7 +9,7 @@
     <div class="area-container">
         <p>エリアを選ぶ</p>
         <div class="area-icon-container">
-            <img src="{% static 'sushi_app/icons/lower_arrow.svg' %}" alt="arrow" class="lower-arrow-icon" />
+            <img src="{% static 'sushi_app/icons/lower_arrow.svg' %}" alt="arrow" class="icon lower-arrow-icon" />
             <form class="area-select" action="{% url 'sushi_app:area_search' %}" method="get">
                 <select name="prefecture-list" id="">
                     {% for prefecture in prefecture_list %}
@@ -24,7 +24,8 @@
     <a class="keyword-link" href="{% url 'sushi_app:store_list' %}">store list</a>
     <div class="keyword-container">
         <div class="keyword-title-container">
-            <h4>keywordから寿司を見る</h4>
+            <img src="{% static 'sushi_app/icons/database.svg' %}" alt="database-icon" class="icon"></img>
+            <h4 class="title-with-icon">keywordから寿司を見る</h4>
         </div>
         <div class="keyword-box-container">
             {% for keyword_list in keywords_list %}

@@ -28,6 +28,10 @@ a:any-link {
     color: #D8DADA;
 }
 
+.icon {
+    display: inline-block;
+}
+
 /* Navbar---------------------------- */
 nav.navbar {
     width: 100%;
@@ -120,6 +124,7 @@ div.keyword-container {
     width: 80%;
     background-color: rgba(35, 35, 35, 0.5);
     padding: 30px;
+    margin: auto;
 }
 
 div.keyword-title-container h4 {
@@ -133,6 +138,12 @@ div.keyword-title-container h4 {
     width: 200px;
 }
 
+
+/* top page------- */
+.title-with-icon {
+    display: inline-block;
+}
+
 /* sample  */
 #radar-chart canvas {
     height: 70px;
@@ -143,9 +154,35 @@ div.keyword-title-container h4 {
 }
 
 h3.store-name {
-    color: #D8DADA;
+    color: #D8DADA;;
 }
 
 td, th {
     color: #D8DADA;
+}
+
+/* ----------store detail -------- */
+.store-name-container {
+
+}
+
+.store-name {
+    display: inline-block;
+    margin: 10px;
+}
+.site-score {
+    display: inline-block;
+    margin: 10px;;
+}
+
+.keyword-title-container {
+    margin: 10px;
+}
+
+.gender-score {
+    display: inline-block;
+    margin: 0 10px 0 0 ;
+}
+.gender-score-container {
+    margin: 10px;
 }

@@ -6,22 +6,40 @@
 
 {% block content %}
 <h4 class="mt-4 border-bottom">Storeの詳細</h4>
+<div class="store-name-container">
+    <h3 class="store-name">{{ store.store_name }}</h3>
+    <p class="site-score">食べログスコア：{{ store.tabelog_score }}点</p>
+    <p class="site-score">Rettyスコア：{{ store.retty_score }}いきたい</p>
+</div>
+<div class="keyword-title-container">
+    <img src="{% static 'sushi_app/icons/graph.svg' %}" alt="graph-icon" class="icon">
+    <p class="title-with-icon">{{ review_length }}件のレビューを解析</p>
+</div>
 
+<p>{{ store.store_name }}の強み</p>
 <canvas id="radar-chart"></canvas>
+<p>{{ store.store_name }}の食べログ点数の推移</p>
 <canvas id="line-chart"></canvas>
+<p>{{ store.store_name }}の口コミ男女比</p>
 <canvas id="pie-chart"></canvas>
-<h3 class="store-name">{{ store.store_name }}</h3>
-{% for summary in sorted_summary_list %}
-<p>key: {{ summary.0 }} PP: {{ summary.1.0.0 }} NP: {{ summary.1.0.1 }}</p>
-{% for keyword in summary.1.1 %}
-{% if keyword %}
-<p>{{ keyword.0 }}: PP{{ keyword.1 }} NP{{ keyword.2 }}</p>
-{% endif %}
-{% endfor %}
+<div class="gender-score-container">
+    <p class="gender-score">男性客の平均スコア：{{ gender_ave_score_list.1 }}</p>
+    <p class="gender-score">女性客の平均スコア：{{ gender_ave_score_list.2 }}</p>
+</div>
+<div class="keyword-container">
 
-{% endfor %}
+    {% for summary in sorted_summary_list %}
+    <p>key: {{ summary.0 }} PP: {{ summary.1.0.0 }} NP: {{ summary.1.0.1 }}</p>
+    {% for keyword in summary.1.1 %}
+    {% if keyword %}
+    <p>{{ keyword.0 }}: PP{{ keyword.1 }} NP{{ keyword.2 }}</p>
+    {% endif %}
+    {% endfor %}
 
-</tbody>
+    {% endfor %}
+
+    </tbody>
+</div>
 
 
 

@@ -18,7 +18,7 @@ from get_important_word.analysis import Analyzer
 import json
 import math
 from .get_average import get_keyword_average
-from .get_gender_popular import get_gender_rate
+from .get_gender_popular import get_gender_rate, get_gender_ave
 
 
 def list_view(request):
@@ -40,12 +40,14 @@ def list_view(request):
 
 def detail_view(request, store_id):
     store = get_object_or_404(Store, id=store_id)
+    review_length = len(DinnerReview.objects.filter(store__id__exact=store_id))
+    gender_ave_score_list = get_gender_ave(store)
+    print("ave score === " + str(gender_ave_score_list))
     summaries = DinnerStoreSummary.objects.filter(store__id__exact=store_id)
     summary_list = []
     for summary in summaries:
         keyword = summary.keyword
         keyword_sentiment = summary.keyword_sentiment
-        print("keyword sentiment=== " + str(keyword_sentiment))
         keyword_modifier1 = summary.keyword_modifier1
         keyword_modifier2 = summary.keyword_modifier2
         keyword_modifier3 = summary.keyword_modifier3
@@ -72,7 +74,6 @@ def detail_view(request, store_id):
     sliced_summary_list = sorted_summary_list[:5]
     for sorted_summary in sliced_summary_list:
         score = float(sorted_summary[1][0][0])
-        print("score === " + str(score))
         adj = sorted_summary[0]
         ave_score = get_keyword_average(adj)
         chart_store_ave_list.append(ave_score)
@@ -188,10 +189,11 @@ def detail_view(request, store_id):
         page = int(request.GET.get('from_page'))
     except BaseException:
         page = 1
-    print("sorted summary list === " + str(sorted_summary_list))
     return render(request,
                   'sushi_app/store_detail.html',
-                  {'store': store,
+                  {'review_length': review_length,
+                   'gender_ave_score_list': gender_ave_score_list,
+                   'store': store,
                    'sorted_summary_list': sorted_summary_list,
                    'page': page,
                    'radar_json_data': radar_json_data,
@@ -312,7 +314,6 @@ def get_top_growth_rate(request):
 
 
 def area_search(request):
-    pass
     if request.GET.get('prefecture'):
         query_string = request.GET.get('prefecture')
         return HttpResponse("area search")
