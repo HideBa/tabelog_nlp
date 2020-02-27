@@ -42,7 +42,6 @@ def detail_view(request, store_id):
     store = get_object_or_404(Store, id=store_id)
     review_length = len(DinnerReview.objects.filter(store__id__exact=store_id))
     gender_ave_score_list = get_gender_ave(store)
-    print("ave score === " + str(gender_ave_score_list))
     summaries = DinnerStoreSummary.objects.filter(store__id__exact=store_id)
     summary_list = []
     for summary in summaries:
@@ -246,20 +245,15 @@ def save_review(request, store_id):
 
 def keyword_sort(request, keyword, site):
     if request.POST:
-        print("postpostpost")
         site = request.POST.get('sort')
-        print("value ==== " + request.POST.get('sort'))
 
     stores = Store.objects.filter(dinnerstoresummary__keyword=keyword).all(
     ).order_by("dinnerstoresummary__keyword_sentiment")[:30]
-    print("stores ==== " + str(stores))
 
     if(site == "tabelog"):
         sorted_stores = sorted(stores, key=lambda store: store.tabelog_score)
-        print("sorted stores === " + str(sorted_stores))
     elif(site == "retty"):
         sorted_stores = sorted(stores, key=lambda store: store.retty_score)
-        print("sorted stores === " + str(sorted_stores))
     store_summary_list = []
     # ex), [[store_obj], [dinner_summary_obj]]
     for store in sorted_stores:
@@ -267,7 +261,6 @@ def keyword_sort(request, keyword, site):
             store, DinnerStoreSummary.objects.filter(
                 store__id__exact=store.id).filter(
                 keyword=keyword).get()]
-        print("store summary === " + str(list))
         store_summary_list.append(list)
     return render(request, 'sushi_app/sorted_store_list.html',
                   {'store_summary_list': store_summary_list, 'keyword': keyword})

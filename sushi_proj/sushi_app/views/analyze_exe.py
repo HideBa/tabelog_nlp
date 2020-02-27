@@ -24,12 +24,10 @@ class AnalyzeExe:
 
     def get_store_id_list(self):
         store_obj_list = Store.objects.all()
-        print("store obj list === " + str(store_obj_list))
         store_id_list = []
         for store_obj in store_obj_list:
             store_id = store_obj.id
             store_id_list.append(store_id)
-            print("store id === " + str(store_id))
         return store_id_list
 
     def implement_all(self, store_id_list):
@@ -44,8 +42,6 @@ class AnalyzeExe:
         # decide dinner or lunch
         if is_dinner:
             # delete old data
-            print("length === " + str(len(DinnerImportantWords.objects.filter(
-                store__id__exact=store_id).all())))
             DinnerImportantWords.objects.filter(
                 store__id__exact=store_id).delete()
         # 各店舗のレビューが入ったリストを格納
@@ -86,7 +82,6 @@ class AnalyzeExe:
                     keyword_modifier1=keyword_modifier1,
                     keyword_modifier2=keyword_modifier2,
                     keyword_modifier3=keyword_modifier3)
-                print("saved data ==== " + str(new_data))
         else:
             LunchImportantWords.objects.all().delete()
             lunch_reviews = LunchReview.objects.filter(
@@ -123,7 +118,6 @@ class AnalyzeExe:
                     keyword_modifier1=keyword_modifier1,
                     keyword_modifier2=keyword_modifier2,
                     keyword_modifier3=keyword_modifier3)
-                print("saved data ==== " + str(new_data))
 
                 # return render(self, 'sushi_app/sample.html', {'temp': temp})
 
@@ -133,7 +127,6 @@ class AnalyzeExe:
         if is_dinner:
             dinner_reviews = DinnerReview.objects.filter(
                 store__id__exact=store_id)  # review object
-            print("length of dinnerreviw = " + str(len(dinner_reviews)))
             store = get_object_or_404(Store, id=store_id)  # ストアオブジェクト
             # import api key from settings
             key = GCP_API_KEY
@@ -164,13 +157,12 @@ class AnalyzeExe:
                         magnitude=magnitude,
                         review=review,
                         store=store)
-                    print("new data === " + str(new_data))
         # return HttpResponse('hello')
         else:
             lunch_reviews = LunchReview.objects.filter(
                 store__id__exact=store_id)  # review object
             store = get_object_or_404(Store, id=store_id)  # ストアオブジェクト
-            key = 'AIzaSyCIl8F1e8D7mLIs0jhgp4Z3U4KWI76pcvE'
+            key = GCP_API_KEY
             analyzer = Analyzer()
             for lunch_review in lunch_reviews:
                 text = lunch_review.content
@@ -193,13 +185,11 @@ class AnalyzeExe:
                         magnitude=magnitude,
                         review=review,
                         store=store)
-                    print("new data === " + str(new_data))
 
     # 以下でポジネガを取得
 
     def get_posinega(self, store_id, is_dinner):
         store = get_object_or_404(Store, id=store_id)
-        print("store 1 == " + store.store_name)
         if is_dinner:
             # delete old data
             DinnerStoreSummary.objects.filter(
@@ -213,7 +203,6 @@ class AnalyzeExe:
                 sentiment = sentiment_result_object.sentiment
                 magnitude = sentiment_result_object.magnitude
                 sentiment_list = [text, magnitude, sentiment]
-                # print("parse_list === " + str(sentiment_list))
                 parse_list.append(sentiment_list)
             analyzer = Analyzer()
             # ["まぐろ":[["うまい", 0.2, 0.5]["くさい", 0.5, -0.2]]
@@ -221,7 +210,6 @@ class AnalyzeExe:
                 parse_list, self.keyword_dict, self.adjective_dict)
         #  {'赤酢': [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]], '握り': [['大きい', 0.48999999999999994, 0.0], ['小さい', 0.0, 0.0], ['創作', 0.0, 0.0]], 'シャリ': [['大きい', 0.0, 0.0], ['小さい', 0.0, 0.0], ['パラパラ', 0.0, 0.0], ['塩気', 0.0, 0.0], ['甘い', 0.0, 0.0], ['熟成', 0.0, 0.0]]})
         #    {'赤酢': [0.4, 0.4], }
-            print("====" + str(posi_nega_result))
             for keyword in posi_nega_result:
                 try:
                     max_id = DinnerStoreSummary.objects.latest('id').id
@@ -229,17 +217,8 @@ class AnalyzeExe:
                     max_id = 'DSS0000000000'
                 dinner_store_summary_id = 'DSS' + \
                     (str(int(max_id[3:]) + 1).zfill(10))
-                # print("keyword ==== " + str(keyword))
-                # 赤酢
-                # print("modifier ===== " + str(posi_nega_result[keyword]))
                 keyword_sentiment = sentiment_dic[keyword]
-                print(
-                    "keyword === " +
-                    str(keyword) +
-                    "  " +
-                    str(keyword_sentiment))
                 # [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]]
-                # for modifier_list in posi_nega_result[keyword]:
                 if len(posi_nega_result[keyword]) >= 1:
                     keyword_modifier1 = posi_nega_result[keyword][0]
                 else:
@@ -264,7 +243,6 @@ class AnalyzeExe:
                     keyword_modifier6 = posi_nega_result[keyword][5]
                 else:
                     keyword_modifier6 = []
-                print("store === " + store.store_name)
                 new_data = DinnerStoreSummary.objects.create(
                     id=dinner_store_summary_id,
                     store=store,
@@ -276,7 +254,6 @@ class AnalyzeExe:
                     keyword_modifier4=keyword_modifier4,
                     keyword_modifier5=keyword_modifier5,
                     keyword_modifier6=keyword_modifier6)
-                print("new data ===== " + str(new_data))
         else:
             sentiment_result_objects = LunchSentimentResult.objects.filter(
                 store__id__exact=store_id)
@@ -287,14 +264,12 @@ class AnalyzeExe:
                 sentiment = sentiment_result_object.sentiment
                 magnitude = sentiment_result_object.magnitude
                 sentiment_list = [text, magnitude, sentiment]
-                print("parse_list === " + str(sentiment_list))
                 parse_list.append(sentiment_list)
             analyzer = Analyzer()
             # ["まぐろ":[["うまい", 0.2, 0.5]["くさい", 0.5, -0.2]]
             posi_nega_result, sentiment_dic = analyzer.get_posinega(
                 parse_list, self.keyword_dict)  # {("まぐろ", "おいしい"): posi_point}
         #  {'赤酢': [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]], '握り': [['大きい', 0.48999999999999994, 0.0], ['小さい', 0.0, 0.0], ['創作', 0.0, 0.0]], 'シャリ': [['大きい', 0.0, 0.0], ['小さい', 0.0, 0.0], ['パラパラ', 0.0, 0.0], ['塩気', 0.0, 0.0], ['甘い', 0.0, 0.0], ['熟成', 0.0, 0.0]]})
-            print("====" + str(posi_nega_result))
             for keyword in posi_nega_result:
                 try:
                     max_id = LunchStoreSummary.objects.latest('id').id
@@ -302,10 +277,8 @@ class AnalyzeExe:
                     max_id = 'DSS0000000000'
                 lunch_store_id = 'DSS' + \
                     (str(int(max_id[3:]) + 1).zfill(10))
-                print("keyword ==== " + str(keyword))
                 # 赤酢
                 keyword_sentiment = sentiment_dic[keyword]
-                print("modifier ===== " + str(posi_nega_result[keyword]))
                 # [['強い', 0.0, 0.0], ['あっさり', 0.0, 0.0], ['すっぱい', 0.0, 0.0]]
                 # for modifier_list in posi_nega_result[keyword]:
                 if len(posi_nega_result[keyword]) >= 1:
@@ -343,10 +316,6 @@ class AnalyzeExe:
                     keyword_modifier4=keyword_modifier4,
                     keyword_modifier5=keyword_modifier5,
                     keyword_modifier6=keyword_modifier6)
-                print("new data ===== " + str(new_data))
-
-        # return HttpResponse("god")
-#     get_important_word()
 
     def get_summary_average(self, is_dinner, json_file):
         if is_dinner:
@@ -355,21 +324,15 @@ class AnalyzeExe:
             with open(json_file, encoding='utf-8') as f:
                 json_data = json.load(f)
                 keywords = json_data['all_jiku']['all_jiku_list']
-            print("keyword === " + str(keywords))
             for keyword in keywords:
                 summaries = DinnerStoreSummary.objects.filter(
                     keyword__exact=keyword).all()
-                print("summaries === " + str(summaries))
                 posi_score_list = [float(summary.keyword_sentiment[0])
                                    for summary in summaries]
-                print(
-                    "summaries sentiment score === " +
-                    str(posi_score_list))
                 if posi_score_list:
                     score_ave = mean(posi_score_list)
                 else:
                     score_ave = 0.0
-                print("score_ave === " + str(score_ave))
                 try:
                     max_id = DinnerSummaryAverage.objects.latest('id').id
                 except ObjectDoesNotExist:
@@ -384,25 +347,20 @@ class AnalyzeExe:
         for store_obj in store_list:
             latest_tabelog_score = TabelogHistory.objects.filter(
                 store__id__exact=store_obj.id).order_by('-nth').all()
-            print("score === " + str(latest_tabelog_score))
             if latest_tabelog_score:
                 growth_rate = (
                     (latest_tabelog_score[0].score - latest_tabelog_score[1].score) / latest_tabelog_score[1].score) * 100
-                print("growth rate ===" + str(growth_rate))
                 store_obj.tabelog_growth_rate = growth_rate
             latest_retty_score = RettyHistory.objects.filter(
                 store__id__exact=store_obj.id).order_by('-nth').all()
-            print("score === " + str(latest_retty_score))
             if latest_retty_score:
                 growth_rate = (
                     (latest_retty_score[0].score - latest_retty_score[1].score) / latest_retty_score[1].score) * 100
-                print("growth rate ===" + str(growth_rate))
                 store_obj.retty_growth_rate = growth_rate
             store_obj.save()
 
 
 def implement_all_process(request):
-    print("base dir === " + BASE_DIR)
     keyword_file = BASE_DIR + '/analyze_files/dictionary.json'
     adjective_file = BASE_DIR + '/analyze_files/adjective.json'
     analyze_implement = AnalyzeExe(
