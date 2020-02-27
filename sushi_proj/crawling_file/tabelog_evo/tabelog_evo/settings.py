@@ -1,5 +1,15 @@
 # -*- coding: utf-8 -*-
-from sushi_proj.settings import DATABASES
+# from sys.path import DATABASES
+# from sushi_proj.settings import DATABASES
+import settings.DATABASES
+import pathlib
+import sys
+# print("path ==== " + str(sys.path))
+target_dir = str(pathlib.Path(
+    __file__).parent.parent.parent.parent.resolve()) + '/sushi_proj/settings'
+sys.path.append(target_dir)
+# print("dir === " + target_dir)
+
 # Scrapy settings for tabelog_evo project
 #
 # For simplicity, this file contains only settings considered important or
