@@ -186,3 +186,40 @@ td, th {
 .gender-score-container {
     margin: 10px;
 }
+
+.keyword-summary-container {
+    padding: 10px;
+}
+
+.summary-keyword {
+    font-weight: bold;
+}
+
+.posinega-keyword-score {
+    font-size: calc(4px * var(--param));
+}
+
+.posinega-score {
+    display: inline-block;
+}
+
+.posinega-word {
+    display: inline-block;
+}
+
+.posinega-posi {
+    color: greenyellow;
+}
+
+.posinega-nega {
+    color: red;
+    
+}
+.posinega-modi-score {
+    font-size: calc(6px * var(--param));
+}
+.posinega-modi {
+    padding: 5px 5px 5px 50px;
+    font-size: calc(10px * var(--param));
+
+}

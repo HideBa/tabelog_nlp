@@ -28,15 +28,42 @@
 </div>
 <div class="keyword-container">
 
-    {% for summary in sorted_summary_list %}
-    <p>key: {{ summary.0 }} PP: {{ summary.1.0.0 }} NP: {{ summary.1.0.1 }}</p>
-    {% for keyword in summary.1.1 %}
-    {% if keyword %}
-    <p>{{ keyword.0 }}: PP{{ keyword.1 }} NP{{ keyword.2 }}</p>
-    {% endif %}
-    {% endfor %}
+    <div class="keyword-summary-container">
 
-    {% endfor %}
+        {% for summary in sorted_summary_list %}
+        <div class="summary-keyword">
+            <p class="posinega-keyword posinega-word">
+                key: {{ summary.0 }}
+            </p>
+            <p class="posinega-posi posinega-score posinega-keyword-score" style="--param:{{ summary.1.0.0 }};">
+                PP: {{ summary.1.0.0|floatformat }}
+            </p>
+            <p class="posinega-nega posinega-score posinega-keyword-score" style="--param:{{ summary.1.0.1 }};">
+                NP:
+                {{ summary.1.0.1|floatformat }}
+            </p>
+        </div>
+        {% for keyword in summary.1.1 %}
+        {% if keyword %}
+        {% if keyword.1 is not 0 or keyword.2 is not 0 %}
+        <div class="posinega-modi">
+            {% if keyword.1 is not 0 and keyword.2 is not 0 %}
+            <p class="posinega-word">
+                {{ keyword.0 }}:
+            </p>
+            <p class="posinega-score posinega-posi posinega-modi-score" style="--param:{{ keyword.1 }};">
+                PP{{ keyword.1|floatformat }}
+            </p>
+            <p class="posinega-score posinega-nega posinega-modi-score" style="--param:{{ keyword.2 }};">
+                NP{{ keyword.2|floatformat }}
+            </p>
+            {% endif %}
+        </div>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    </div>
 
     </tbody>
 </div>
