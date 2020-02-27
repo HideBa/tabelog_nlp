@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from sushi_proj.settings import DATABASES
+
 # Scrapy settings for tabelog_evo project
 #
 # For simplicity, this file contains only settings considered important or
@@ -72,10 +72,7 @@ DOWNLOAD_DELAY = 5
 #    'tabelog_evo.pipelines.PostgresPipeline': 600
 # }
 # DB
-POSTGRESQL_URL = 'postgresql://{0}:{1}@localhost:5432/{2}'.format(
-    DATABASES['default']['USER'],
-    DATABASES['default']['PASSWORD'],
-    DATABASES['default']['NAME'])
+POSTGRESQL_URL = 'postgresql://sushi_proj:sushi_proj_pass@localhost:5432/sushi_proj_db'
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
