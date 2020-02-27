@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}SushiSumma{% endblock title %}
+{% block content %}
+
+
+<!-- Page Content -->
+<div class="container">
+    <div class="area-container">
+        <p>エリアを選ぶ</p>
+        <div class="area-icon-container">
+            <img src="{% static 'sushi_app/icons/lower_arrow.svg' %}" alt="arrow" class="icon lower-arrow-icon" />
+            <form class="area-select" action="{% url 'sushi_app:area_search' %}" method="get">
+                <select name="prefecture-list" id="">
+                    {% for prefecture in prefecture_list %}
+                    <option value=prefecture>{{ prefecture }}</option>
+                    {% endfor %}
+                </select>
+                <!-- <input type="submit" value="submit" class="btn"/> -->
+            </form>
+        </div>
+    </div>
+    <br>
+    <a class="keyword-link" href="{% url 'sushi_app:store_list' %}">store list</a>
+    <div class="keyword-container">
+        <div class="keyword-title-container">
+            <img src="{% static 'sushi_app/icons/database.svg' %}" alt="database-icon" class="icon"></img>
+            <h4 class="title-with-icon">keywordから寿司を見る</h4>
+        </div>
+        <div class="keyword-box-container">
+            {% for keyword_list in keywords_list %}
+            <div class="keyword-box">
+                <p><a class="keyword"
+                        href="{% url 'sushi_app:keyword_sort' keyword=keyword_list.0 site='tabelog' %}">{{ keyword_list.0 }}</a>
+                </p>
+                {% for modifier in keyword_list.1 %}
+                <p class="modifier">{{ modifier }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <p><a href="{% url 'sushi_app:top_growth_rate' %}">急上昇</a></p>
+            <p><a href="{% url 'sushi_app:get_gender_popular' is_dinner=True is_male=True %}">男性ウケ</a></p>
+            <p><a href="{% url 'sushi_app:get_gender_popular' is_dinner=True is_male=False %}">女性ウケ</a></p>
+        </div>
+    </div>
+</div>
+<!-- /.container -->
+
+
+{% endblock content %}
