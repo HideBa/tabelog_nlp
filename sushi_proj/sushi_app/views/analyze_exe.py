@@ -31,7 +31,6 @@ class AnalyzeExe:
         return store_id_list
 
     def implement_all(self, store_id_list):
-
         for store_id in store_id_list:
             self.get_important_word(store_id, self.is_dinner)
             self.get_sentiment_result(store_id, self.is_dinner)
@@ -51,7 +50,7 @@ class AnalyzeExe:
             dinner_reviews_list = []
             for dinner_review in dinner_reviews:
                 review_content = dinner_review.review
-                dinner_reviews_list.append(review_review)
+                dinner_reviews_list.append(review_content)
             content = ''.join(dinner_reviews_list)
             analyzer = Analyzer()
             temp = analyzer.feature_analysis_adjective(

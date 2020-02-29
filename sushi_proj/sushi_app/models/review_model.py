@@ -23,4 +23,4 @@ class Review(models.Model):
         on_delete=models.CASCADE)
 
     def __str__(self):
-        return '昼' if self.ld_id == 0 else '夜' + 'レビュー　' + self.content[:30]
+        return '昼' if self.ld_id == 0 else '夜' + 'レビュー　' + self.review[:30]

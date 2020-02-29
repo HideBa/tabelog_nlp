@@ -198,7 +198,7 @@ def detail_view(request, store_id):
 def save_review(request, store_id):
     store = Store.objects.get(id=store_id)
     analyzer = Analyzer()
-    csv_path = BASE_DIR + "/sample_files/pretest_mitani_dinner.csv"
+    csv_path = BASE_DIR + "/sample_files/pretest_aozora_dinner.csv"
     reviews = analyzer.read_csv(csv_path)
     for review in reviews:
         try:
