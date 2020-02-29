@@ -120,8 +120,14 @@ select.prefecture-list {
 form.area-select {
     display: inline-block;
     margin: 0;
+    width: 100px;
 }
 
+.perfecture-item {
+    display: inline-block;
+}
+
+/* -------area select ------- */
 
 div.keyword-container {
     width: 80%;
