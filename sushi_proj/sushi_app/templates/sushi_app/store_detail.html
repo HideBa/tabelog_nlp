@@ -64,7 +64,46 @@
         {% endfor %}
         {% endfor %}
     </div>
-
+    <div class="store-info">
+        <table class="store-detail">
+            <tr>
+                <td>店名</td>
+                <td>{{ store.store_name }}</td>
+            </tr>
+            <tr>
+                <td>住所</td>
+                <td>{{ store.address }}</td>
+            </tr>
+            <tr>
+                <td>最寄り駅</td>
+                <td>{{ store.station }}</td>
+            </tr>
+            <tr>
+                <td>電話番号</td>
+                <td>{{ store.phone_num }}</td>
+            </tr>
+            <tr>
+                <td>営業時間</td>
+                <td>{{ store.opening_time }}</td>
+            </tr>
+            <tr>
+                <td>定休日</td>
+                <td>{{ store.regular_holiday }}</td>
+            </tr>
+            <tr>
+                <td>Rettyスコア</td>
+                <td>{{ store.retty_score }}</td>
+            </tr>
+            <tr>
+                <td>食べログスコア</td>
+                <td>{{ store.tabelog_score }}</td>
+            </tr>
+            <tr>
+                <td>店舗詳細URL</td>
+                <td>{{ store.url }}</td>
+            </tr>
+        </table>
+    </div>
     </tbody>
 </div>
 

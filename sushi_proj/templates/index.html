@@ -33,9 +33,6 @@
                 <p><a class="keyword"
                         href="{% url 'sushi_app:keyword_sort' keyword=keyword_list.0 site='tabelog' %}">{{ keyword_list.0 }}</a>
                 </p>
-                {% for modifier in keyword_list.1 %}
-                <p class="modifier">{{ modifier }}</p>
-                {% endfor %}
             </div>
             {% endfor %}
             <p><a href="{% url 'sushi_app:top_growth_rate' %}">急上昇</a></p>

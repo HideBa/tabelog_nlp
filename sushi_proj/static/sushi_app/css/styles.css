@@ -224,5 +224,9 @@ td, th {
 .posinega-modi {
     padding: 5px 5px 5px 50px;
     font-size: calc(10px * var(--param));
+}
 
+table.store-detail tr td {
+    border: solid 1px #D8DADA;
+    width: 90%;
 }
