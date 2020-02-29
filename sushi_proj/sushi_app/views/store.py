@@ -204,11 +204,15 @@ def save_review(request, store_id):
         try:
             max_id = Review.objects.latest('id').id
         except ObjectDoesNotExist:
-            max_id = 'dr00000000'
-        dinner_review_id = 'dr' + (str(int(max_id[2:]) + 1).zfill(8))
+            max_id = 1
+        dinner_review_id = max_id + 1
         Review.objects.create(
-            id=dinner_review_id, content=review, store=store, ld_id=1)
-        # ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
+            id=dinner_review_id,
+            review=review,
+            store=store,
+            ld_id=1,
+            is_new=True)
+    # ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
     return HttpResponse("save")
 
 

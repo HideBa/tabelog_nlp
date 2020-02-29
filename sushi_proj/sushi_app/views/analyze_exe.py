@@ -50,8 +50,8 @@ class AnalyzeExe:
                 store__id__exact=store_id).filter(ld_id__exact=1)
             dinner_reviews_list = []
             for dinner_review in dinner_reviews:
-                review_content = dinner_review.content
-                dinner_reviews_list.append(review_content)
+                review_content = dinner_review.review
+                dinner_reviews_list.append(review_review)
             content = ''.join(dinner_reviews_list)
             analyzer = Analyzer()
             temp = analyzer.feature_analysis_adjective(
@@ -89,7 +89,7 @@ class AnalyzeExe:
                 store__id__exact=store_id).filter(ld_id__exact=0)
             lunch_reviews_list = []
             for lunch_review in lunch_reviews:
-                temp = lunch_review.content
+                temp = lunch_review.review
                 lunch_reviews_list.append(temp)
             content = ''.join(lunch_reviews_list)
             analyzer = Analyzer()
@@ -137,7 +137,7 @@ class AnalyzeExe:
             for dinner_review in dinner_reviews:
                 if not dinner_review.is_new:
                     continue
-                text = dinner_review.content
+                text = dinner_review.review
                 sentiment_result = analyzer.gcp_analyzer(text, key)
                 gcp_nums += 1
                 print("gcp nums === " + str(gcp_nums))
@@ -159,6 +159,8 @@ class AnalyzeExe:
                         magnitude=magnitude,
                         review=review,
                         store=store)
+                dinner_review.is_new = False
+                dinner_review.save()
         # return HttpResponse('hello')
         else:
             lunch_reviews = Review.objects.filter(
@@ -168,7 +170,7 @@ class AnalyzeExe:
             key = GCP_API_KEY
             analyzer = Analyzer()
             for lunch_review in lunch_reviews:
-                text = lunch_review.content
+                text = lunch_review.review
                 sentiment_result = analyzer.gcp_analyzer(text, key)
                 for elem in sentiment_result:
                     try:

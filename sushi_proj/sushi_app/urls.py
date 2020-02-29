@@ -12,11 +12,11 @@ urlpatterns = [
         'store/<slug:store_id>',
         store.detail_view,
         name='store_detail'),
+    path('save-review/<slug:store_id>', store.save_review),
     path('keyword-sort/<str:keyword>/<slug:site>',
          store.keyword_sort, name='keyword_sort'),
     path('store-search', store.store_search, name='store_search'),
     path('area-search', store.area_search, name='area_search'),
-
     path('exe', analyze_exe.implement_all_process, name="exe"),
     path('top-growth-rate', store.get_top_growth_rate, name="top_growth_rate"),
     path(
