@@ -11,12 +11,12 @@
         <div class="area-icon-container">
             <img src="{% static 'sushi_app/icons/lower_arrow.svg' %}" alt="arrow" class="icon lower-arrow-icon" />
             <form class="area-select" action="{% url 'sushi_app:area_search' %}" method="get">
-                <select name="prefecture-list" id="">
+                <select name="prefecture" class="prefecture-list prefecture-item" id="">
                     {% for prefecture in prefecture_list %}
-                    <option value=prefecture>{{ prefecture }}</option>
+                    <option value={{ prefecture }}>{{ prefecture }}</option>
                     {% endfor %}
                 </select>
-                <!-- <input type="submit" value="submit" class="btn"/> -->
+                <input type="submit" value="submit" class="btn-primary prefecture-item" />
             </form>
         </div>
     </div>
@@ -33,9 +33,6 @@
                 <p><a class="keyword"
                         href="{% url 'sushi_app:keyword_sort' keyword=keyword_list.0 site='tabelog' %}">{{ keyword_list.0 }}</a>
                 </p>
-                {% for modifier in keyword_list.1 %}
-                <p class="modifier">{{ modifier }}</p>
-                {% endfor %}
             </div>
             {% endfor %}
             <p><a href="{% url 'sushi_app:top_growth_rate' %}">急上昇</a></p>
