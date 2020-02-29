@@ -198,8 +198,6 @@ def detail_view(request, store_id):
 def save_review(request, store_id):
     store = Store.objects.get(id=store_id)
     analyzer = Analyzer()
-    # csv_path = BASE_DIR + "/sample_files/pretest_aozora_dinner.csv"
-    # csv_path = BASE_DIR + "/sample_files/pretest_sushitsuu_dinner.csv"
     csv_path = BASE_DIR + "/sample_files/pretest_mitani_dinner.csv"
     reviews = analyzer.read_csv(csv_path)
     for review in reviews:
@@ -209,7 +207,7 @@ def save_review(request, store_id):
             max_id = 'dr00000000'
         dinner_review_id = 'dr' + (str(int(max_id[2:]) + 1).zfill(8))
         Review.objects.create(
-            id=dinner_review_id, content=review, store=store)
+            id=dinner_review_id, content=review, store=store, ld_id=1)
         # ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
     return HttpResponse("save")
 
