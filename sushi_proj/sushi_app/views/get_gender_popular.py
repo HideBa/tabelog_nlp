@@ -1,13 +1,6 @@
-from sushi_proj.settings import BASE_DIR
-from django.core.exceptions import ObjectDoesNotExist
 from sushi_app.models.store_model import Store
-from sushi_app.models.review_model import LunchReview, DinnerReview
-# from sushi_app.models.sentiment_result_model import LunchSentimentResult, DinnerSentimentResult
-# from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
-# from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
-# from sushi_app.models.dinner_summary_average import DinnerSummaryAverage
-from django.http import HttpResponse, Http404, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from sushi_app.models.review_model import Review
+from django.shortcuts import render
 
 
 def get_popular_store(request, is_dinner, is_male):
@@ -31,7 +24,7 @@ def get_popular_store(request, is_dinner, is_male):
 
 
 def get_gender_ave(store):
-    all_reviews = DinnerReview.objects.filter(store_id__exact=store.id)
+    all_reviews = Review.objects.filter(store_id__exact=store.id)
     male_reviews_list = [
         review for review in all_reviews if review.user_sex == 1]
     female_reviews_list = [
@@ -53,7 +46,7 @@ def get_gender_ave(store):
 
 def get_gender_rate(store_id, is_dinner):
     if is_dinner:
-        all_reviews = DinnerReview.objects.filter(store_id__exact=store_id)
+        all_reviews = Review.objects.filter(store_id__exact=store_id)
         male_reviews_list = [
             review for review in all_reviews if review.user_sex == 1]
         female_reviews_list = [

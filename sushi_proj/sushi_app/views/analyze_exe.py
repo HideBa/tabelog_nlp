@@ -1,6 +1,6 @@
 from sushi_app.models.store_model import Store
 # /sushi_proj/sushi_app/models/store_model.py
-from sushi_app.models.review_model import LunchReview, DinnerReview
+from sushi_app.models.review_model import Review
 from sushi_app.models.sentiment_result_model import LunchSentimentResult, DinnerSentimentResult
 from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
 from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
@@ -45,11 +45,11 @@ class AnalyzeExe:
             DinnerImportantWords.objects.filter(
                 store__id__exact=store_id).delete()
         # 各店舗のレビューが入ったリストを格納
-            dinner_reviews = DinnerReview.objects.filter(
-                store__id__exact=store_id)
+            dinner_reviews = Review.objects.filter(
+                store__id__exact=store_id).filter(ld_id__exact=1)
             dinner_reviews_list = []
             for dinner_review in dinner_reviews:
-                review_content = dinner_review.content
+                review_content = dinner_review.review
                 dinner_reviews_list.append(review_content)
             content = ''.join(dinner_reviews_list)
             analyzer = Analyzer()
@@ -74,7 +74,7 @@ class AnalyzeExe:
                     keyword_modifier3 = t[4]
                 else:
                     keyword_modifier3 = []
-                new_data = DinnerImportantWords.objects.create(
+                DinnerImportantWords.objects.create(
                     id=dinner_important_words_id,
                     store=store,
                     key_words=key_words,
@@ -84,11 +84,11 @@ class AnalyzeExe:
                     keyword_modifier3=keyword_modifier3)
         else:
             LunchImportantWords.objects.all().delete()
-            lunch_reviews = LunchReview.objects.filter(
-                store__id__exact=store_id)
+            lunch_reviews = Review.objects.filter(
+                store__id__exact=store_id).filter(ld_id__exact=0)
             lunch_reviews_list = []
             for lunch_review in lunch_reviews:
-                temp = lunch_review.content
+                temp = lunch_review.review
                 lunch_reviews_list.append(temp)
             content = ''.join(lunch_reviews_list)
             analyzer = Analyzer()
@@ -110,7 +110,7 @@ class AnalyzeExe:
                 keyword_modifier1 = t[2]
                 keyword_modifier2 = t[3]
                 keyword_modifier3 = t[4]
-                new_data = LunchImportantWords.objects.create(
+                LunchImportantWords.objects.create(
                     id=lunch_important_words_id,
                     store=store,
                     key_words=key_words,
@@ -125,8 +125,9 @@ class AnalyzeExe:
 
     def get_sentiment_result(self, store_id, is_dinner):
         if is_dinner:
-            dinner_reviews = DinnerReview.objects.filter(
-                store__id__exact=store_id)  # review object
+            dinner_reviews = Review.objects.filter(
+                store__id__exact=store_id).filter(
+                ld_id__exact=1)  # review object
             store = get_object_or_404(Store, id=store_id)  # ストアオブジェクト
             # import api key from settings
             key = GCP_API_KEY
@@ -135,7 +136,7 @@ class AnalyzeExe:
             for dinner_review in dinner_reviews:
                 if not dinner_review.is_new:
                     continue
-                text = dinner_review.content
+                text = dinner_review.review
                 sentiment_result = analyzer.gcp_analyzer(text, key)
                 gcp_nums += 1
                 print("gcp nums === " + str(gcp_nums))
@@ -150,22 +151,25 @@ class AnalyzeExe:
                     magnitude = elem[1]
                     sentiment = elem[2]
                     review = dinner_review
-                    new_data = DinnerSentimentResult.objects.create(
+                    DinnerSentimentResult.objects.create(
                         id=dinner_sentiment_result_id,
                         sentense=sentense,
                         sentiment=sentiment,
                         magnitude=magnitude,
                         review=review,
                         store=store)
+                dinner_review.is_new = False
+                dinner_review.save()
         # return HttpResponse('hello')
         else:
-            lunch_reviews = LunchReview.objects.filter(
-                store__id__exact=store_id)  # review object
+            lunch_reviews = Review.objects.filter(
+                store__id__exact=store_id).filter(
+                ld_id__exact=0)  # review object
             store = get_object_or_404(Store, id=store_id)  # ストアオブジェクト
             key = GCP_API_KEY
             analyzer = Analyzer()
             for lunch_review in lunch_reviews:
-                text = lunch_review.content
+                text = lunch_review.review
                 sentiment_result = analyzer.gcp_analyzer(text, key)
                 for elem in sentiment_result:
                     try:
@@ -178,7 +182,7 @@ class AnalyzeExe:
                     magnitude = elem[1]
                     sentiment = elem[2]
                     review = lunch_review
-                    new_data = LunchSentimentResult.objects.create(
+                    LunchSentimentResult.objects.create(
                         id=lunch_sentiment_result_id,
                         sentense=sentense,
                         sentiment=sentiment,
@@ -243,7 +247,7 @@ class AnalyzeExe:
                     keyword_modifier6 = posi_nega_result[keyword][5]
                 else:
                     keyword_modifier6 = []
-                new_data = DinnerStoreSummary.objects.create(
+                DinnerStoreSummary.objects.create(
                     id=dinner_store_summary_id,
                     store=store,
                     keyword=keyword,
@@ -305,7 +309,7 @@ class AnalyzeExe:
                     keyword_modifier6 = posi_nega_result[keyword][5]
                 else:
                     keyword_modifier6 = []
-                new_data = LunchStoreSummary.objects.create(
+                LunchStoreSummary.objects.create(
                     id=lunch_store_id,
                     store=store,
                     keyword=keyword,
