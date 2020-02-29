@@ -11,8 +11,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name='dinnerreview',
-            name='user_sex',
-            field=models.IntegerField(choices=[(0, '不明'), (1, '男性'), (2, '女性')], null=True, verbose_name='性別'),
-        ),
-    ]
+            model_name='Review', name='user_sex', field=models.IntegerField(
+                choices=[
+                    (0, '不明'), (1, '男性'), (2, '女性')], null=True, verbose_name='性別'), ), ]

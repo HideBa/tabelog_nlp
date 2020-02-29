@@ -13,15 +13,22 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='dinnerimportantwords',
-            options={'verbose_name': 'dinner important words', 'verbose_name_plural': 'dinner important words'},
+            options={
+                'verbose_name': 'dinner important words',
+                'verbose_name_plural': 'dinner important words'},
         ),
         migrations.AlterModelOptions(
             name='lunchimportantwords',
-            options={'verbose_name': 'lunch important words', 'verbose_name_plural': 'lunch important words'},
+            options={
+                'verbose_name': 'lunch important words',
+                'verbose_name_plural': 'lunch important words'},
         ),
         migrations.AlterField(
             model_name='dinnersentimentresult',
             name='review',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='sushi_app.DinnerReview', verbose_name='dinner_review'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to='sushi_app.Review',
+                verbose_name='dinner_review'),
         ),
     ]

@@ -7,33 +7,61 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sushi_app', '0003_dinnerimportantwords_dinnersentimentresult_dinnerstoresummary'),
+        ('sushi_app',
+         '0003_dinnerimportantwords_dinnersentimentresult_dinnerstoresummary'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='dinnerreview',
+            model_name='Review',
             name='score',
-            field=models.FloatField(null=True, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(5.0)], verbose_name='user score'),
+            field=models.FloatField(
+                null=True,
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(5.0)],
+                verbose_name='user score'),
         ),
         migrations.AlterField(
             model_name='dinnersentimentresult',
             name='sentiment',
-            field=models.FloatField(null=True, validators=[django.core.validators.MinValueValidator(-1.0), django.core.validators.MaxValueValidator(1.0)], verbose_name='sentiment'),
+            field=models.FloatField(
+                null=True,
+                validators=[
+                    django.core.validators.MinValueValidator(
+                        -1.0),
+                    django.core.validators.MaxValueValidator(1.0)],
+                verbose_name='sentiment'),
         ),
         migrations.AlterField(
             model_name='lunchreview',
             name='score',
-            field=models.FloatField(null=True, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(5.0)], verbose_name='each score'),
+            field=models.FloatField(
+                null=True,
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(5.0)],
+                verbose_name='each score'),
         ),
         migrations.AlterField(
             model_name='lunchsentimentresult',
             name='sentiment',
-            field=models.FloatField(null=True, validators=[django.core.validators.MinValueValidator(-1.0), django.core.validators.MaxValueValidator(1.0)], verbose_name='sentiment'),
+            field=models.FloatField(
+                null=True,
+                validators=[
+                    django.core.validators.MinValueValidator(
+                        -1.0),
+                    django.core.validators.MaxValueValidator(1.0)],
+                verbose_name='sentiment'),
         ),
         migrations.AlterField(
             model_name='store',
             name='tabelog_score',
-            field=models.FloatField(null=True, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(5.0)], verbose_name='Tabelog_score'),
+            field=models.FloatField(
+                null=True,
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(5.0)],
+                verbose_name='Tabelog_score'),
         ),
     ]

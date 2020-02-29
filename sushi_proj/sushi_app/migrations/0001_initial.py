@@ -100,7 +100,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='DinnerReview',
+            name='Review',
             fields=[
                 ('id', models.CharField(max_length=10, primary_key=True, serialize=False, verbose_name='review_dinnerID')),
                 ('score', models.FloatField(null=True, verbose_name='user score')),

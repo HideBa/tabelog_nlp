@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                 ('sentense', models.CharField(max_length=100, null=True, verbose_name='sentense')),
                 ('sentiment', models.FloatField(null=True, verbose_name='sentiment')),
                 ('magnitude', models.FloatField(null=True, verbose_name='magunitude')),
-                ('review', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='sushi_app.DinnerReview', verbose_name='dinner_review')),
+                ('review', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='sushi_app.Review', verbose_name='dinner_review')),
             ],
             options={
                 'verbose_name': 'sentiment analytics results',

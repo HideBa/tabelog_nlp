@@ -13,9 +13,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DinnerSummaryAverage',
             fields=[
-                ('id', models.CharField(max_length=10, primary_key=True, serialize=False, verbose_name='dinner_summary_average')),
-                ('keyword', models.CharField(max_length=30, null=True, verbose_name='keyword')),
-                ('keyword_sentiment_ave_score', models.FloatField(null=True, verbose_name='sentiment_ave_score')),
+                ('id',
+                 models.CharField(
+                     max_length=10,
+                     primary_key=True,
+                     serialize=False,
+                     verbose_name='dinner_summary_average')),
+                ('keyword',
+                 models.CharField(
+                     max_length=30,
+                     null=True,
+                     verbose_name='keyword')),
+                ('keyword_sentiment_ave_score',
+                 models.FloatField(
+                     null=True,
+                     verbose_name='sentiment_ave_score')),
             ],
             options={
                 'verbose_name': 'dinner_summary_average',
@@ -23,8 +35,10 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AddField(
-            model_name='dinnerreview',
+            model_name='Review',
             name='is_new',
-            field=models.BooleanField(null=True, verbose_name='新しく取得されたレビューかどうか？'),
+            field=models.BooleanField(
+                null=True,
+                verbose_name='新しく取得されたレビューかどうか？'),
         ),
     ]
