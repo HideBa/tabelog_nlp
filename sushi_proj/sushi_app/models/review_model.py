@@ -16,7 +16,6 @@ class Review(models.Model):
         MaxValueValidator(5.0)])
     review = models.TextField('review content', null=True)
     is_new = models.BooleanField('新しく取得されたレビューかどうか？', null=True, default=True)
-    store_id = models.IntegerField('store id')
     store = models.ForeignKey(
         Store,
         verbose_name='store',

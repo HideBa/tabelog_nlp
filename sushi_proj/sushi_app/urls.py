@@ -12,14 +12,6 @@ urlpatterns = [
         'store/<slug:store_id>',
         store.detail_view,
         name='store_detail'),
-    path(
-        'store/<slug:store_id>/<slug:lunch_review_id>',
-        store.review_lunch_view,
-        name='lunch_review_detail'),
-    path(
-        'store/<slug:store_id>/<slug:dinner_review_id>',
-        store.review_dinner_view,
-        name='dinner_review_detail'),
     path('keyword-sort/<str:keyword>/<slug:site>',
          store.keyword_sort, name='keyword_sort'),
     path('store-search', store.store_search, name='store_search'),
