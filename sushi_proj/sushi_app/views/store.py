@@ -281,31 +281,33 @@ def get_top_growth_rate(request):
 
 def area_search(request):
     if request.GET.get('prefecture'):
+        print("area wur^^^^^^^^^")
+        print("request.GET == ")
         query_string = request.GET.get('prefecture')
-        return HttpResponse("area search")
-    #     if Store.objects.filter(
-    #             Q(store_address__icontains=query_string)).exists():
-    #         searched_store_list = Store.objects.filter(
-    #             Q(store_address__icontains=query_string)).all()
-    #         message = ""
-    #     else:
-    #         searched_store_list = []
-    #         message = "no result"
+        print("value ==== " + query_string)
+        if Store.objects.filter(
+                Q(address__icontains=query_string)).exists():
+            searched_store_list = Store.objects.filter(
+                Q(address__icontains=query_string)).all()
+            message = ""
+        else:
+            searched_store_list = []
+            message = "no result"
 
-    #     paginator = Paginator(searched_store_list, 20)  # ページ当たり20個表示
+        paginator = Paginator(searched_store_list, 20)  # ページ当たり20個表示
 
-    #     try:
-    #         page = int(request.GET.get('page'))
-    #     except BaseException:
-    #         page = 1
+        try:
+            page = int(request.GET.get('page'))
+        except BaseException:
+            page = 1
 
-    #     stores = paginator.get_page(page)
-    #     return render(request,
-    #                   'sushi_app/store_list.html',
-    #                   {'stores': stores,
-    #                    'page': page,
-    #                    'message': message,
-    #                    'last_page': paginator.num_pages})
+        stores = paginator.get_page(page)
+        return render(request,
+                      'sushi_app/store_list.html',
+                      {'stores': stores,
+                       'page': page,
+                       'message': message,
+                       'last_page': paginator.num_pages})
 
     else:
         return redirect('show_top_page')

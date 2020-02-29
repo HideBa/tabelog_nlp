@@ -11,9 +11,9 @@
         <div class="area-icon-container">
             <img src="{% static 'sushi_app/icons/lower_arrow.svg' %}" alt="arrow" class="icon lower-arrow-icon" />
             <form class="area-select" action="{% url 'sushi_app:area_search' %}" method="get">
-                <select name="prefecture-list prefecture-item" id="">
+                <select name="prefecture" class="prefecture-list prefecture-item" id="">
                     {% for prefecture in prefecture_list %}
-                    <option value=prefecture>{{ prefecture }}</option>
+                    <option value={{ prefecture }}>{{ prefecture }}</option>
                     {% endfor %}
                 </select>
                 <input type="submit" value="submit" class="btn-primary prefecture-item" />
