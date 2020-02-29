@@ -7,7 +7,7 @@ class Store(models.Model):
         verbose_name = 'store data'
         verbose_name_plural = 'store data'
 
-    id = models.CharField('StoreID', max_length=6, primary_key=True)
+    id = models.IntegerField('StoreID', primary_key=True)
     store_name = models.CharField('StoreName', max_length=30)
     tabelog_score = models.FloatField(
         'Tabelog_score', null=True, validators=[
