@@ -1,5 +1,5 @@
 from django.db import models
-from .review_model import LunchReview, DinnerReview
+from .review_model import Review
 from .store_model import Store
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -18,7 +18,7 @@ class LunchSentimentResult(models.Model):
                                   MinValueValidator(-1.0), MaxValueValidator(1.0)])
     magnitude = models.FloatField('magunitude', null=True)
     review = models.OneToOneField(
-        LunchReview,
+        Review,
         verbose_name='lunch_review',
         on_delete=models.CASCADE)
 
@@ -39,7 +39,7 @@ class DinnerSentimentResult(models.Model):
                                   MinValueValidator(-1.0), MaxValueValidator(1.0)])
     magnitude = models.FloatField('magunitude', null=True)
     review = models.ForeignKey(
-        DinnerReview,
+        Review,
         verbose_name='dinner_review',
         on_delete=models.CASCADE)
     store = models.ForeignKey(

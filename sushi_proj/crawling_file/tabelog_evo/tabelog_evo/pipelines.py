@@ -7,8 +7,6 @@
 import scrapy
 import psycopg2
 import logging
-from time import sleep
-
 # 値のバリデーションチェック
 
 
@@ -78,7 +76,7 @@ class PostgresPipeline(object):
 
         # Review テーブル
         review_col = "(score, store_id, id, content, user_sex, is_new)"
-        review_sql = "INSERT INTO sushi_app_dinnerreview {} VALUES (%s, %s, %s, %s, %s, %s)".format(
+        review_sql = "INSERT INTO sushi_app_Review {} VALUES (%s, %s, %s, %s, %s, %s)".format(
             review_col)
         is_new = True
         curs.execute(

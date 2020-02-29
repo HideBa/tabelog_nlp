@@ -1,19 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, Http404, JsonResponse
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from sushi_proj.settings import BASE_DIR
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-
+from django.http import HttpResponse
 from django.core.paginator import Paginator
-# from sushi_app.models import Store, LunchReview
 from sushi_app.models.store_model import Store
-from sushi_app.models.review_model import LunchReview, DinnerReview
-from sushi_app.models.sentiment_result_model import LunchSentimentResult, DinnerSentimentResult
-from sushi_app.models.important_word_model import LunchImportantWords, DinnerImportantWords
-from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
-from sushi_app.models.score_history_model import TabelogHistory, RettyHistory
+from sushi_app.models.review_model import Review
+from sushi_app.models.store_summary import DinnerStoreSummary
+from sushi_app.models.score_history_model import TabelogHistory
 from get_important_word.analysis import Analyzer
 import json
 import math
@@ -40,7 +34,7 @@ def list_view(request):
 
 def detail_view(request, store_id):
     store = get_object_or_404(Store, id=store_id)
-    review_length = len(DinnerReview.objects.filter(store__id__exact=store_id))
+    review_length = len(Review.objects.filter(store__id__exact=store_id))
     gender_ave_score_list = get_gender_ave(store)
     summaries = DinnerStoreSummary.objects.filter(store__id__exact=store_id)
     summary_list = []
@@ -201,45 +195,24 @@ def detail_view(request, store_id):
                    })
 
 
-def review_lunch_view(request, store_id, lunch_review_id):
-    review = get_object_or_404(LunchReview, id=lunch_review_id)
-    store = get_object_or_404(Store, id=store_id)
-    try:
-        page = int(request.GET.get('from_page'))
-    except BaseException:
-        page = 1
-
-    return render(request, 'sushi_app/lunch_review_detail.html',
-                  {'store': store, 'review': review, 'page': page})
-
-
-def review_dinner_view(request, store_id, dinner_review_id):
-    review = get_object_or_404(DinnerReview, id=dinner_review_id)
-    store = get_object_or_404(Store, id=store_id)
-    try:
-        page = int(request.GET.get('from_page'))
-    except BaseException:
-        page = 1
-    return render(request, 'sushi_app/dinner_review_detail.html',
-                  {'store': store, 'review': review, 'page': page})
-
-
 def save_review(request, store_id):
     store = Store.objects.get(id=store_id)
     analyzer = Analyzer()
-    # csv_path = BASE_DIR + "/sample_files/pretest_aozora_dinner.csv"
-    # csv_path = BASE_DIR + "/sample_files/pretest_sushitsuu_dinner.csv"
-    csv_path = BASE_DIR + "/sample_files/pretest_mitani_dinner.csv"
+    csv_path = BASE_DIR + "/sample_files/pretest_aozora_dinner.csv"
     reviews = analyzer.read_csv(csv_path)
     for review in reviews:
         try:
-            max_id = DinnerReview.objects.latest('id').id
+            max_id = Review.objects.latest('id').id
         except ObjectDoesNotExist:
-            max_id = 'dr00000000'
-        dinner_review_id = 'dr' + (str(int(max_id[2:]) + 1).zfill(8))
-        new_data = DinnerReview.objects.create(
-            id=dinner_review_id, content=review, store=store)
-        # ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
+            max_id = 1
+        dinner_review_id = max_id + 1
+        Review.objects.create(
+            id=dinner_review_id,
+            review=review,
+            store=store,
+            ld_id=1,
+            is_new=True)
+    # ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
     return HttpResponse("save")
 
 
@@ -308,31 +281,33 @@ def get_top_growth_rate(request):
 
 def area_search(request):
     if request.GET.get('prefecture'):
+        print("area wur^^^^^^^^^")
+        print("request.GET == ")
         query_string = request.GET.get('prefecture')
-        return HttpResponse("area search")
-    #     if Store.objects.filter(
-    #             Q(store_address__icontains=query_string)).exists():
-    #         searched_store_list = Store.objects.filter(
-    #             Q(store_address__icontains=query_string)).all()
-    #         message = ""
-    #     else:
-    #         searched_store_list = []
-    #         message = "no result"
+        print("value ==== " + query_string)
+        if Store.objects.filter(
+                Q(address__icontains=query_string)).exists():
+            searched_store_list = Store.objects.filter(
+                Q(address__icontains=query_string)).all()
+            message = ""
+        else:
+            searched_store_list = []
+            message = "no result"
 
-    #     paginator = Paginator(searched_store_list, 20)  # ページ当たり20個表示
+        paginator = Paginator(searched_store_list, 20)  # ページ当たり20個表示
 
-    #     try:
-    #         page = int(request.GET.get('page'))
-    #     except BaseException:
-    #         page = 1
+        try:
+            page = int(request.GET.get('page'))
+        except BaseException:
+            page = 1
 
-    #     stores = paginator.get_page(page)
-    #     return render(request,
-    #                   'sushi_app/store_list.html',
-    #                   {'stores': stores,
-    #                    'page': page,
-    #                    'message': message,
-    #                    'last_page': paginator.num_pages})
+        stores = paginator.get_page(page)
+        return render(request,
+                      'sushi_app/store_list.html',
+                      {'stores': stores,
+                       'page': page,
+                       'message': message,
+                       'last_page': paginator.num_pages})
 
     else:
         return redirect('show_top_page')
