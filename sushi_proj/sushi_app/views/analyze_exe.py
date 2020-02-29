@@ -31,6 +31,7 @@ class AnalyzeExe:
         return store_id_list
 
     def implement_all(self, store_id_list):
+
         for store_id in store_id_list:
             self.get_important_word(store_id, self.is_dinner)
             self.get_sentiment_result(store_id, self.is_dinner)
@@ -46,7 +47,7 @@ class AnalyzeExe:
                 store__id__exact=store_id).delete()
         # 各店舗のレビューが入ったリストを格納
             dinner_reviews = Review.objects.filter(
-                store__id__exact=store_id)
+                store__id__exact=store_id).filter(ld_id__exact=1)
             dinner_reviews_list = []
             for dinner_review in dinner_reviews:
                 review_content = dinner_review.content
@@ -126,7 +127,8 @@ class AnalyzeExe:
     def get_sentiment_result(self, store_id, is_dinner):
         if is_dinner:
             dinner_reviews = Review.objects.filter(
-                store__id__exact=store_id)  # review object
+                store__id__exact=store_id).filter(
+                ld_id__exact=1)  # review object
             store = get_object_or_404(Store, id=store_id)  # ストアオブジェクト
             # import api key from settings
             key = GCP_API_KEY
