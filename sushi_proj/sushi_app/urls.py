@@ -12,7 +12,7 @@ urlpatterns = [
         'store/<slug:store_id>',
         store.detail_view,
         name='store_detail'),
-    path('save-review/<slug:store_id>', store.save_review),
+    path('save-review', store.save_review),
     path('keyword-sort/<str:keyword>/<slug:site>',
          store.keyword_sort, name='keyword_sort'),
     path('store-search', store.store_search, name='store_search'),
