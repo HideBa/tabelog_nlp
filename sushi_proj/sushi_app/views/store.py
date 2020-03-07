@@ -226,7 +226,7 @@ def save_review(request):
                 ld_id=1,
                 is_new=True)
     # ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
-    return HttpResponse("save")
+    return redirect('show_top_page')
 
 
 def keyword_sort(request, keyword, site):

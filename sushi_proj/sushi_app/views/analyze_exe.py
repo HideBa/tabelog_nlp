@@ -7,7 +7,7 @@ from sushi_app.models.store_summary import DinnerStoreSummary, LunchStoreSummary
 from sushi_app.models.dinner_summary_average import DinnerSummaryAverage
 from sushi_app.models.score_history_model import TabelogHistory, RettyHistory
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from sushi_proj.settings import BASE_DIR, GCP_API_KEY
 from get_important_word.analysis import Analyzer
 from django.http import HttpResponse
@@ -371,4 +371,4 @@ def implement_all_process(request):
         keyword_file, adjective_file, is_dinner=True)
     store_id_list = analyze_implement.get_store_id_list()
     analyze_implement.implement_all(store_id_list)
-    return HttpResponse("done")
+    return redirect('show-top-page')
