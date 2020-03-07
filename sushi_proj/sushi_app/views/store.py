@@ -14,6 +14,17 @@ import math
 from .get_average import get_keyword_average
 from .get_gender_popular import get_gender_rate, get_gender_ave
 
+SAMPLE_STORE_LIST = {
+    1: 'aozora',
+    2: 'hatsune',
+    3: 'imamura',
+    4: 'kiyoda',
+    5: 'mitani',
+    6: 'sawada',
+    7: 'sushiichi',
+    8: 'sushitsuu'
+}
+
 
 def list_view(request):
     store_list = Store.objects.all().order_by('-id')
@@ -195,23 +206,25 @@ def detail_view(request, store_id):
                    })
 
 
-def save_review(request, store_id):
-    store = Store.objects.get(id=store_id)
-    analyzer = Analyzer()
-    csv_path = BASE_DIR + "/sample_files/pretest_aozora_dinner.csv"
-    reviews = analyzer.read_csv(csv_path)
-    for review in reviews:
-        try:
-            max_id = Review.objects.latest('id').id
-        except ObjectDoesNotExist:
-            max_id = 1
-        dinner_review_id = max_id + 1
-        Review.objects.create(
-            id=dinner_review_id,
-            review=review,
-            store=store,
-            ld_id=1,
-            is_new=True)
+def save_review(request):
+    for key, value in SAMPLE_STORE_LIST.items():
+        store = Store.objects.get(id=key)
+        analyzer = Analyzer()
+        csv_path = BASE_DIR + \
+            "/sample_files/pretest_{}_dinner.csv".format(value)
+        reviews = analyzer.read_csv(csv_path)
+        for review in reviews:
+            try:
+                max_id = Review.objects.latest('id').id
+            except ObjectDoesNotExist:
+                max_id = 1
+            dinner_review_id = max_id + 1
+            Review.objects.create(
+                id=dinner_review_id,
+                review=review,
+                store=store,
+                ld_id=1,
+                is_new=True)
     # ここからしたの処理はユーザーの応答に応じてレスポンスするものではなく、システムとして常時稼働し、実行される。
     return HttpResponse("save")
 
