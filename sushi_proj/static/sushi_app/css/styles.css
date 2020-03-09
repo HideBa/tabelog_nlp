@@ -97,7 +97,9 @@ body {
 }
 /* area------------- */
 
-
+.container {
+    margin-top: 100px;
+}
 .area-container {
     background-color: #232323;
     color: #D8DADA;
