@@ -25,7 +25,7 @@ SECRET_KEY = '-f32kw3re+pq9)!=gct37eg1kl@e^nd)yt!gq)0fc7oz*almxr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # リダイレクト先にメッセージを表示するため、設定を追加
