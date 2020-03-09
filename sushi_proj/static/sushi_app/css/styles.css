@@ -70,6 +70,7 @@ input.search-textbox {
     background-color: transparent;
     color: #B5B8BA;
     font-size: 14px;
+    width: 120px;
 }
 
 input::placeholder {
