@@ -371,4 +371,4 @@ def implement_all_process(request):
         keyword_file, adjective_file, is_dinner=True)
     store_id_list = analyze_implement.get_store_id_list()
     analyze_implement.implement_all(store_id_list)
-    return redirect('show-top-page')
+    return redirect('show_top_page')
